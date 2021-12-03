@@ -1,0 +1,5 @@
+export {default as logo_soldays} from '../Assets/newSoldLogo.png'
+export {default as logo_login} from '../Assets/icon_header/login.png'
+export {default as logo_qr_scan} from '../Assets/icon_header/qr-scan-icon.png'
+export {default as logo_shopping_cart} from '../Assets/icon_header/shopping-cart.png'
+export {default as logo_unpaid_list} from '../Assets/icon_header/unpaid_list.png'
