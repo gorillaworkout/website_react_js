@@ -12,9 +12,13 @@ import Select from 'react-select'
 export default function Header(data){
 
     const [isLogin,setIsLogin]=useState(data.data.isLogin)
+    const [isOrderList,setIsOrderList]=useState(data.data.isOrderList)
+    const [isBulkOrder,setIsBulkOrder]=useState(data.data.isBulkOrder)
+    const [isCart,setIsCart]=useState(data.data.isCart)
+    const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(data.data.allProduct)
     const options_product_searching = []
-
+    console.log(data)
     // console.log(handleCallbackFromHeader)
     
     useEffect(()=>{
@@ -39,8 +43,50 @@ export default function Header(data){
         }else {
             // console.log('jalan',e.value)
             // console.log(data.parentCallback(e.value))
-            data.parentCallback(e.value)
+            setDataSearching(e.value)
+            var data_from_searching =[
+                {"searching_header":e.value},
+                {"order_list":isOrderList},
+                {"bulk_order":isBulkOrder},
+                {"cart":isCart}
+            ]
+            
+            data.parentCallback(data_from_searching)
         }
+    }
+
+    const open_order_list=()=>{
+        var data_from_orderList =[
+            {"searching_header":dataSearching},
+            {"order_list":!isOrderList},
+            {"bulk_order":isBulkOrder},
+            {"cart":isCart}
+        ]
+        data.parentCallback(data_from_orderList)
+        setIsOrderList(!isOrderList)
+    }
+    const open_bulk_order=()=>{
+        var data_from_bulk_order =
+        [
+            {"searching_header":dataSearching},
+            {"order_list":!isOrderList},
+            {"bulk_order":isBulkOrder},
+            {"cart":isCart}
+        ]
+        
+        data.parentCallback(data_from_bulk_order)
+        setIsBulkOrder(!isBulkOrder)
+    }
+    
+    const open_cart=()=>{
+        var data_from_cart =[
+            {"searching_header":dataSearching},
+            {"order_list":isOrderList},
+            {"bulk_order":isBulkOrder},
+            {"cart":!isCart}
+        ]
+        data.parentCallback(data_from_cart)
+        setIsCart(!isCart)
     }
 
     const render_searching_product=()=>{
@@ -125,20 +171,20 @@ export default function Header(data){
                     </div>
                     <div className="menu-from-header">
                         <div className="item-menu-1">
-                            <div className="box-active-item-menu">
+                            <div className="box-active-item-menu" onClick={open_order_list}>
                                 <img src={logo_unpaid_list} alt="" />
                                 <p>Order List</p>
                             </div>
                         </div>
                         <div className="item-menu-1">
-                            <div className="box-active-item-menu">
+                            <div className="box-active-item-menu" onClick={open_bulk_order}>
                                 <img src={logo_qr_scan} alt="" />
                                 <p>Bulk Order</p>
                             </div>
                         </div>
                         <div className="item-menu-1">
                             <div className="box-active-item-menu">
-                                <div className="box-cart-counter">
+                                <div className="box-cart-counter" onClick={open_cart}>
                                     <img src={logo_shopping_cart} alt=""  id="img-cart-counter"/>
                                     <p id="cart-counter">0</p>
                                 </div>
