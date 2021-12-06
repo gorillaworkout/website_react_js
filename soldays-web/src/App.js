@@ -1,8 +1,7 @@
-import React,{useEffect,useState} from 'react';
+import React from 'react';
 import {Routes,Route} from 'react-router-dom'
 // import logo from './logo.svg';
 import './App.css';
-import Axios from 'axios';
 import Home from '../src/Pages/Home/Home'
 
 function App() {

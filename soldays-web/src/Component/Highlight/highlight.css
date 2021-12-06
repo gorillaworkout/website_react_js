@@ -1,0 +1,69 @@
+.highlight-container{
+    width:100%;
+    height:450px;
+    /* border:1px solid black; */
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    /* overflow-x:scroll; */
+    overflow:auto;
+    /* padding:5px; */
+}
+.highlight-judul{
+    width:100%;
+    height:70px;
+    display: flex;
+    justify-content: flex-start;
+    /* padding-left:20px; */
+    /* border:1px solid black; */
+    align-items: center;
+}
+.box-for-product-item-highlight{
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow:auto;
+
+    /* border:1px solid red; */
+    /* padding:10px; */
+}
+.card-highlight-product{
+    width:12%;
+    height:50%;
+    border:1px solid black;
+    border-radius:5px;
+}
+.card-highlight-img {
+    width:100%;
+    height:80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-highlight-img img {
+    height:100%;
+    width:100%;
+}
+.card-detail-name {
+    width:100%;
+    height:20%;
+    /* border:1px solid black; */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-size:0.7em;
+    overflow: auto;
+}
+.card-detail-name p {
+    text-align: center;
+    width:100%;
+    /* height:70px; */
+    min-width:100%;
+    white-space:nowrap;
+    /* overflow: hidden; */
+    overflow-x:hidden;
+    /* text-overflow: ellipsis; */
+
+}
