@@ -317,23 +317,25 @@ export default function Header(data){
         )
     }
     const render_random_category=()=>{
-        return allCategoryFromHome.map((val,index)=>{
-            if(index<5){
-                return (
-                    <>
-                         <div key={index} className="category-random-item" onClick={()=>open_random_category(`${val.Category}`)}>
-                            <p>{val.Category}</p>
-                        </div>
-                    </>
-                )
-            }else {
-                return (
-                    <>
-                        
-                    </>
-                )
-            }
-        })
+        if(allCategoryFromHome !== undefined){
+            return allCategoryFromHome.map((val,index)=>{
+                if(index<5){
+                    return (
+                        <>
+                             <div key={index} className="category-random-item" onClick={()=>open_random_category(`${val.Category}`)}>
+                                <p>{val.Category}</p>
+                            </div>
+                        </>
+                    )
+                }else {
+                    return (
+                        <>
+                            
+                        </>
+                    )
+                }
+            })
+        }
     }
 
     return(
