@@ -4,7 +4,7 @@ import {GrFacebookOption,GrInstagram,GrTwitter,GrYoutube} from 'react-icons/gr'
 import SmallCardSocialMedia from '../card/small_card_social_media'
 import Iframe from 'react-iframe'
 import {android_logo,bca_logo,bni_logo,bri_logo,citibank_logo,dbs_logo,mandiri_logo,permata_logo,shopee_logo} from '../../Assets/Assets'
-
+import ImgEffect from '../Effect/img_effect'
 
 
 export default function Footer(){
@@ -118,16 +118,37 @@ export default function Footer(){
                             <div className="logo-bank-left">
                                 <ul>
                                     <li>
-                                        <img src={bca_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:bca_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                     <li>
-                                        <img src={bni_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:bni_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
+                    
                                     </li>
                                     <li>
-                                        <img src={bri_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:bri_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                     <li>
-                                        <img src={citibank_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:citibank_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                   
                                 </ul>
@@ -135,16 +156,36 @@ export default function Footer(){
                             <div className="logo-bank-left">
                                 <ul>
                                     <li>
-                                        <img src={mandiri_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:mandiri_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                     <li>
-                                        <img src={permata_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:permata_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                     <li>
-                                        <img src={shopee_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:shopee_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                     <li>
-                                        <img src={dbs_logo} alt="" />
+                                        <ImgEffect
+                                            data={{
+                                                img:dbs_logo,
+                                                background:'transparent'
+                                            }}
+                                        />
                                     </li>
                                 </ul>
                             </div>

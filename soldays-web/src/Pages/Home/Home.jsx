@@ -8,6 +8,7 @@ import ProductCard from '../../Component/ProductCard/ProductCard'
 import Footer from '../../Component/Footer/Footer'
 import axios from 'axios'
 import LazyLoad from 'react-lazyload';
+import ImgEffect from '../../Component/Effect/img_effect'
 import { ads_panjang_1,icon_ads_panjang_brand,icon_ads_panjang_new,ads_panjang_2 } from '../../Assets/Assets';
 // import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
