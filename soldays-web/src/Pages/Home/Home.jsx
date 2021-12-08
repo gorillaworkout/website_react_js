@@ -5,9 +5,10 @@ import Header from '../Header/Header'
 import Highlight from '../../Component/Highlight/highlight'
 import CardAds from '../../Component/card/Card_Ads'
 import ProductCard from '../../Component/ProductCard/ProductCard'
+import Footer from '../../Component/Footer/Footer'
 import axios from 'axios'
 import LazyLoad from 'react-lazyload';
-import { ads_panjang_1,icon_ads_panjang_brand,icon_ads_panjang_new,ads_panjang_2,ads_panjang_3 } from '../../Assets/Assets';
+import { ads_panjang_1,icon_ads_panjang_brand,icon_ads_panjang_new,ads_panjang_2 } from '../../Assets/Assets';
 // import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
@@ -38,15 +39,20 @@ export default function Home({parentCallback}){
         isRandomCategory:false,
         category_random:''
     })
-    // console.log(callbackFromHeader,'call back from header')
-    // console.log(callbackFromHighlight,'call back from highlight')
+    
     useEffect(()=>{
         var all_product = JSON.parse(localStorage.getItem('all_product'))
         var all_category = JSON.parse(localStorage.getItem('all_category'))
         var all_subcategory = JSON.parse(localStorage.getItem('all_subcategory'))
         var all_array_groupbuy = []
         var all_array_new = []
-        if(all_product === null || all_product === ''){
+
+        if(
+            (all_product === null || all_product === '') && 
+            (all_category === null || all_category === '') &&
+            (all_subcategory === null || all_subcategory === '')
+        ){
+
             axios.post('https://products.sold.co.id/get-product-details')
             .then((res)=>{
                 setAllProductItem(res.data)
@@ -62,7 +68,49 @@ export default function Home({parentCallback}){
                         setAllProductNew(all_array_new)
                     }
                 })
-                setLoadingFetchingData(false)
+
+                // GET ALL CATEGORY
+                axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Category=true`)
+                .then((res)=>{
+                 
+                    setAllCategory(res.data)
+                    var stringify_all_product = JSON.stringify(res.data)
+                    localStorage.setItem('all_category',stringify_all_product)
+    
+                    // GET ALL SUBCATEGORY
+                    var all_array_subcategory = []
+                        res.data.forEach((val,index,array)=>{
+                            axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
+                            .then((res)=>{
+                                if(res.data.length > 0){
+                                    res.data.forEach((val,index,array)=>{
+                                        all_array_subcategory.push(val)
+                                    })
+                                    
+                                }else {
+                                    all_array_subcategory.push(res.data)
+                                    // setLoadingFetchingData(false)
+                                }
+                                var stringify_subcategory = JSON.stringify(all_array_subcategory)
+                                localStorage.setItem('all_subcategory',stringify_subcategory)
+                                setAllSubCategory(all_array_subcategory)
+                                console.log('harusnya udh false')
+                              
+                                if(index === array.length - 1 ){
+                                    console.log('masuk ke line 99')
+                                    setLoadingFetchingData(false)
+                                }
+                            }).catch((err)=>{
+                                console.log(err)
+                            })
+                        })
+                    // GET ALL SUBCATEGORY
+                }).catch((err)=>{
+                    console.log(err)
+                })
+
+                // GET ALL CATEGORY
+          
             }).catch((err)=>{
                 console.log(err)
             })
@@ -78,48 +126,10 @@ export default function Home({parentCallback}){
                 }
             })
             setAllProductItem(all_product)
-            setLoadingFetchingData(false)
-        }
-
-        // GET ALL CATEGORY
-        if((all_category === null || all_product === '') && (all_subcategory === null || allSubCategory === '') ){ 
-            axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Category=true`)
-            .then((res)=>{
-                console.log(res.data)
-                setAllCategory(res.data)
-                var stringify_all_product = JSON.stringify(res.data)
-                localStorage.setItem('all_category',stringify_all_product)
-
-                // GET ALL SUBCATEGORY
-                var all_array_subcategory = []
-                    res.data.forEach((val,index)=>{
-                        axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
-                        .then((res)=>{
-                            if(res.data.length > 0){
-                                res.data.forEach((val,index)=>{
-                                    all_array_subcategory.push(val)
-                                })
-                            }else {
-                                all_array_subcategory.push(res.data)
-                            }
-                            var stringify_subcategory = JSON.stringify(all_array_subcategory)
-                            localStorage.setItem('all_subcategory',stringify_subcategory)
-                            setAllSubCategory(all_array_subcategory)
-                            setLoadingFetchingData(false)
-                        }).catch((err)=>{
-                            console.log(err)
-                        })
-                    })
-                // GET ALL SUBCATEGORY
-            }).catch((err)=>{
-                console.log(err)
-            })
-        }else {
             setAllCategory(all_category)
             setAllSubCategory(all_subcategory)
             setLoadingFetchingData(false)
         }
-        // GET ALL CATEGORY
 
 
     },[])
@@ -169,7 +179,7 @@ export default function Home({parentCallback}){
     }
     var data_to_card_new={
         isTokpedAds:false,
-        allProductItem: allProductGroupbuy
+        allProductItem: allProductNew
     }
     var data_to_cards_ads_1={
         detail_Cards:'PROMO',
@@ -181,8 +191,6 @@ export default function Home({parentCallback}){
         img:ads_panjang_2,
         icon:icon_ads_panjang_new
     }
-    console.log(data_to_card_promo)
-
     // FUNCTION FOR HEADER
     if(loadingFetchingData){
         return (
@@ -203,14 +211,22 @@ export default function Home({parentCallback}){
                     <Highlight data={data_to_highlight} parentCallback={handleCallbackFromHighlight}/>
                 </div>
             </LazyLoad>
+
             <LazyLoad>
                 <CardAds data={data_to_cards_ads_1}/>
             </LazyLoad>
+
+            <LazyLoad>
                 <ProductCard data={data_to_card_promo} parentCallback={handleCallbackFromCardPromo}/>
+            </LazyLoad>
+
             <LazyLoad>
                 <CardAds data={data_to_cards_ads_2} />
             </LazyLoad>
+
+            <LazyLoad>
                 <ProductCard data={data_to_card_new} parentCallback={handleCallbackFromCardNew}/>
+            </LazyLoad>
 
 
 
@@ -234,6 +250,11 @@ export default function Home({parentCallback}){
 
                 </>
             }
+                <div className="box-highlight2">
+                    <LazyLoad>
+                            <Footer/>
+                    </LazyLoad>
+                </div>
 
         </div>
         </>

@@ -2,9 +2,7 @@ import React from 'react'
 import './Card_Ads.css'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 export default function Box_Ads_small(data){
-    console.log(data.data.detail_Cards)
-
-
+   console.log(data)
     return (
         <>
             <div className="box-ads-small-container">

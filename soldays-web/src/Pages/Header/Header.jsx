@@ -36,13 +36,12 @@ export default function Header(data){
             category_random:''
         }
     )
-    console.log(allIsData,'all is data')
-
+  
     const options_product_searching = []
     
     
     useEffect(()=>{
-        // console.log(allProductFromHome)
+     
         // IF UNTUK RENDER SEARCHING PRODUCT
         if(allProductFromHome !==null || allProductFromHome.length > 0){
             allProductFromHome.forEach((val,index)=>{

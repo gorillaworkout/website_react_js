@@ -2,14 +2,23 @@ import React, {useState } from 'react'
 import './ProductCard.css'
 import Tokped_gambar from '../../Assets/tokped_gambar/tokped.png'
 import Sealant from '../../Assets/tokped_gambar/sealant.png'
-import {badge_seller,badge_new,badge_groupbuy,icon_cart} from '../../Assets/Assets'
+import {badge_new,badge_groupbuy,icon_cart} from '../../Assets/Assets'
+import {motion} from 'framer-motion/dist/es/index'
+import ScrollContainer from 'react-indiana-drag-scroll'
+
 export default function ProductCard(data){
 
     const [isTokpedAds,setIsTokpedAds]=useState(data.data.isTokpedAds) // ini dibikin kalo misal card mau pake iklan berarti true, kasih class tokped_ads_iklan
     const [allDataFromHome,setAllDataFromHome]=useState(data.data.allProductItem)
-    console.log(isTokpedAds)
+    const [imageLoading, setImageLoading] = useState(true);
+    const [pulsing, setPulsing] = useState(true);
+  
+    const imageLoaded = () => {
+      setImageLoading(false);
+      setTimeout(() => setPulsing(false), 600);
+    };
     function commafy( num ) {
-        if(num !=undefined){
+        if(num !==undefined){
             var str = num.toString().split('.');
             if (str[0].length >= 5) {
                 str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
@@ -22,8 +31,10 @@ export default function ProductCard(data){
             return '0'
         }
     }
+
+    console.log(data)
     const renderCard=()=>{
-        console.log(isTokpedAds)
+
         return allDataFromHome.map((val,index)=>{
             var hargaAwal = parseInt(val.Sell_Price)
             var discount = parseInt(val.Sell_Price * 0.1)
@@ -33,12 +44,29 @@ export default function ProductCard(data){
                     <>
                         <div key={index+1} className="card-product-box tokped_ads_active  hvr-float-shadow">
                             <div className="box-badge-product-card">
-                                {/* <img src={badge_new} alt="" id="badge_new"/> */}
-                                {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
                                 <img src={badge_groupbuy} alt="" id="badge_groupbuy"/>
                             </div>
                             <div className="box-img-product-card">
-                                <img src={val.Picture_1} alt="" />
+                                <div className={`${pulsing ? "pulse" : ""} loadable`}
+                                    style={{ width: "100%", background: "#ccc" }}>
+                                    <motion.img
+                                    initial={{ height: "100%", opacity: 0 }}
+                                    // style={{ height: imageLoading ? "6rem" : "auto" }}
+                                    animate={{
+                                        height: imageLoading ? "100%" : "auto",
+                                        opacity: imageLoading ? 0 : 1
+                                    }}
+                                    transition={
+                                        ({ height: { delay: 0, duration: 0.4 } },
+                                        { opacity: { delay: 0.7, duration: 0.4 } })
+                                    }
+                                    onLoad={imageLoaded}
+                                    width="100%"
+                                    height="100%"
+                                    src={val.Picture_1}
+                                    />
+                                </div>
+                                {/* <img src={val.Picture_1} alt="" /> */}
                             </div>
                             <div className="box-price-buy-product-card ">
                                 <div className="inner-price-box-product-card">
@@ -65,7 +93,25 @@ export default function ProductCard(data){
                             {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
                         </div>
                         <div className="box-img-product-card">
-                            <img src={Sealant} alt="" />
+                            <div className={`${pulsing ? "pulse" : ""} loadable`}
+                                style={{ width: "100%", background: "#ccc" }}>
+                                <motion.img
+                                initial={{ height: "100%", opacity: 0 }}
+                                // style={{ height: imageLoading ? "6rem" : "auto" }}
+                                animate={{
+                                    height: imageLoading ? "100%" : "auto",
+                                    opacity: imageLoading ? 0 : 1
+                                }}
+                                transition={
+                                    ({ height: { delay: 0, duration: 0.4 } },
+                                    { opacity: { delay: 0.7, duration: 0.4 } })
+                                }
+                                onLoad={imageLoaded}
+                                width="100%"
+                                height="100%"
+                                src={val.Picture_1}
+                                />
+                            </div>
                         </div>
                         <div className="box-price-buy-product-card ">
                             <div className="inner-price-box-product-card">
@@ -91,7 +137,25 @@ export default function ProductCard(data){
                             {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
                         </div>
                         <div className="box-img-product-card">
-                            <img src={Sealant} alt="" />
+                            <div className={`${pulsing ? "pulse" : ""} loadable`}
+                                style={{ width: "100%", background: "#ccc" }}>
+                                <motion.img
+                                initial={{ height: "100%", opacity: 0 }}
+                                // style={{ height: imageLoading ? "6rem" : "auto" }}
+                                animate={{
+                                    height: imageLoading ? "100%" : "auto",
+                                    opacity: imageLoading ? 0 : 1
+                                }}
+                                transition={
+                                    ({ height: { delay: 0, duration: 0.4 } },
+                                    { opacity: { delay: 0.7, duration: 0.4 } })
+                                }
+                                onLoad={imageLoaded}
+                                width="100%"
+                                height="100%"
+                                src={val.Picture_1}
+                                />
+                            </div>
                         </div>
                         <div className="box-price-buy-product-card ">
                             <div className="inner-price-box-product-card">
@@ -122,7 +186,27 @@ export default function ProductCard(data){
                         
                         <div className="card-tokped-iklan">
                             <div className="card-half-tokped">
-                                <img src={Tokped_gambar} alt="" />
+                                {/* <img src={Tokped_gambar} alt="" /> */}
+
+                                <div className={`${pulsing ? "pulse" : ""} loadable`}
+                                    style={{ width: "100%", background: "yellow" }}>
+                                    <motion.img
+                                    initial={{ height: "100%", opacity: 0 }}
+                                    // style={{ height: imageLoading ? "6rem" : "auto" }}
+                                    animate={{
+                                        height: imageLoading ? "100%" : "auto",
+                                        opacity: imageLoading ? 0 : 1
+                                    }}
+                                    transition={
+                                        ({ height: { delay: 0, duration: 0.4 } },
+                                        { opacity: { delay: 0.5, duration: 0.4 } })
+                                    }
+                                    onLoad={imageLoaded}
+                                    width="100%"
+                                    height="100%"
+                                    src={Tokped_gambar}
+                                    />
+                                </div>
                             </div>
                         </div>
                         :
@@ -131,7 +215,9 @@ export default function ProductCard(data){
                         </>
 
                     }
-                    {renderCard()}
+                    {/* <ScrollContainer className="scroll-container"> */}
+                        {renderCard()}
+                    {/* </ScrollContainer> */}
                 </div>
             </div>
         </>
