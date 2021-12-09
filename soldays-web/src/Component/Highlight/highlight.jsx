@@ -2,8 +2,8 @@ import React, { useState,useEffect, } from 'react'
 import './highlight.css'
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImgEffect from '../Effect/img_effect'
-export default function Highlight(data){
-
+    export default function Highlight(data){
+    console.log(data)
 
     const [allSubCategoryFromHome,setAllSubCategpryFromHome]=useState(data.data.allSubCategory)
     const [open_Category,setOpen_Category] = useState(false)
@@ -40,7 +40,7 @@ export default function Highlight(data){
     }
     return (
         <>
-            <div className="highlight-container">
+            <div key={1} className="highlight-container">
                 {/* <div className="inside-highlight"> */}
                     <div className="highlight-judul">
                         <h1>HIGHLIGHT</h1>

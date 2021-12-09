@@ -14,7 +14,7 @@ function App(props) {
   
   const dispatch=useDispatch()
 
-  const [loading,setLoading]=useState(true)
+  const [loading,setLoading]=useState(Product.isLoadingProduct)
 
 
   useEffect(()=>{
@@ -30,12 +30,20 @@ function App(props) {
       (all_subcategory === null || all_subcategory === ''))
     {
         dispatch(GetAllProduct()) // get all product,category,subcategory,category groupbuy, category  new
-        console.log(Auth)
-        setLoading(false)
+        setTimeout(()=>{
+          console.log(Auth)
+          setLoading(false)
+        },2000)
     }else {
+      console.log('masuk ke else')
+      console.log(all_product)
+
+      dispatch({type:'LOADINGPRODUCT',isLoading:true})
       dispatch({type:'GETALLPRODUCT',allProduct:all_product}) // saving all product to getallProduct
-      dispatch({type:'LOADING'})
-      console.log(Auth)
+      setTimeout(()=>{
+        console.log(Product.allProduct)
+      },3000)
+      // console.log(Auth)
       all_product.forEach((val,index,array)=>{
           if(val.GroupBuy_Purchase === true || val.GroupBuy_Purchase === 'true'){
             all_array_groupbuy.push(val)
@@ -44,19 +52,26 @@ function App(props) {
               all_array_new.push(val)
           }
           if(index === array.length - 1){
-
+              // console.log(all_subcategory)
               dispatch({type:'GETALLCATEGORYGROUPBUY',allCategoryGroupBuy:all_array_groupbuy}) // saving all product to category groupbuy
               dispatch({type:'GETALLCATEGORYNEW',allCategoryNew:all_array_new}) // saving all product to category new
+              dispatch({type:'GETALLCATEGORY',allCategory:all_category}) // saving all data to allcategory
+              dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_subcategory})
+              // dispatch(getAllSubCategory(all_category)) // get all subcategory , saving to getallsubcategory
+              setTimeout(()=>{
+                dispatch({type:'ALLPRODUCTLOAD'})
+                
+              },2000)
+              // console.log('isloading udh false')
+           
           }
       })
-      dispatch({type:'GETALLCATEGORY',allCategory:all_category}) // saving all data to allcategory
-      dispatch(getAllSubCategory(all_category)) // get all subcategory , saving to getallsubcategory
-      setLoading(false)
     }
 
-  },)
+  },[])
 
   if(loading){
+    console.log('masih stuck di app')
     return (
       <div className='d-flex justify-content-center align-items-center' style={{height:"100vh", width:"100vw"}}>
           {FullPageLoading(loading,100,'#0095DA')}

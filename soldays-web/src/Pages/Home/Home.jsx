@@ -21,13 +21,14 @@ import {useDispatch,useSelector} from 'react-redux'
 export default function Home({parentCallback}){
     const Product = useSelector(state=>state.Product)
     const Auth = useSelector(state=>state.Auth)
-
-    const [allProductItem,setAllProductItem]=useState(Product.AllProduct)
+    // console.log(Auth)
+    console.log(Product)
+    const [allProductItem,setAllProductItem]=useState(Product.allProduct)
     const [allProductGroupbuy,setAllProductGroupbuy]=useState(Product.allCategoryGroupBuy)
-    const [allProductNew,setAllProductNew]=useState(Product.AllCategoryNew)
+    const [allProductNew,setAllProductNew]=useState(Product.allCategoryNew)
     const [allCategory,setAllCategory]=useState(Product.AllCategory)
     const [allSubCategory,setAllSubCategory]=useState(Product.allSubCategory)
-    const [loadingFetchingData,setLoadingFetchingData]=useState(Auth.isLoading)
+    const [loadingFetchingData,setLoadingFetchingData]=useState(Product.isLoading)
     const [callbackFromHeader,setCallbackFromHeader]=useState([])
     const [callbackFromHighlight,setCallbackFromHighlight]=useState([])
     const [callbackFromCardPromo,setCallbackFromCardPromo]=useState([])
@@ -52,16 +53,17 @@ export default function Home({parentCallback}){
     
     // console.log(Product)
     // console.log(Auth)
- 
+
     useEffect(()=>{
         setAllProductItem(Product.allProduct)
         setAllProductGroupbuy(Product.allCategoryGroupBuy)
         setAllProductNew(Product.AllCategoryNew)
         setAllCategory(Product.AllCategory)
         setAllSubCategory(Product.allSubCategory)
-        // setLoadingFetchingData(Auth.isLoading)
+        setLoadingFetchingData(Product.isLoadingProduct)
+  
     },
-    [Auth.isLoading, Product.AllCategory, Product.AllCategoryNew, Product.allCategoryGroupBuy, Product.allProduct, Product.allSubCategory, allProductItem])
+    [Product.isLoadingProduct, Product.AllCategory, Product.AllCategoryNew, Product.allCategoryGroupBuy, Product.allProduct, Product.allSubCategory, allProductItem])
     
 
 
@@ -103,6 +105,7 @@ export default function Home({parentCallback}){
     var data_to_highlight = {
         allSubCategory:allSubCategory
     }
+
     var data_to_card_promo = {
         isTokpedAds:true,
         allProductItem: allProductGroupbuy

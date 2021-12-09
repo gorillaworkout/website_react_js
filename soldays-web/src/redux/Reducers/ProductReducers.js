@@ -3,7 +3,8 @@ const INITIAL_STATE = {
     allCategory         :[],
     allSubCategory      :[],
     allCategoryGroupBuy :[],
-    allCategoryNew      :[]
+    allCategoryNew      :[],
+    isLoadingProduct    :true
 }
 
 
@@ -20,6 +21,11 @@ export default  (state=INITIAL_STATE,action)=>{
             return {...state,...action.payload,allCategoryGroupBuy:action.allCategoryGroupBuy}
         case 'GETALLCATEGORYNEW':
             return {...state,...action.payload,allCategoryNew:action.allCategoryNew}
+        case 'LOADINGPRODUCT' :
+            console.log('loading jalan',state.isLoadingProduct)
+            return {...state,isLoadingProduct:true}
+        case 'ALLPRODUCTLOAD':
+            return {...state,isLoadingProduct:false}
         default:
             return state
     }

@@ -5,6 +5,7 @@ import {badge_new,badge_groupbuy,icon_cart,new_iklan_left} from '../../Assets/As
 import ImgEffect from '../../Component/Effect/img_effect'
 
 export default function ProductCard(data){
+    // console.log(data)
     const [isTokpedAds,setIsTokpedAds]=useState(data.data.isTokpedAds) // ini dibikin kalo misal card mau pake iklan berarti true, kasih class tokped_ads_iklan
     const [allDataFromHome,setAllDataFromHome]=useState(data.data.allProductItem)
     function commafy( num ) {
@@ -22,13 +23,13 @@ export default function ProductCard(data){
         }
     }
 
-    useEffect(()=>{
-        setAllDataFromHome(data.data.allProductItem)
-    },[data.data.allProductItem])
+    // useEffect(()=>{
+    //     setAllDataFromHome(data.data.allProductItem)
+    // },[data.data.allProductItem])
   
 
     const renderCard=()=>{
-        console.log(allDataFromHome)
+        // console.log(allDataFromHome)
         // return allDataFromHome.map((val,index)=>{
         //     var hargaAwal = parseInt(val.Sell_Price)
         //     var discount = parseInt(val.Sell_Price * 0.1)

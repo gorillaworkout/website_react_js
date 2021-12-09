@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const GetAllProduct=()=>{
     return (dispatch)=>{
-        dispatch({type:'LOADING',isLoading:true})
+        dispatch({type:'LOADINGPRODUCT',isLoading:true})
           var all_array_groupbuy = []
           var all_array_new      = []
         axios.post('https://products.sold.co.id/get-product-details')
@@ -24,7 +24,8 @@ export const GetAllProduct=()=>{
                 }
                 if(index === array.length - 1){
                     dispatch({type:'GETALLCATEGORYGROUPBUY',allCategoryGroupBuy:all_array_groupbuy})
-                    dispatch({type:'GETALLCATEGORYNEW',allCategoryGroupNew:all_array_new})
+                    dispatch({type:'GETALLCATEGORYNEW',allCategoryNew:all_array_new})
+                    console.log('selesai looping get all product')
                 }
             })
 
@@ -53,7 +54,7 @@ export const GetAllProduct=()=>{
                         localStorage.setItem('all_subcategory',stringify_subcategory)
                         if(index === array.length - 1 ){
                             dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_array_subcategory})
-                            dispatch({type:'LOADING',isLoading:false})
+                            dispatch({type:'ALLPRODUCTLOAD'})
                         }
                     }).catch((err)=>{
                         console.log(err)
@@ -89,9 +90,11 @@ export const getAllSubCategory=(Category)=>{
                 var stringify_subcategory = JSON.stringify(all_array_subcategory)
                 if(index === array.length - 1 ){
                     localStorage.setItem('all_subcategory',stringify_subcategory)
+                    // console.log(all_array_subcategory)
                     dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_array_subcategory})
-                    dispatch({type:'LOADING',isLoading:false})
-                    console.log('dispatch loading, harusnya false')
+                    dispatch({type:'ALLPRODUCTLOAD'})
+                    console.log(all_array_subcategory)
+                    // console.log('dispatch loading, harusnya false')
                 }
             }).catch((err)=>{
                 console.log(err)
