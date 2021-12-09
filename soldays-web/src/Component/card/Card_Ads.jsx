@@ -4,7 +4,6 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ImgEffect from '../Effect/img_effect'
 export default function Box_Ads_small(data){
 
-   console.log(data)
     return (
         <>
             <div className="box-ads-small-container">

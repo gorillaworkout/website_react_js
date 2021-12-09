@@ -11,15 +11,23 @@ import LazyLoad from 'react-lazyload';
 import ImgEffect from '../../Component/Effect/img_effect'
 import { ads_panjang_1,icon_ads_panjang_brand,icon_ads_panjang_new,ads_panjang_2 } from '../../Assets/Assets';
 // import Loader from "react-loader-spinner";
+
+import {FullPageLoading} from '../../Component/Loading/Loading'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {useDispatch,useSelector} from 'react-redux'
+
+
 
 export default function Home({parentCallback}){
-    const [allProductItem,setAllProductItem]=useState([])
-    const [allProductGroupbuy,setAllProductGroupbuy]=useState([])
-    const [allProductNew,setAllProductNew]=useState([])
-    const [allCategory,setAllCategory]=useState([])
-    const [allSubCategory,setAllSubCategory]=useState([])
-    const [loadingFetchingData,setLoadingFetchingData]=useState(true)
+    const Product = useSelector(state=>state.Product)
+    const Auth = useSelector(state=>state.Auth)
+
+    const [allProductItem,setAllProductItem]=useState(Product.AllProduct)
+    const [allProductGroupbuy,setAllProductGroupbuy]=useState(Product.allCategoryGroupBuy)
+    const [allProductNew,setAllProductNew]=useState(Product.AllCategoryNew)
+    const [allCategory,setAllCategory]=useState(Product.AllCategory)
+    const [allSubCategory,setAllSubCategory]=useState(Product.allSubCategory)
+    const [loadingFetchingData,setLoadingFetchingData]=useState(Auth.isLoading)
     const [callbackFromHeader,setCallbackFromHeader]=useState([])
     const [callbackFromHighlight,setCallbackFromHighlight]=useState([])
     const [callbackFromCardPromo,setCallbackFromCardPromo]=useState([])
@@ -40,100 +48,21 @@ export default function Home({parentCallback}){
         isRandomCategory:false,
         category_random:''
     })
+   
     
+    // console.log(Product)
+    // console.log(Auth)
+ 
     useEffect(()=>{
-        var all_product = JSON.parse(localStorage.getItem('all_product'))
-        var all_category = JSON.parse(localStorage.getItem('all_category'))
-        var all_subcategory = JSON.parse(localStorage.getItem('all_subcategory'))
-        var all_array_groupbuy = []
-        var all_array_new = []
-
-        if(
-            (all_product === null || all_product === '') && 
-            (all_category === null || all_category === '') &&
-            (all_subcategory === null || all_subcategory === '')
-        ){
-
-            axios.post('https://products.sold.co.id/get-product-details')
-            .then((res)=>{
-                setAllProductItem(res.data)
-                var stringify_all_product = JSON.stringify(res.data)
-                localStorage.setItem('all_product',stringify_all_product)
-                res.data.forEach((val,index)=>{
-                    if(val.GroupBuy_Purchase === true || val.GroupBuy_Purchase === 'true'){
-                        all_array_groupbuy.push(val)
-                        setAllProductGroupbuy(all_array_groupbuy)
-                    }
-                    if (val.Categorize_NEW === true || val.Categorize_NEW === 'true') {
-                        all_array_new.push(val)
-                        setAllProductNew(all_array_new)
-                    }
-                })
-
-                // GET ALL CATEGORY
-                axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Category=true`)
-                .then((res)=>{
-                 
-                    setAllCategory(res.data)
-                    var stringify_all_product = JSON.stringify(res.data)
-                    localStorage.setItem('all_category',stringify_all_product)
+        setAllProductItem(Product.allProduct)
+        setAllProductGroupbuy(Product.allCategoryGroupBuy)
+        setAllProductNew(Product.AllCategoryNew)
+        setAllCategory(Product.AllCategory)
+        setAllSubCategory(Product.allSubCategory)
+        // setLoadingFetchingData(Auth.isLoading)
+    },
+    [Auth.isLoading, Product.AllCategory, Product.AllCategoryNew, Product.allCategoryGroupBuy, Product.allProduct, Product.allSubCategory, allProductItem])
     
-                    // GET ALL SUBCATEGORY
-                    var all_array_subcategory = []
-                        res.data.forEach((val,index,array)=>{
-                            axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
-                            .then((res)=>{
-                                if(res.data.length > 0){
-                                    res.data.forEach((val,index,array)=>{
-                                        all_array_subcategory.push(val)
-                                    })
-                                    
-                                }else {
-                                    all_array_subcategory.push(res.data)
-                                    // setLoadingFetchingData(false)
-                                }
-                                var stringify_subcategory = JSON.stringify(all_array_subcategory)
-                                localStorage.setItem('all_subcategory',stringify_subcategory)
-                                setAllSubCategory(all_array_subcategory)
-                                console.log('harusnya udh false')
-                              
-                                if(index === array.length - 1 ){
-                                    console.log('masuk ke line 99')
-                                    setLoadingFetchingData(false)
-                                }
-                            }).catch((err)=>{
-                                console.log(err)
-                            })
-                        })
-                    // GET ALL SUBCATEGORY
-                }).catch((err)=>{
-                    console.log(err)
-                })
-
-                // GET ALL CATEGORY
-          
-            }).catch((err)=>{
-                console.log(err)
-            })
-        }else {
-            all_product.forEach((val,index)=>{
-                if(val.GroupBuy_Purchase === true || val.GroupBuy_Purchase === 'true'){
-                    all_array_groupbuy.push(val)
-                    setAllProductGroupbuy(all_array_groupbuy)
-                }
-                if (val.Categorize_NEW === true || val.Categorize_NEW === 'true') {
-                    all_array_new.push(val)
-                    setAllProductNew(all_array_new)
-                }
-            })
-            setAllProductItem(all_product)
-            setAllCategory(all_category)
-            setAllSubCategory(all_subcategory)
-            setLoadingFetchingData(false)
-        }
-
-
-    },[])
 
 
 
@@ -178,6 +107,7 @@ export default function Home({parentCallback}){
         isTokpedAds:true,
         allProductItem: allProductGroupbuy
     }
+    console.log(data_to_card_promo)
     var data_to_card_new={
         isTokpedAds:false,
         allProductItem: allProductNew
@@ -196,8 +126,8 @@ export default function Home({parentCallback}){
     if(loadingFetchingData){
         return (
             <>
-                <div>
-                    <p>LOADING</p>
+                <div className='d-flex justify-content-center align-items-center' style={{height:"100vh", width:"100vw"}}>
+                    {FullPageLoading(loadingFetchingData,100,'#0095DA')}
                 </div>
             </>
         )

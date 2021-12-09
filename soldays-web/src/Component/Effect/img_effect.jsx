@@ -3,7 +3,6 @@ import './img_effect.css'
 import {motion} from 'framer-motion/dist/es/index'
 
 export default function ImgEffect(data){
-    console.log(data)
     const [imageLoading, setImageLoading] = useState(true);
     const [pulsing, setPulsing] = useState(true);
   
