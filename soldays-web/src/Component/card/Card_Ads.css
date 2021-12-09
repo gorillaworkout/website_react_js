@@ -31,7 +31,7 @@
 .ads-inner-right{
     width:85%;
     height:100%;
-    /* background-color: pink; */
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
