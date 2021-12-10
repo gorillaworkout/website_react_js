@@ -1,4 +1,4 @@
-import React, { useState,useEffect, } from 'react'
+import React, { useState } from 'react'
 import './highlight.css'
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImgEffect from '../Effect/img_effect'
@@ -45,7 +45,7 @@ import ImgEffect from '../Effect/img_effect'
                     <div className="highlight-judul">
                         <h1>HIGHLIGHT</h1>
                     </div>
-                    <div className="box-for-product-item-highlight">
+                    <div className="box-for-product-item-highlight" key={1}>
                        {render_subcategory_highlight()}       
                     </div>
                 {/* </div> */}

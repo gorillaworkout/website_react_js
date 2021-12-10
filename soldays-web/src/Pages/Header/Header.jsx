@@ -6,33 +6,33 @@ import {BsPhone,BsSearch} from 'react-icons/bs'
 import {AiOutlineLogout,AiOutlineLogin} from 'react-icons/ai'
 import {logo_soldays,logo_login,logo_qr_scan,logo_shopping_cart,logo_unpaid_list} from '../../Assets/Assets'
 import Select from 'react-select'
+import {useDispatch,useSelector} from 'react-redux'
 
 
 
 export default function Header(data){
-
-
+    const Product = useSelector(state=>state.Product)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
     // const [category_random,setCategory_random]=useState('')
     const [dataSearching,setDataSearching]=useState([])
-    const [allProductFromHome,setAllProductFromHome]=useState(data.data.allProduct)
-    const [allCategoryFromHome,setAllCategoryFromHome]=useState(data.data.allCategory)
+    const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
+    const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allCategory)
 
     const [allIsData,setAllIsData]=useState(
         {
-            isLogin:data.data.isLogin,
-            isSemuaKategori:data.data.isSemuaKategori,
-            isOrderList:data.data.isOrderList,
-            isBulkOrder:data.data.isBulkOrder,
-            isCart:data.data.isCart,
-            isAboutUs:data.data.isAboutUs,
-            isKebijakan:data.data.isKebijakan,
-            isPanduanSeller:data.data.isPanduanSeller,
-            isPanduanCustomer:data.data.isPanduanCustomer,
-            isSocialMedia:data.data.isSocialMedia,
-            isCatalog:data.data.isCatalog,
-            isDownloadApp:data.data.isDownloadApp,
-            isRandomCategory:data.data.isRandomCategory,
+            isLogin:false,
+            isSemuaKategori:false,
+            isOrderList:false,
+            isBulkOrder:false,
+            isCart:false,
+            isAboutUs:false,
+            isKebijakan:false,
+            isPanduanSeller:false,
+            isPanduanCustomer:false,
+            isSocialMedia:false,
+            isCatalog:false,
+            isDownloadApp:false,
+            isRandomCategory:false,
             category_random:''
         }
     )
@@ -316,6 +316,7 @@ export default function Header(data){
         )
     }
     const render_random_category=()=>{
+        console.log(allCategoryFromHome)
         if(allCategoryFromHome !== undefined){
             return allCategoryFromHome.map((val,index)=>{
                 if(index<5){

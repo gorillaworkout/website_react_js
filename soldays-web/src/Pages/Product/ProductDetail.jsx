@@ -7,7 +7,7 @@ export default function ProductDetail(){
 
     return (
         <>
-            {/* <Header/> */}
+            <Header/>
         </>
     )
 }

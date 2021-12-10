@@ -73,8 +73,10 @@ export default function Home({parentCallback}){
             img:ads_panjang_2,
             icon:icon_ads_panjang_new
         })
+      
 
         const check_all_data=()=>{
+            var isDataToHeader    = false
             var isDataToHighlight = false
             var isDataToCardPromo = false
             var isDataToCardNew   = false
@@ -82,7 +84,7 @@ export default function Home({parentCallback}){
             var isDataToCardAds2  = false
             if(dataToHighlight.allSubCategory !== undefined){
                 if(dataToHighlight.allSubCategory.length > 0){
-                    console.log('data dah ada isinya')
+                    // console.log('data dah ada isinya')
                     // console.log(Product.allSubCategory)
                     setDataToHighlight({...dataToHighlight,allSubCategory:Product.allSubCategory})
                     isDataToHighlight = true
@@ -95,7 +97,7 @@ export default function Home({parentCallback}){
             }
             if(dataToCardPromo.allProductItem !== undefined){
                 if(dataToCardPromo.allProductItem.length > 0){
-                    console.log('data dah ada isinya')
+                    // console.log('data dah ada isinya')
                     setDataToCardPromo({...dataToCardPromo,allProductItem:Product.allCategoryGroupBuy})
                     isDataToCardPromo = true
                 }else {
@@ -106,7 +108,7 @@ export default function Home({parentCallback}){
             }
             if(dataToCardNew.allProductItem !== undefined){
                 if(dataToCardNew.allProductItem.length > 0){
-                    console.log('data dah ada isinya')
+                    // console.log('data dah ada isinya')
                     setDataToCardNew({...dataToCardNew,allProductItem:Product.allCategoryNew})
                     isDataToCardNew = true
                 }else {
@@ -117,7 +119,7 @@ export default function Home({parentCallback}){
             }
             if(dataToCardAds1 !== undefined){
                 // if(dataToCardAds1.length > 0){
-                    console.log('data dah ada isinya')
+                    // console.log('data dah ada isinya')
                     setDataToCardAds1({...dataToCardAds1})
                     isDataToCardAds1 = true
                 // }else {
@@ -129,7 +131,7 @@ export default function Home({parentCallback}){
             }
             if(dataToCardAds2 !== undefined){
                 // if(dataToCardAds1.length > 0){
-                    console.log('data dah ada isinya')
+                    // console.log('data dah ada isinya')
                     setDataToCardAds1({...dataToCardAds2})
                     isDataToCardAds2 = true
                 // }else {
@@ -203,8 +205,8 @@ export default function Home({parentCallback}){
         isPanduanSeller:allIsDataFromHeader.isPanduanSeller,
         isSocialMedia:allIsDataFromHeader.isSocialMedia,
         isCatalog:allIsDataFromHeader.isCatalog,
-        allProduct:allProductItem,
-        allCategory:allCategory
+        // allProduct:allProductItem,
+        // allCategory:allCategory
     }
     // var data_to_highlight = {
     //     allSubCategory:allSubCategory
@@ -243,7 +245,7 @@ export default function Home({parentCallback}){
         <>
         <div className="home-container">
            
-            <Header data={data_to_header} parentCallback={handleCallbackFromHeader}/>
+            <Header  parentCallback={handleCallbackFromHeader}/>
             <LazyLoad>
                 <div className="box-highlight">
                     <Highlight data={dataToHighlight} parentCallback={handleCallbackFromHighlight}/>
