@@ -5,26 +5,27 @@ const INITIAL_STATE = {
     allCategoryGroupBuy :[],
     allCategoryNew      :[],
     isLoadingProduct    :true
-}
+} 
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default  (state=INITIAL_STATE,action)=>{
     switch(action.type){
         case 'GETALLPRODUCT' :
-            return {...state,...action.payload,allProduct:action.allProduct}
+            return {...state,allProduct:action.allProduct}
         case 'GETALLCATEGORY' :
-            return {...state,...action.payload,allCategory:action.allCategory}
+            return {...state,allCategory:action.allCategory}
         case 'GETALLSUBCATEGORY' :
-            return {...state,...action.payload,allSubCategory:action.allSubCategory}
+            return {...state,allSubCategory:action.allSubCategory}
         case 'GETALLCATEGORYGROUPBUY':
-            return {...state,...action.payload,allCategoryGroupBuy:action.allCategoryGroupBuy}
+            return {...state,allCategoryGroupBuy:action.allCategoryGroupBuy}
         case 'GETALLCATEGORYNEW':
-            return {...state,...action.payload,allCategoryNew:action.allCategoryNew}
+            return {...state,allCategoryNew:action.allCategoryNew}
         case 'LOADINGPRODUCT' :
             console.log('loading jalan',state.isLoadingProduct)
             return {...state,isLoadingProduct:true}
         case 'ALLPRODUCTLOAD':
+            console.log('allProductload harusnya udh false')
             return {...state,isLoadingProduct:false}
         default:
             return state

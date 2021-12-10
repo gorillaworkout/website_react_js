@@ -9,13 +9,13 @@ import {FullPageLoading} from './Component/Loading/Loading'
 import {GetAllProduct,getAllSubCategory} from './redux/Actions/ProductActions'
 import {useDispatch,useSelector} from 'react-redux'
 function App(props) {
-  const Auth=useSelector(state=>state.Auth)
-  const Product = useSelector(state=>state.Product)
+  const Auth=useSelector((state)=>state.Auth)
+  const Product = useSelector((state)=>state.Product)
   
   const dispatch=useDispatch()
 
   const [loading,setLoading]=useState(Product.isLoadingProduct)
-
+  const [ProductFromReducers,setProductFromReducers]=useState(Product)
 
   useEffect(()=>{
     var all_product = JSON.parse(localStorage.getItem('all_product'))
@@ -40,9 +40,8 @@ function App(props) {
 
       dispatch({type:'LOADINGPRODUCT',isLoading:true})
       dispatch({type:'GETALLPRODUCT',allProduct:all_product}) // saving all product to getallProduct
-      setTimeout(()=>{
-        console.log(Product.allProduct)
-      },3000)
+
+
       // console.log(Auth)
       all_product.forEach((val,index,array)=>{
           if(val.GroupBuy_Purchase === true || val.GroupBuy_Purchase === 'true'){
@@ -59,16 +58,42 @@ function App(props) {
               dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_subcategory})
               // dispatch(getAllSubCategory(all_category)) // get all subcategory , saving to getallsubcategory
               setTimeout(()=>{
+                // console.log('all product load jalan seharusnya udh false')
                 dispatch({type:'ALLPRODUCTLOAD'})
-                
-              },2000)
+                setLoading(Product.isLoadingProduct)
+                // console.log(Product)
+        
+            
+              },1000)
               // console.log('isloading udh false')
            
           }
       })
     }
+    // console.log(Product.isLoadingProduct)
 
   },[])
+
+  useEffect(()=>{
+    // console.log(ProductFromReducers)
+    // if(ProductFromReducers !== undefined){
+    //   if(ProductFromReducers.length > 0){
+    //     console.log(Product)
+    //     setLoading(Product.isLoadingProduct)
+    //   }else {
+    //     console.log('masuk ke else product from reducer 0')
+    //   }
+    // }else {
+    //   console.log('masuk ke else product reducer undefined')
+    // }
+
+    if(loading){  
+      setLoading(Product.isLoadingProduct)
+    }else {
+      console.log('loading masih false')
+    }
+
+  },[Product, Product.isLoadingProduct, ProductFromReducers])
 
   if(loading){
     console.log('masih stuck di app')

@@ -21,7 +21,7 @@ import ImgEffect from '../Effect/img_effect'
         return allSubCategoryFromHome.map((val,index)=>{
             return(
                 <>
-                    <div key={index} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
+                    <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
                         <div className="card-highlight-img">
                             <ImgEffect
                                 data={{

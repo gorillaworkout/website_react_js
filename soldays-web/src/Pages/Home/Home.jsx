@@ -11,7 +11,7 @@ import LazyLoad from 'react-lazyload';
 import ImgEffect from '../../Component/Effect/img_effect'
 import { ads_panjang_1,icon_ads_panjang_brand,icon_ads_panjang_new,ads_panjang_2 } from '../../Assets/Assets';
 // import Loader from "react-loader-spinner";
-
+import {GetAllProduct,getAllSubCategory} from '../../redux/Actions/ProductActions'
 import {FullPageLoading} from '../../Component/Loading/Loading'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {useDispatch,useSelector} from 'react-redux'
@@ -19,16 +19,17 @@ import {useDispatch,useSelector} from 'react-redux'
 
 
 export default function Home({parentCallback}){
+    const dispatch=useDispatch()
     const Product = useSelector(state=>state.Product)
     const Auth = useSelector(state=>state.Auth)
     // console.log(Auth)
-    console.log(Product)
+    // console.log(Product)
     const [allProductItem,setAllProductItem]=useState(Product.allProduct)
     const [allProductGroupbuy,setAllProductGroupbuy]=useState(Product.allCategoryGroupBuy)
     const [allProductNew,setAllProductNew]=useState(Product.allCategoryNew)
     const [allCategory,setAllCategory]=useState(Product.AllCategory)
     const [allSubCategory,setAllSubCategory]=useState(Product.allSubCategory)
-    const [loadingFetchingData,setLoadingFetchingData]=useState(Product.isLoading)
+    const [loadingFetchingData,setLoadingFetchingData]=useState(true)
     const [callbackFromHeader,setCallbackFromHeader]=useState([])
     const [callbackFromHighlight,setCallbackFromHighlight]=useState([])
     const [callbackFromCardPromo,setCallbackFromCardPromo]=useState([])
@@ -49,10 +50,113 @@ export default function Home({parentCallback}){
         isRandomCategory:false,
         category_random:''
     })
+
+    // STATE YANG DIKIRIM UNTUK SETIAP CHILD
+        const [dataToHighlight,setDataToHighlight]=useState({
+            allSubCategory:Product.allSubCategory
+        })
+        const [dataToCardPromo,setDataToCardPromo]=useState({
+            isTokpedAds:true,
+            allProductItem: Product.allCategoryGroupBuy
+        })
+        const [dataToCardNew,setDataToCardNew]=useState({
+            isTokpedAds:false,
+            allProductItem: Product.allCategoryNew
+        })
+        const [dataToCardAds1,setDataToCardAds1]=useState({
+            detail_Cards:'PROMO',
+            img:ads_panjang_1,
+            icon:icon_ads_panjang_brand
+        })
+        const [dataToCardAds2,setDataToCardAds2]=useState({
+            detail_Cards:'NEW',
+            img:ads_panjang_2,
+            icon:icon_ads_panjang_new
+        })
+
+        const check_all_data=()=>{
+            var isDataToHighlight = false
+            var isDataToCardPromo = false
+            var isDataToCardNew   = false
+            var isDataToCardAds1  = false
+            var isDataToCardAds2  = false
+            if(dataToHighlight.allSubCategory !== undefined){
+                if(dataToHighlight.allSubCategory.length > 0){
+                    console.log('data dah ada isinya')
+                    // console.log(Product.allSubCategory)
+                    setDataToHighlight({...dataToHighlight,allSubCategory:Product.allSubCategory})
+                    isDataToHighlight = true
+                    // setLoadingFetchingData(false)
+                }else {
+                    console.log('data to highlight kosong')
+                }
+            }else {
+                console.log('data undefined')
+            }
+            if(dataToCardPromo.allProductItem !== undefined){
+                if(dataToCardPromo.allProductItem.length > 0){
+                    console.log('data dah ada isinya')
+                    setDataToCardPromo({...dataToCardPromo,allProductItem:Product.allCategoryGroupBuy})
+                    isDataToCardPromo = true
+                }else {
+                    console.log('data to highlight kosong')
+                }
+            }else {
+                console.log('data undefined')
+            }
+            if(dataToCardNew.allProductItem !== undefined){
+                if(dataToCardNew.allProductItem.length > 0){
+                    console.log('data dah ada isinya')
+                    setDataToCardNew({...dataToCardNew,allProductItem:Product.allCategoryNew})
+                    isDataToCardNew = true
+                }else {
+                    console.log('data to highlight kosong')
+                }
+            }else {
+                console.log('data undefined')
+            }
+            if(dataToCardAds1 !== undefined){
+                // if(dataToCardAds1.length > 0){
+                    console.log('data dah ada isinya')
+                    setDataToCardAds1({...dataToCardAds1})
+                    isDataToCardAds1 = true
+                // }else {
+                    // console.log(dataToCardAds1.length)
+                    // console.log('data to highlight kosong')
+                // }
+            }else {
+                console.log('data undefined')
+            }
+            if(dataToCardAds2 !== undefined){
+                // if(dataToCardAds1.length > 0){
+                    console.log('data dah ada isinya')
+                    setDataToCardAds1({...dataToCardAds2})
+                    isDataToCardAds2 = true
+                // }else {
+                    // console.log(dataToCardAds1.length)
+                    // console.log('data to highlight kosong')
+                // }
+            }else {
+                console.log('data undefined')
+            }
+
+            if(isDataToHighlight && isDataToCardPromo && isDataToCardNew && isDataToCardAds1 && isDataToCardAds2 ){
+                setLoadingFetchingData(false)
+            }else {
+                dispatch(GetAllProduct())
+            }
+            
+
+        }
+
+
+        useEffect(()=>{
+            check_all_data()
+            
+        },[])
+        console.log(dataToHighlight)
+    // STATE YANG DIKIRIM UNTUK SETIAP CHILD END
    
-    
-    // console.log(Product)
-    // console.log(Auth)
 
     useEffect(()=>{
         setAllProductItem(Product.allProduct)
@@ -60,7 +164,7 @@ export default function Home({parentCallback}){
         setAllProductNew(Product.AllCategoryNew)
         setAllCategory(Product.AllCategory)
         setAllSubCategory(Product.allSubCategory)
-        setLoadingFetchingData(Product.isLoadingProduct)
+        // setLoadingFetchingData(Product.isLoadingProduct)
   
     },
     [Product.isLoadingProduct, Product.AllCategory, Product.AllCategoryNew, Product.allCategoryGroupBuy, Product.allProduct, Product.allSubCategory, allProductItem])
@@ -102,24 +206,24 @@ export default function Home({parentCallback}){
         allProduct:allProductItem,
         allCategory:allCategory
     }
-    var data_to_highlight = {
-        allSubCategory:allSubCategory
-    }
+    // var data_to_highlight = {
+    //     allSubCategory:allSubCategory
+    // }
 
-    var data_to_card_promo = {
-        isTokpedAds:true,
-        allProductItem: allProductGroupbuy
-    }
-    console.log(data_to_card_promo)
-    var data_to_card_new={
-        isTokpedAds:false,
-        allProductItem: allProductNew
-    }
-    var data_to_cards_ads_1={
-        detail_Cards:'PROMO',
-        img:ads_panjang_1,
-        icon:icon_ads_panjang_brand
-    }
+    // var data_to_card_promo = {
+    //     isTokpedAds:true,
+    //     allProductItem: allProductGroupbuy
+    // }
+    // console.log(data_to_card_promo)
+    // var data_to_card_new={
+    //     isTokpedAds:false,
+    //     allProductItem: allProductNew
+    // }
+    // var data_to_cards_ads_1={
+    //     detail_Cards:'PROMO',
+    //     img:ads_panjang_1,
+    //     icon:icon_ads_panjang_brand
+    // }
     var data_to_cards_ads_2 ={
         detail_Cards:'NEW',
         img:ads_panjang_2,
@@ -142,16 +246,16 @@ export default function Home({parentCallback}){
             <Header data={data_to_header} parentCallback={handleCallbackFromHeader}/>
             <LazyLoad>
                 <div className="box-highlight">
-                    <Highlight data={data_to_highlight} parentCallback={handleCallbackFromHighlight}/>
+                    <Highlight data={dataToHighlight} parentCallback={handleCallbackFromHighlight}/>
                 </div>
             </LazyLoad>
 
             <LazyLoad>
-                <CardAds data={data_to_cards_ads_1}/>
+                <CardAds data={dataToCardAds1}/>
             </LazyLoad>
 
             <LazyLoad>
-                <ProductCard data={data_to_card_promo} parentCallback={handleCallbackFromCardPromo}/>
+                <ProductCard data={dataToCardPromo} parentCallback={handleCallbackFromCardPromo}/>
             </LazyLoad>
 
             <LazyLoad>
@@ -159,7 +263,7 @@ export default function Home({parentCallback}){
             </LazyLoad>
 
             <LazyLoad>
-                <ProductCard data={data_to_card_new} parentCallback={handleCallbackFromCardNew}/>
+                <ProductCard data={dataToCardNew} parentCallback={handleCallbackFromCardNew}/>
             </LazyLoad>
 
 
