@@ -316,7 +316,7 @@ export default function Header(data){
         )
     }
     const render_random_category=()=>{
-        console.log(allCategoryFromHome)
+        // console.log(allCategoryFromHome)
         if(allCategoryFromHome !== undefined){
             return allCategoryFromHome.map((val,index)=>{
                 if(index<5){
