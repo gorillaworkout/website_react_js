@@ -9,6 +9,8 @@ import useScrollPosition from "@react-hook/window-scroll";
 import { useEffect } from 'react';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Sealant from '../../Assets/tokped_gambar/sealant.png'
+
 
 export default function ProductDetail(){
 
@@ -62,20 +64,20 @@ export default function ProductDetail(){
                 <div className="detail-product-box container">
                     <section className="box-detail-product-img">
                         <div className="box-img-pd">
-
+                            <img src={Sealant} alt="" />
                         </div>
                         <div className="box-option-img-product">
-                            <div className="final-box-img-option">
-
+                            <div className="final-box-img-option active-small-img">
+                                <img src={Sealant} alt="" />
                             </div>
                             <div className="final-box-img-option">
-                                
+                                <img src={Sealant} alt="" />
                             </div>
                             <div className="final-box-img-option">
-                                
+                                <img src={Sealant} alt="" />
                             </div>
                             <div className="final-box-img-option">
-                                
+                                <img src={Sealant} alt="" />
                             </div>
                         </div>
 

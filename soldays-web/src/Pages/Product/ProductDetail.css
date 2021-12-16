@@ -108,7 +108,7 @@
 .box-detail-product-img{
     width:30%;
     height:100%;
-    background-color:blue;
+    /* background-color:blue; */
     display: flex;
     /* justify-content: center; */
     align-items: center;
@@ -119,7 +119,12 @@
 .box-img-pd {
     width:80%;
     height:250px;
-    border:1px solid black;
+    /* border:1px solid black; */
+    border-radius:10px;
+}
+.box-img-pd img {
+    width:100%;
+    height:100%;
     border-radius:10px;
 }
 
@@ -175,6 +180,21 @@
 .final-box-img-option{
     width:20%;
     height:100%;
-    border:1px solid black;
+    /* border:1px solid black; */
     border-radius:10px;
+    transition:1s;
+}
+.final-box-img-option:hover{
+    cursor: pointer;
+    
+}
+
+.final-box-img-option img {
+    width:100%;
+    height:100%;
+    border-radius:10px;
+
+}
+.active-small-img{
+    border:2px solid #27aae1;
 }
