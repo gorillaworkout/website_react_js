@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useRef, useState,useCustomHooks } from 'react'
 import './ProductDetail.css'
 import Header from '../Header/Header'
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
@@ -9,7 +9,7 @@ import useScrollPosition from "@react-hook/window-scroll";
 import { useEffect } from 'react';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-
+import {Vantsing_logo} from '../../Assets/Assets'
 import {GrLocation} from 'react-icons/gr'
 import Sealant from '../../Assets/tokped_gambar/sealant.png'
 
@@ -20,17 +20,35 @@ export default function ProductDetail(){
     // const [widthD, heightD] = useWindowSizeD();
     const scrollY = useScrollPosition(60 /*frames per second*/);
     const [scrollZero,setScrollZero] = useState(true)
+    const [scrollNone,setScrollNone] = useState(true)
     useEffect(()=>{
-        // console.log(scrollY)
+        console.log(scrollY)
         if(scrollY === 0 ){
             setScrollZero(true)
         }else {
             setScrollZero(false)
         }
 
-        var testing = document.querySelector('.ulasan-product-detail').pageYOffset
-        console.log(testing)
+
+        let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
+        // let elHeight = document.querySelector('.box-detail-product-description').clientHeight
+        var finalHeight = elHeight - 270
+        console.log(finalHeight)
+
+        if(scrollY > finalHeight) {
+            setScrollNone(false)
+        }else {
+            setScrollNone(true)
+        }
+
+
+
     },[scrollY, scrollZero])
+
+    // testing scroll
+    const bottomRef = useRef();
+    // const reachedBottom = useCustomHooks(bottomRef);
+    // testing scroll
     return (
         <>
             <div className="box-container-product-detail">
@@ -66,7 +84,8 @@ export default function ProductDetail(){
                 </div>
 
                 <div className="detail-product-box ">
-                    <section className="box-detail-product-img">
+                    {/* <section className="box-detail-product-img"> */}
+                    <section className={scrollNone ? 'box-detail-product-img img-appeared' : 'box-detail-product-img img-hide'}>
                         <div className="box-img-pd">
                                 <img src={Sealant} alt="" />
                         </div>
@@ -132,7 +151,7 @@ export default function ProductDetail(){
                                                 <div className="company-description-box">
                                                     <div className="img-box-company-description">
                                                         <div className="img-company-description">
-
+                                                            <img src={Vantsing_logo} alt="" />
                                                         </div>
                                                     </div>
                                                     <div className="company-description-detail">
@@ -158,7 +177,26 @@ export default function ProductDetail(){
                     </section>
                 </div>
 
-                <div className="ulasan-product-detail">
+                <div className="ulasan-product-detail" ref={bottomRef}>
+                    <div className="total-ulasan-box">
+                        <p>Semua Ulasan (320)</p>
+                    </div>
+
+                    <div className="all-total-comment-product-detail">
+                        <div className="comment-customer-product">
+                            <div className="customer-profile-img">
+                                <div className="img-box-customer">
+
+                                </div>
+                                <div className="customer-name-box">
+
+                                </div>
+                            </div>
+                            <div className="box-comment-from-customer">
+                                
+                            </div>
+                        </div>
+                    </div>
                     
                 </div>
 
