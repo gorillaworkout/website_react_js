@@ -236,7 +236,7 @@
 }
 .section-input-item{
     width:70%;
-    height:auto;
+    /* height:auto; */
     border:1px solid #dedede;
     border-radius:10px;
     display: flex;
@@ -245,6 +245,9 @@
     padding-left:10px;
     padding-right:10px; 
     background-color: white;;
+}
+.input-terisi{
+    height:400px !important;
 }
 .section-varian-top {
     width:100%;
@@ -294,17 +297,71 @@
 
 .section-pilih-item-box2 {
     width:100%;
-    height:50px;
+    /* height:50px; */
+    height:100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom:1px solid #dedede;
+
+}
+.section-pilih-item-top{
+    width:100%;
+    height:30px;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.box-for-plus-minus-qty{
+    width:100%;
+    height:60px;
+    /* border:1px solid black; */
+    /* background-color: blue; */
+    display: flex;
+    align-items: center;
+}
+.box-qty-plus{
+    width:50%;
+    height:30px;
+    border:1px solid #dedede;
+    border-radius:5px;
+    display: flex;
+    flex-direction: row;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-direction: row;
-    border-bottom:1px solid #dedede;
-
+    margin-right:10px;
+    padding-right:5px;
+    padding-left:5px;
 }
 .total_harga{
     margin:0px !important;
     font-weight:700;
+}
+.icon-minus {
+    font-size:20px;
+    color:#dedede;
+}
+.icon-minus:hover{
+    cursor: pointer;
+}
+.icon-plus:hover{
+    cursor: pointer;
+}
+.icon-plus{
+    font-size:20px;
+    color:black;
+}
+.input-qty-plus{
+    width:30%;
+    height:100%;
+    border:none !important;
+}
+.input-qty-plus::placeholder{
+    text-align: center;
 }
 .nonactive-icon {
     color:#A5A6A9

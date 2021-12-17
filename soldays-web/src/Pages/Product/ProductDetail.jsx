@@ -18,6 +18,8 @@ import {AiFillHeart} from 'react-icons/ai'
 import {BsFillShareFill} from 'react-icons/bs'
 // import ImgEffect from '../../Component/Effect/img_effect';
 import ImgEffect from '../../Component/Effect/img_effect'
+import {BsPlus} from 'react-icons/bs'
+import {FiMinus} from 'react-icons/fi'
 
 export default function ProductDetail(){
 
@@ -183,7 +185,7 @@ export default function ProductDetail(){
                     </section>
 
                     <section className="box-detail-product-price">
-                        <div className="section-input-item">
+                        <div className="section-input-item input-terisi">
                             <div className="section-varian-top">
                                 <p>Pilih Varian</p>
                                 <IoIosArrowDropup className="icon-arrow-up"/>
@@ -194,8 +196,19 @@ export default function ProductDetail(){
                                 <input type="number" className="input-pcs-product" onChange={(e)=>onInputQtyProduct(e.target.value)} />
                             </div>
                             <div className="section-pilih-item-box2">
-                                <p className="total_harga nonactive-icon">Total Harga dan quantity</p>
-                                <IoIosArrowDropup className="icon-arrow-up nonactive-icon"/>
+                                <div className="section-pilih-item-top">
+                                    <p className="total_harga nonactive-icon">Total Harga dan quantity</p>
+                                    <IoIosArrowDropup className="icon-arrow-up nonactive-icon"/>
+                                </div>
+
+                                <div className="box-for-plus-minus-qty">
+                                    <div className="box-qty-plus">
+                                        <FiMinus className="icon-minus"/>
+                                        <input type="text" className="input-qty-plus"  placeholder='1'/>
+                                        <BsPlus className="icon-plus"/>
+                                    </div>
+                                    <p>Stok 100</p>
+                                </div>
                             </div>
                             <div className="section-keranjang-product-detail">
                                 <p>+ Keranjang</p>
