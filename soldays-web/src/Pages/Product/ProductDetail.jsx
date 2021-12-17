@@ -186,14 +186,34 @@ export default function ProductDetail(){
                         <div className="comment-customer-product">
                             <div className="customer-profile-img">
                                 <div className="img-box-customer">
-
+                                    <img src={Sealant} alt="" />
                                 </div>
                                 <div className="customer-name-box">
-
+                                    <p>BAYU DARMAWAN</p>
                                 </div>
                             </div>
                             <div className="box-comment-from-customer">
-                                
+                                <div className="comment-box-customer">
+                                    <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
+                                </div>
+                                <div className="seller-thankyou-comment">
+                                    <div className="box-for-img-tq">
+                                        <div className="img-box-customer">
+                                            <img src={Sealant} alt="" />
+                                        </div>
+                                    </div>
+                                    <div className="seller-information-detail-comment">
+                                        <div className="seller-name-detail">
+                                            <p>VANTSING INTERNATIONAL</p>
+                                            <div className="penjual-box-detail">
+                                                <p>Penjual</p>
+                                            </div>
+                                        </div>
+                                        <div className="all-comment-from-tq">
+                                            <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
