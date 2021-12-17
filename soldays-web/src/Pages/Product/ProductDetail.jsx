@@ -12,6 +12,12 @@ import Tab from 'react-bootstrap/Tab'
 import {Vantsing_logo} from '../../Assets/Assets'
 import {GrLocation} from 'react-icons/gr'
 import Sealant from '../../Assets/tokped_gambar/sealant.png'
+import {IoIosArrowDropup} from 'react-icons/io'
+import {FaCommentAlt} from 'react-icons/fa'
+import {AiFillHeart} from 'react-icons/ai'
+import {BsFillShareFill} from 'react-icons/bs'
+// import ImgEffect from '../../Component/Effect/img_effect';
+import ImgEffect from '../../Component/Effect/img_effect'
 
 export default function ProductDetail(){
 
@@ -49,6 +55,10 @@ export default function ProductDetail(){
     const bottomRef = useRef();
     // const reachedBottom = useCustomHooks(bottomRef);
     // testing scroll
+
+    const onInputQtyProduct=(qty)=>{
+        console.log(parseInt(qty))
+    }
     return (
         <>
             <div className="box-container-product-detail">
@@ -173,7 +183,44 @@ export default function ProductDetail(){
                     </section>
 
                     <section className="box-detail-product-price">
+                        <div className="section-input-item">
+                            <div className="section-varian-top">
+                                <p>Pilih Varian</p>
+                                <IoIosArrowDropup className="icon-arrow-up"/>
+                            </div>
 
+                            <div className="section-pilih-item-box">
+                                <p>Quantity : 1pcs</p>
+                                <input type="number" className="input-pcs-product" onChange={(e)=>onInputQtyProduct(e.target.value)} />
+                            </div>
+                            <div className="section-pilih-item-box2">
+                                <p className="total_harga nonactive-icon">Total Harga dan quantity</p>
+                                <IoIosArrowDropup className="icon-arrow-up nonactive-icon"/>
+                            </div>
+                            <div className="section-keranjang-product-detail">
+                                <p>+ Keranjang</p>
+                            </div>
+                            <div className="section-beli-product-detail">
+                                <p>+ Beli</p>
+                            </div>
+                            <div className="section-for-icon-input">
+                                <div className="box-icon-quantity-product">
+                                    <FaCommentAlt className="icon-comment"/>
+                                    <p>Chat</p>
+                                </div>
+                                <div className="box-icon-quantity-product-2">
+                                    <AiFillHeart className="icon-comment"/>
+                                    <p>Wishlist</p>
+                                </div>
+                                <div className="box-icon-quantity-product">
+                                    <BsFillShareFill className="icon-comment"/>
+                                    <p>Share</p>
+                                </div>
+                            </div>
+
+                            
+                        
+                        </div>
                     </section>
                 </div>
 
@@ -217,7 +264,214 @@ export default function ProductDetail(){
                             </div>
                         </div>
                     </div>
+                    <div className="all-total-comment-product-detail">
+                        <div className="comment-customer-product">
+                            <div className="customer-profile-img">
+                                <div className="img-box-customer">
+                                    <img src={Sealant} alt="" />
+                                </div>
+                                <div className="customer-name-box">
+                                    <p>BAYU DARMAWAN</p>
+                                </div>
+                            </div>
+                            <div className="box-comment-from-customer">
+                                <div className="comment-box-customer">
+                                    <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
+                                </div>
+                                <div className="seller-thankyou-comment">
+                                    <div className="box-for-img-tq">
+                                        <div className="img-box-customer">
+                                            <img src={Sealant} alt="" />
+                                        </div>
+                                    </div>
+                                    <div className="seller-information-detail-comment">
+                                        <div className="seller-name-detail">
+                                            <p>VANTSING INTERNATIONAL</p>
+                                            <div className="penjual-box-detail">
+                                                <p>Penjual</p>
+                                            </div>
+                                        </div>
+                                        <div className="all-comment-from-tq">
+                                            <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="all-total-comment-product-detail">
+                        <div className="comment-customer-product">
+                            <div className="customer-profile-img">
+                                <div className="img-box-customer">
+                                    <img src={Sealant} alt="" />
+                                </div>
+                                <div className="customer-name-box">
+                                    <p>BAYU DARMAWAN</p>
+                                </div>
+                            </div>
+                            <div className="box-comment-from-customer">
+                                <div className="comment-box-customer">
+                                    <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
+                                </div>
+                                <div className="seller-thankyou-comment">
+                                    <div className="box-for-img-tq">
+                                        <div className="img-box-customer">
+                                            <img src={Sealant} alt="" />
+                                        </div>
+                                    </div>
+                                    <div className="seller-information-detail-comment">
+                                        <div className="seller-name-detail">
+                                            <p>VANTSING INTERNATIONAL</p>
+                                            <div className="penjual-box-detail">
+                                                <p>Penjual</p>
+                                            </div>
+                                        </div>
+                                        <div className="all-comment-from-tq">
+                                            <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
+                </div>
+                <div className="section-for-similar-item">
+                    <div key={1} className="card-product-box  hvr-float-shadow">
+                        <div className="box-badge-product-card">
+                            <img src={Sealant} alt="" id="badge_new"/>
+                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
+                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
+                        </div>
+                        <div className="box-img-product-card">
+                            <ImgEffect data={{
+                                img:Sealant,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="box-price-buy-product-card ">
+                            <div className="inner-price-box-product-card">
+                                <div className="box-top-price-product-card">
+                                    <p id="discount-price">RP.30.000</p>
+                                </div>
+                                <div className="box-top-price-product-card">
+                                    <p id="normal-price">RP.20.000</p>
+                                </div>
+                            </div>
+                            <div className="inner-buy-box-product-card">
+                                <img src={Sealant} alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div key={1} className="card-product-box  hvr-float-shadow">
+                        <div className="box-badge-product-card">
+                            <img src={Sealant} alt="" id="badge_new"/>
+                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
+                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
+                        </div>
+                        <div className="box-img-product-card">
+                            <ImgEffect data={{
+                                img:Sealant,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="box-price-buy-product-card ">
+                            <div className="inner-price-box-product-card">
+                                <div className="box-top-price-product-card">
+                                    <p id="discount-price">RP.30.000</p>
+                                </div>
+                                <div className="box-top-price-product-card">
+                                    <p id="normal-price">RP.20.000</p>
+                                </div>
+                            </div>
+                            <div className="inner-buy-box-product-card">
+                                <img src={Sealant} alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div key={1} className="card-product-box  hvr-float-shadow">
+                        <div className="box-badge-product-card">
+                            <img src={Sealant} alt="" id="badge_new"/>
+                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
+                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
+                        </div>
+                        <div className="box-img-product-card">
+                            <ImgEffect data={{
+                                img:Sealant,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="box-price-buy-product-card ">
+                            <div className="inner-price-box-product-card">
+                                <div className="box-top-price-product-card">
+                                    <p id="discount-price">RP.30.000</p>
+                                </div>
+                                <div className="box-top-price-product-card">
+                                    <p id="normal-price">RP.20.000</p>
+                                </div>
+                            </div>
+                            <div className="inner-buy-box-product-card">
+                                <img src={Sealant} alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div key={1} className="card-product-box  hvr-float-shadow">
+                        <div className="box-badge-product-card">
+                            <img src={Sealant} alt="" id="badge_new"/>
+                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
+                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
+                        </div>
+                        <div className="box-img-product-card">
+                            <ImgEffect data={{
+                                img:Sealant,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="box-price-buy-product-card ">
+                            <div className="inner-price-box-product-card">
+                                <div className="box-top-price-product-card">
+                                    <p id="discount-price">RP.30.000</p>
+                                </div>
+                                <div className="box-top-price-product-card">
+                                    <p id="normal-price">RP.20.000</p>
+                                </div>
+                            </div>
+                            <div className="inner-buy-box-product-card">
+                                <img src={Sealant} alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div key={1} className="card-product-box  hvr-float-shadow">
+                        <div className="box-badge-product-card">
+                            <img src={Sealant} alt="" id="badge_new"/>
+                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
+                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
+                        </div>
+                        <div className="box-img-product-card">
+                            <ImgEffect data={{
+                                img:Sealant,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="box-price-buy-product-card ">
+                            <div className="inner-price-box-product-card">
+                                <div className="box-top-price-product-card">
+                                    <p id="discount-price">RP.30.000</p>
+                                </div>
+                                <div className="box-top-price-product-card">
+                                    <p id="normal-price">RP.20.000</p>
+                                </div>
+                            </div>
+                            <div className="inner-buy-box-product-card">
+                                <img src={Sealant} alt="" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>

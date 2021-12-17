@@ -221,15 +221,173 @@
 }
 .box-detail-product-price {
     width:30%;
-    height: 50%;
-    background-color:greenyellow;
+    height: 70%;
+    /* background-color:greenyellow; */
     display: flex;
+    align-items: center;
     flex-direction: column;
+    justify-content: flex-start;
     position: fixed;
     top: 175px;
     right:0;
+    padding-top:20px;
     /* z-index:3; */
     border-radius: 10px 0 0 10px;
+}
+.section-input-item{
+    width:70%;
+    height:auto;
+    border:1px solid #dedede;
+    border-radius:10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left:10px;
+    padding-right:10px; 
+    background-color: white;;
+}
+.section-varian-top {
+    width:100%;
+    height:40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top:5px;
+    /* padding:5px; */
+    /* background-color: blue; */
+}
+.section-varian-top p {
+    font-size:20px;
+    font-weight:600;
+}
+.icon-arrow-up {
+    font-size:30px;
+}
+
+.section-pilih-item-box {
+    width:100%;
+    height:80px;
+    /* border:1px solid black; */
+    /* background-color: pink; */
+    border-bottom:1px solid #dedede;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    /* padding-left:10px; */
+}
+.section-pilih-item-box p {
+    text-align: center;
+    /* width:100%; */
+}
+
+.input-pcs-product{
+    width:90%;
+    height:35px;
+    border-radius:5px;
+    border:1px solid #dedede;
+}
+.input-pcs-product:focus {
+    outline:none !important;
+    border-color:#dedede !important;
+}
+
+.section-pilih-item-box2 {
+    width:100%;
+    height:50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border-bottom:1px solid #dedede;
+
+}
+.total_harga{
+    margin:0px !important;
+    font-weight:700;
+}
+.nonactive-icon {
+    color:#A5A6A9
+}
+.section-keranjang-product-detail {
+    width:95%;
+    height:40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:10px;
+    background-color:#27aae1;
+    margin-top:10px;
+}
+.section-keranjang-product-detail:hover{
+    cursor: pointer;
+}
+.section-beli-product-detail:hover{
+    cursor: pointer;
+}
+.section-keranjang-product-detail p {
+    font-size:18px;
+    color:white;
+    font-weight:700;
+}
+.section-beli-product-detail {
+    width:95%;
+    height:40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:10px;
+    background-color:white;
+    margin-top:10px;
+    border:1px solid #27aae1;
+}
+
+.section-beli-product-detail p {
+    font-size:18px;
+    color:#27aae1;
+    font-weight:700;
+}
+
+.section-for-icon-input{
+    width:100%;
+    height:40px;
+    display: flex;
+    flex-direction: row;
+    margin-top:10px;
+    margin-bottom:10px;
+
+}
+.box-icon-quantity-product{
+    width:35%;
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.box-icon-quantity-product:hover{
+    cursor: pointer;
+}
+.box-icon-quantity-product-2{
+    width:30%;
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-right:1px solid #dedede;
+    border-left:1px solid #dedede;
+    
+}
+.box-icon-quantity-product-2:hover{
+    cursor: pointer;
+}
+.box-icon-quantity-product p {
+    font-size:14px;
+}
+.icon-comment {
+    font-size:15px;
+
 }
 .nav-item {
     border:none !important
@@ -385,8 +543,10 @@
     display: flex;
     flex-direction: column;
     /* padding:10px; */
-    padding-top:20px;
+    padding-top:30px;
     padding-left:50px;
+    margin-bottom:50px;
+    overflow-x:auto;
 
 }
 
@@ -484,7 +644,7 @@
 }
 
 .seller-thankyou-comment{
-    width:100%;
+    width:80%;
     height:70%;
     /* border:1px solid black; */
     border-radius:10px;
@@ -508,6 +668,7 @@
     display:flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding-left:10px;
 
 }
 .seller-name-detail{
@@ -534,4 +695,20 @@
     margin:0px !important;
     font-size:0.7em;
     font-weight:700;
+}
+
+.section-for-similar-item{
+    width:70%;
+    height:300px;
+    min-height:300px;
+    /* border:1px solid black; */
+    /* background-color: red; */
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items: center;
+    padding:10px;
+    padding-left:20px;
+    overflow-x:scroll;
+    overflow-y:hidden;
 }
