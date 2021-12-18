@@ -248,6 +248,25 @@
 }
 .input-terisi{
     height:400px !important;
+    opacity: 1;
+    transition: 1s;
+  
+} 
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 .section-varian-top {
     width:100%;
@@ -265,6 +284,12 @@
 }
 .icon-arrow-up {
     font-size:30px;
+    transition: 1s;
+     -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 11.1 */
+    -moz-animation: fadein 1s; /* Firefox < 16 */
+     -ms-animation: fadein 1s; /* Internet Explorer */
+      -o-animation: fadein 1s; /* Opera < 11.1 */
+         animation: fadein 1s;
 }
 
 .section-pilih-item-box {
@@ -297,8 +322,9 @@
 
 .section-pilih-item-box2 {
     width:100%;
+    height:auto;
     /* height:50px; */
-    height:100px;
+    /* height:100px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -308,7 +334,7 @@
 }
 .section-pilih-item-top{
     width:100%;
-    height:30px;
+    height:50px;
     /* background-color: red; */
     display: flex;
     flex-direction: row;
@@ -322,6 +348,14 @@
     /* background-color: blue; */
     display: flex;
     align-items: center;
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 11.1 */
+    -moz-animation: fadein 1s; /* Firefox < 16 */
+     -ms-animation: fadein 1s; /* Internet Explorer */
+      -o-animation: fadein 1s; /* Opera < 11.1 */
+         animation: fadein 1s;
+}
+.flip-icon {
+    -webkit-transform: rotate(180deg);
 }
 .box-qty-plus{
     width:50%;
@@ -340,6 +374,11 @@
 .total_harga{
     margin:0px !important;
     font-weight:700;
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 11.1 */
+    -moz-animation: fadein 1s; /* Firefox < 16 */
+     -ms-animation: fadein 1s; /* Internet Explorer */
+      -o-animation: fadein 1s; /* Opera < 11.1 */
+         animation: fadein 1s;
 }
 .icon-minus {
     font-size:20px;
@@ -364,7 +403,8 @@
     text-align: center;
 }
 .nonactive-icon {
-    color:#A5A6A9
+    color:#A5A6A9;
+    transition:1s;
 }
 .section-keranjang-product-detail {
     width:95%;
@@ -533,11 +573,12 @@
 }
 
 .main-description-detail-product{
-    height:auto;
+    height:200px;
     width:100%;
     display: flex;
     justify-content:center;
     flex-direction:column;
+    overflow-x: scroll;
     /* align-items:center; */
     /* background-color:red; */
 }

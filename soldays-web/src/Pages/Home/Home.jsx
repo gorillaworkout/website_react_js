@@ -1,5 +1,6 @@
 import React, {useEffect,useState} from 'react'
 
+
 import './home.css'
 import Header from '../Header/Header'
 import Highlight from '../../Component/Highlight/highlight'
@@ -10,7 +11,6 @@ import axios from 'axios'
 import LazyLoad from 'react-lazyload';
 import ImgEffect from '../../Component/Effect/img_effect'
 import { ads_panjang_1,icon_ads_panjang_brand,icon_ads_panjang_new,ads_panjang_2 } from '../../Assets/Assets';
-// import Loader from "react-loader-spinner";
 import {GetAllProduct,getAllSubCategory} from '../../redux/Actions/ProductActions'
 import {FullPageLoading} from '../../Component/Loading/Loading'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -51,6 +51,7 @@ export default function Home({parentCallback}){
         category_random:''
     })
 
+    
     // STATE YANG DIKIRIM UNTUK SETIAP CHILD
         const [dataToHighlight,setDataToHighlight]=useState({
             allSubCategory:Product.allSubCategory
@@ -66,12 +67,14 @@ export default function Home({parentCallback}){
         const [dataToCardAds1,setDataToCardAds1]=useState({
             detail_Cards:'PROMO',
             img:ads_panjang_1,
-            icon:icon_ads_panjang_brand
+            icon:icon_ads_panjang_brand,
+            bayu:'dari promo'
         })
         const [dataToCardAds2,setDataToCardAds2]=useState({
             detail_Cards:'NEW',
             img:ads_panjang_2,
-            icon:icon_ads_panjang_new
+            icon:icon_ads_panjang_new,
+            bayu:'dari new'
         })
       
 
@@ -132,7 +135,7 @@ export default function Home({parentCallback}){
             if(dataToCardAds2 !== undefined){
                 // if(dataToCardAds1.length > 0){
                     // console.log('data dah ada isinya')
-                    setDataToCardAds1({...dataToCardAds2})
+                    setDataToCardAds2({...dataToCardAds2})
                     isDataToCardAds2 = true
                 // }else {
                     // console.log(dataToCardAds1.length)
@@ -261,7 +264,7 @@ export default function Home({parentCallback}){
             </LazyLoad>
 
             <LazyLoad>
-                <CardAds data={data_to_cards_ads_2} />
+                <CardAds data={dataToCardAds2} />
             </LazyLoad>
 
             <LazyLoad>

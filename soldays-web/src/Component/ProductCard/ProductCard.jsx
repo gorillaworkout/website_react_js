@@ -3,9 +3,9 @@ import './ProductCard.css'
 import Tokped_gambar from '../../Assets/tokped_gambar/tokped.png'
 import {badge_new,badge_groupbuy,icon_cart,new_iklan_left} from '../../Assets/Assets'
 import ImgEffect from '../../Component/Effect/img_effect'
-
+import { Link} from "react-router-dom";
 export default function ProductCard(data){
-    console.log(data)
+    // console.log(data)
     const [isTokpedAds,setIsTokpedAds]=useState(data.data.isTokpedAds) // ini dibikin kalo misal card mau pake iklan berarti true, kasih class tokped_ads_iklan
     const [allDataFromHome,setAllDataFromHome]=useState(data.data.allProductItem)
     function commafy( num ) {
@@ -27,6 +27,10 @@ export default function ProductCard(data){
     //     setAllDataFromHome(data.data.allProductItem)
     // },[data.data.allProductItem])
   
+    const onClickChoosingItem=(product)=>{
+        console.log(product)
+        data.parentCallback({"onclick_card":product})
+    }
 
     const renderCard=()=>{
         // console.log(allDataFromHome)
@@ -37,7 +41,7 @@ export default function ProductCard(data){
             if(val.GroupBuy_Purchase === 'true' && isTokpedAds === true){
                 return (
                     <>
-                        <div key={index+1} className="card-product-box tokped_ads_active  hvr-float-shadow">
+                        <Link to={`/ProductDetail/${val.Product_Code}`} key={index+1} className="card-product-box tokped_ads_active  hvr-float-shadow" onClick={()=>onClickChoosingItem(val)}>
                             <div className="box-badge-product-card">
                                 <img src={badge_groupbuy} alt="" id="badge_groupbuy"/>
                             </div>
@@ -61,12 +65,12 @@ export default function ProductCard(data){
                                     <img src={icon_cart} alt="" />
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </>
                 )
             }else if (val.Categorize_NEW === 'true' && isTokpedAds=== true){
                 return (
-                    <div key={index+1} className="card-product-box tokped_ads_active hvr-float-shadow">
+                    <Link to={`/ProductDetail/${val.Product_Code}`} key={index+1} className="card-product-box tokped_ads_active hvr-float-shadow" onClick={()=>onClickChoosingItem(val)}>
                         <div className="box-badge-product-card">
                             <img src={badge_new} alt="" id="badge_new"/>
                             {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
@@ -92,11 +96,11 @@ export default function ProductCard(data){
                                 <img src={icon_cart} alt="" />
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 )
             }else {
                 return (
-                    <div key={index+1} className="card-product-box  hvr-float-shadow">
+                    <Link to={`/ProductDetail/${val.Product_Code}`}  key={index+1} className="card-product-box  hvr-float-shadow" onClick={()=>onClickChoosingItem(val)}>
                         <div className="box-badge-product-card">
                             <img src={badge_new} alt="" id="badge_new"/>
                             {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
@@ -122,7 +126,7 @@ export default function ProductCard(data){
                                 <img src={icon_cart} alt="" />
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 )
             }
         })

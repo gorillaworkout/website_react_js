@@ -12,7 +12,7 @@ import Tab from 'react-bootstrap/Tab'
 import {Vantsing_logo} from '../../Assets/Assets'
 import {GrLocation} from 'react-icons/gr'
 import Sealant from '../../Assets/tokped_gambar/sealant.png'
-import {IoIosArrowDropup} from 'react-icons/io'
+import {IoIosArrowDropup,IoIosArrowDropdown} from 'react-icons/io'
 import {FaCommentAlt} from 'react-icons/fa'
 import {AiFillHeart} from 'react-icons/ai'
 import {BsFillShareFill} from 'react-icons/bs'
@@ -20,46 +20,138 @@ import {BsFillShareFill} from 'react-icons/bs'
 import ImgEffect from '../../Component/Effect/img_effect'
 import {BsPlus} from 'react-icons/bs'
 import {FiMinus} from 'react-icons/fi'
+import { useParams } from "react-router-dom";
+import Axios from 'axios'
+import {FullPageLoading} from '../../Component/Loading/Loading'
+import ProductCard from '../../Component/ProductCard/ProductCard';
+
 
 export default function ProductDetail(){
+    const { Product_Code } = useParams();
+
+    console.log(Product_Code)
 
 
-    // const [width, height] = useWindowSize({ fps: 60 });
-    // const [widthD, heightD] = useWindowSizeD();
+    const [inputQty,setInputQty]=useState(0)
+    const [isInputQty,setIsInputQty]=useState(false)
+    const [isLoading,setIsLoading]=useState(true)
+    const [ProductRender,setProductRender]=useState(undefined)
+    const [CityCompany,setCityCompany ] = useState('')
+    const [allComment,setAllComment]=useState(undefined)
+
+
+    // GET DATA FROM USEEFFECT
+    useEffect(()=>{
+
+    })
+
+    // GET DATA FROM USEEFFECT
+
+
+
+    // SCROLL MENU HEADER
     const scrollY = useScrollPosition(60 /*frames per second*/);
     const [scrollZero,setScrollZero] = useState(true)
     const [scrollNone,setScrollNone] = useState(true)
     useEffect(()=>{
-        console.log(scrollY)
-        if(scrollY === 0 ){
-            setScrollZero(true)
+
+        if(isLoading){
+            Axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
+            .then((res)=>{
+                console.log(res.data)
+                setProductRender(res.data)
+                setIsLoading(false)
+                var find_city = res.data.PIC_company_address.split(',')
+                console.log(find_city)
+                var CityCompany = find_city[4]
+                setCityCompany(CityCompany)   
+                // console.log(res.data.User_Comments)
+                var comment_stringify = JSON.parse(res.data.User_Comments)
+                // console.log(comment_stringify)
+                setAllComment(comment_stringify)
+            
+            }).catch((err)=>{
+                console.log(err)
+            })
         }else {
-            setScrollZero(false)
+            console.log(scrollY)
+            if(scrollY === 0 ){
+                setScrollZero(true)
+            }else {
+                setScrollZero(false)
+            }
+    
+    
+            let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
+            // let elHeight = document.querySelector('.box-detail-product-description').clientHeight
+            var finalHeight = elHeight - 270
+            console.log(finalHeight)
+    
+            if(scrollY > finalHeight) {
+                setScrollNone(false)
+            }else {
+                setScrollNone(true)
+            }
         }
 
 
-        let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
-        // let elHeight = document.querySelector('.box-detail-product-description').clientHeight
-        var finalHeight = elHeight - 270
-        console.log(finalHeight)
 
-        if(scrollY > finalHeight) {
-            setScrollNone(false)
-        }else {
-            setScrollNone(true)
-        }
+    },[Product_Code, isLoading, scrollY, scrollZero])
 
+    // scroll menu header
 
-
-    },[scrollY, scrollZero])
-
-    // testing scroll
-    const bottomRef = useRef();
-    // const reachedBottom = useCustomHooks(bottomRef);
-    // testing scroll
 
     const onInputQtyProduct=(qty)=>{
         console.log(parseInt(qty))
+        if(qty !==  0 && qty > 0 ){
+            setIsInputQty(true)
+            setInputQty(qty)
+        }else if (qty === 0  || qty < 0){
+            setInputQty(1)
+            setIsInputQty(false)
+        }else {
+            console.log('masuk ke else line 72 product detail. lebih dari 0 / kurang dari 0')
+            setInputQty(1)
+            setIsInputQty(false)
+        }
+    }
+
+    function commafy( num ) {
+        if(num !==undefined){
+            var str = num.toString().split('.');
+            if (str[0].length >= 5) {
+                str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+            }
+            if (str[1] && str[1].length >= 5) {
+                str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+            }
+            return str.join('.');
+        }else {
+            return '0'
+        }
+    }
+
+    const renderComment = ( )=>{
+        console.log(ProductRender.User_Comments)
+
+        if(ProductRender.User_Comments === undefined || ProductRender.User_Comments === null || ProductRender.User_Comments.length === 0 ) {
+            console.log('masih kosong')
+        }else {
+            console.log(allComment)
+                return allComment.map((val,index)=>{
+                    console.log(val)
+                })
+        }
+    }
+    
+    if(isLoading){
+        return (
+            <>
+                <div className='d-flex justify-content-center align-items-center' style={{height:"100vh", width:"100vw"}}>
+                    {FullPageLoading(isLoading,100,'#0095DA')}
+                </div>
+            </>
+        )
     }
     return (
         <>
@@ -68,7 +160,7 @@ export default function ProductDetail(){
                 {/* <div className="header-slider-product-detail "> */}
                 <div className={scrollZero ? "header-slider-product-detail" : "header-slider-product-detail active-box-slider" }>
                     <div className="product-name-slider-box ">
-                        <p>COPPER EXTRA BASS SERIES EARPHONE HEADSET BANGET BANGETAN</p>
+                        <p>{ProductRender.Name}</p>
                     </div>
                     <div className="box-option-product-slider">
                         <div className="box-option-1 slider-active-product-detail">
@@ -89,9 +181,9 @@ export default function ProductDetail(){
                     <Breadcrumb>
                         <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
                         <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-                            Library
+                            Product Detail
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item active>Data</Breadcrumb.Item>
+                        <Breadcrumb.Item active>{ProductRender.Name}</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
 
@@ -99,7 +191,7 @@ export default function ProductDetail(){
                     {/* <section className="box-detail-product-img"> */}
                     <section className={scrollNone ? 'box-detail-product-img img-appeared' : 'box-detail-product-img img-hide'}>
                         <div className="box-img-pd">
-                                <img src={Sealant} alt="" />
+                                <img src={ProductRender.Picture_1} alt="" />
                         </div>
                         <div className="box-option-img-product">
                             <div className="final-box-img-option active-final-box-img">
@@ -120,10 +212,10 @@ export default function ProductDetail(){
 
                     <section className="box-detail-product-description">
                         <div className="description-detail-pd">
-                            <p>MACBOOK PRO 2012 RAM 16 GB SSD 512 M1 BARU JAKARTA BARAT SELATAN TIMUR</p>
+                            <p>{ProductRender.Name}</p>
                         </div>
                         <div className="description-price-pd">
-                            <p>RP 22.000.000</p>
+                            <p>RP {commafy(ProductRender.Sell_Price)}</p>
                         </div>
                         <div className="detail-description-product">
                             <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example" className="mb-3">
@@ -137,28 +229,21 @@ export default function ProductDetail(){
                                                     </li>
                                                     <li className="li-box-description">
                                                         <span>Kategori : </span>
-                                                        <span className="main-li-box"> Laptop Consumer</span>
+                                                        <span className="main-li-box"> {ProductRender.Category}</span>
                                                     </li>   
                                                     <li className="li-box-description">
                                                         <span>Sub Kategori : </span>
-                                                        <span className="main-li-box"> Laptop</span>
+                                                        <span className="main-li-box"> {ProductRender.Subcategory}</span>
                                                     </li>       
                                                 </ul>
                                                 <div className="main-description-detail-product">
-                                                    <p>
-                                                        Barang Di Jamin Baru / NEW 100%
-                                                        BNIB Segel BLACKPEEL Unit Dan Aksesoris
-                                                        Garansi Official Apple 1 Tahun (Kita Bantu Klaim Garansi Free)
-                                                        Garansi Tukar Unit Baru Jika Produk Cacat Fungsi (7x 24Jam)
-                                                        *HARUS ADA VIDEO UNBOXING*
+                                                    <p dangerouslySetInnerHTML={{ __html: ProductRender.Description}}>
+                                                        {/* {ProductRender.Description} */}
                                                     </p>
-                                                    <p>
-                                                        Barang Di Jamin Baru / NEW 100%
-                                                        BNIB Segel BLACKPEEL Unit Dan Aksesoris
-                                                        Garansi Official Apple 1 Tahun (Kita Bantu Klaim Garansi Free)
-                                                        Garansi Tukar Unit Baru Jika Produk Cacat Fungsi (7x 24Jam)
-                                                        *HARUS ADA VIDEO UNBOXING*
+                                                    <p dangerouslySetInnerHTML={{ __html: ProductRender.Specification}}>
+                                                        {/* {ProductRender.Description} */}
                                                     </p>
+                                                   
                                                 </div>
                                                 <div className="company-description-box">
                                                     <div className="img-box-company-description">
@@ -167,10 +252,11 @@ export default function ProductDetail(){
                                                         </div>
                                                     </div>
                                                     <div className="company-description-detail">
-                                                        <p>VANTSING INTERNATIONAL </p>
+                                                        <p>{ProductRender.PIC_company_name} </p>
                                                         <p>
-                                                            <GrLocation/> <span>Pengiriman Dari Jakarta</span>
+                                                            <GrLocation/> <span>Pengiriman Dari {CityCompany}</span>
                                                         </p>
+                                                        {renderComment()}
                                                         {/* <p>PENGIRIMAN DARI : JAKARTA</p> */}
                                                     </div>
                                                 </div>
@@ -185,10 +271,17 @@ export default function ProductDetail(){
                     </section>
 
                     <section className="box-detail-product-price">
-                        <div className="section-input-item input-terisi">
+
+                        {/* <div className="section-input-item input-terisi"> */}
+                        <div className={isInputQty ? 'section-input-item input-terisi':'section-input-item'}>
                             <div className="section-varian-top">
                                 <p>Pilih Varian</p>
-                                <IoIosArrowDropup className="icon-arrow-up"/>
+                                {
+                                isInputQty ? 
+                                    <IoIosArrowDropup className="icon-arrow-up flip-icon" />
+                                :
+                                    <IoIosArrowDropup className="icon-arrow-up" />
+                                }
                             </div>
 
                             <div className="section-pilih-item-box">
@@ -197,18 +290,39 @@ export default function ProductDetail(){
                             </div>
                             <div className="section-pilih-item-box2">
                                 <div className="section-pilih-item-top">
-                                    <p className="total_harga nonactive-icon">Total Harga dan quantity</p>
-                                    <IoIosArrowDropup className="icon-arrow-up nonactive-icon"/>
+                                    
+                                    {
+                                    isInputQty ? 
+                                        <>
+                                            <p className="total_harga ">Total Harga dan quantity</p>
+                                            <IoIosArrowDropup className="icon-arrow-up nonactive-icon"/>
+                                        </>
+                                        :
+                                        <>
+                                            <p className="total_harga nonactive-icon">Total Harga dan quantity</p>
+                                            <IoIosArrowDropup className="icon-arrow-up nonactive-icon flip-icon"/>
+                                        
+                                        </>
+                                        // <IoIosArrowDropdown className="icon-arrow-up nonactive-icon"/>
+                                    }
+                                    
                                 </div>
 
-                                <div className="box-for-plus-minus-qty">
-                                    <div className="box-qty-plus">
-                                        <FiMinus className="icon-minus"/>
-                                        <input type="text" className="input-qty-plus"  placeholder='1'/>
-                                        <BsPlus className="icon-plus"/>
+                                {
+                                isInputQty ? 
+                                    <div className="box-for-plus-minus-qty">
+                                        <div className="box-qty-plus">
+                                            <FiMinus className="icon-minus"/>
+                                            <input type="text" className="input-qty-plus"  placeholder='1'/>
+                                            <BsPlus className="icon-plus"/>
+                                        </div>
+                                        <p>Stok 100</p>
                                     </div>
-                                    <p>Stok 100</p>
-                                </div>
+                                    : 
+                                    <>
+                                    
+                                    </>
+                                }
                             </div>
                             <div className="section-keranjang-product-detail">
                                 <p>+ Keranjang</p>
@@ -230,14 +344,11 @@ export default function ProductDetail(){
                                     <p>Share</p>
                                 </div>
                             </div>
-
-                            
-                        
                         </div>
                     </section>
                 </div>
 
-                <div className="ulasan-product-detail" ref={bottomRef}>
+                <div className="ulasan-product-detail" >
                     <div className="total-ulasan-box">
                         <p>Semua Ulasan (320)</p>
                     </div>

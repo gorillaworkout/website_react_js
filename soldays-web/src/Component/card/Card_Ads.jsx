@@ -3,7 +3,6 @@ import './Card_Ads.css'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ImgEffect from '../Effect/img_effect'
 export default function Box_Ads_small(data){
-
     return (
         <>
             <div className="box-ads-small-container">

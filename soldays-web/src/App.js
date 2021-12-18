@@ -108,7 +108,7 @@ function App(props) {
     <>
       <Routes>
         <Route exact path = '/' element={<Home new_params={"testing"}/>}/>
-        <Route exact path = '/ProductDetail' element={<ProductDetail new_params={"testing"}/>}/>
+        <Route exact path = '/ProductDetail/:Product_Code' element={<ProductDetail new_params={"testing"}/>}/>
       </Routes>
     </>
   );
