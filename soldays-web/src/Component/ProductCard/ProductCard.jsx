@@ -4,8 +4,9 @@ import Tokped_gambar from '../../Assets/tokped_gambar/tokped.png'
 import {badge_new,badge_groupbuy,icon_cart,new_iklan_left} from '../../Assets/Assets'
 import ImgEffect from '../../Component/Effect/img_effect'
 import { Link} from "react-router-dom";
+
 export default function ProductCard(data){
-    // console.log(data)
+    console.log(data)
     const [isTokpedAds,setIsTokpedAds]=useState(data.data.isTokpedAds) // ini dibikin kalo misal card mau pake iklan berarti true, kasih class tokped_ads_iklan
     const [allDataFromHome,setAllDataFromHome]=useState(data.data.allProductItem)
     function commafy( num ) {
@@ -53,16 +54,21 @@ export default function ProductCard(data){
                                 />
                             </div>
                             <div className="box-price-buy-product-card ">
-                                <div className="inner-price-box-product-card">
-                                    <div className="box-top-price-product-card">
-                                        <p id="discount-price">RP.{commafy(hargaTotal)}</p>
-                                    </div>
-                                    <div className="box-top-price-product-card">
-                                        <p id="normal-price">RP.{commafy(hargaAwal)}</p>
-                                    </div>
+                                <div className="product-name-detail">
+                                    <p>{val.Name}</p>
                                 </div>
-                                <div className="inner-buy-box-product-card">
-                                    <img src={icon_cart} alt="" />
+                                <div className="box-price-product-detail">
+                                    <div className="inner-price-box-product-card">
+                                        <div className="box-top-price-product-card">
+                                            <p id="discount-price">RP.30.000</p>
+                                        </div>
+                                        <div className="box-top-price-product-card">
+                                            <p id="normal-price">RP.20.000</p>
+                                        </div>
+                                    </div>
+                                    <div className="inner-buy-box-product-card">
+                                        <img src={icon_cart} alt="" />
+                                    </div>
                                 </div>
                             </div>
                         </Link>
@@ -84,16 +90,21 @@ export default function ProductCard(data){
                             />
                         </div>
                         <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
+                            <div className="product-name-detail">
+                                <p>{val.Name}</p>
                             </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={icon_cart} alt="" />
+                            <div className="box-price-product-detail">
+                                <div className="inner-price-box-product-card">
+                                    <div className="box-top-price-product-card">
+                                        <p id="discount-price">RP.30.000</p>
+                                    </div>
+                                    <div className="box-top-price-product-card">
+                                        <p id="normal-price">RP.20.000</p>
+                                    </div>
+                                </div>
+                                <div className="inner-buy-box-product-card">
+                                    <img src={icon_cart} alt="" />
+                                </div>
                             </div>
                         </div>
                     </Link>
@@ -114,16 +125,21 @@ export default function ProductCard(data){
                             />
                         </div>
                         <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
+                            <div className="product-name-detail">
+                                <p>{val.Name}</p>
                             </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={icon_cart} alt="" />
+                            <div className="box-price-product-detail">
+                                <div className="inner-price-box-product-card">
+                                    <div className="box-top-price-product-card">
+                                        <p id="discount-price">RP.30.000</p>
+                                    </div>
+                                    <div className="box-top-price-product-card">
+                                        <p id="normal-price">RP.20.000</p>
+                                    </div>
+                                </div>
+                                <div className="inner-buy-box-product-card">
+                                    <img src={icon_cart} alt="" />
+                                </div>
                             </div>
                         </div>
                     </Link>

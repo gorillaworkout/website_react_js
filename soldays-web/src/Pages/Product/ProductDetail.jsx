@@ -24,21 +24,35 @@ import { useParams } from "react-router-dom";
 import Axios from 'axios'
 import {FullPageLoading} from '../../Component/Loading/Loading'
 import ProductCard from '../../Component/ProductCard/ProductCard';
-
+import axios from 'axios';
+import {useDispatch,useSelector} from 'react-redux'
+import {Link} from 'react-scroll'
 
 export default function ProductDetail(){
     const { Product_Code } = useParams();
+    const Product = useSelector(state=>state.Product)
+    const scrollToTop = useRef(null);
 
     console.log(Product_Code)
 
 
     const [inputQty,setInputQty]=useState(0)
+    const [totalInputQty,setTotalInputQty]=useState(1)
+    const [totalHargaProduct,setTotalHargaProduct]=useState(0)
     const [isInputQty,setIsInputQty]=useState(false)
     const [isLoading,setIsLoading]=useState(true)
     const [ProductRender,setProductRender]=useState(undefined)
     const [CityCompany,setCityCompany ] = useState('')
     const [allComment,setAllComment]=useState(undefined)
+    const [imgActive,setImgActive]=useState(undefined)
+    const [imgActiveId,setImgActiveId]=useState(1)
+    const [totalComment,setTotalComment]=useState(undefined)
+    const [dataToCardPromo,setDataToCardPromo]=useState({
+        isTokpedAds:false,
+        allProductItem: Product.allProduct
+    })
 
+    const [isScrollActive,setIsScrollActive]=useState(1)
 
     // GET DATA FROM USEEFFECT
     useEffect(()=>{
@@ -60,16 +74,36 @@ export default function ProductDetail(){
             .then((res)=>{
                 console.log(res.data)
                 setProductRender(res.data)
-                setIsLoading(false)
+                setImgActive(res.data.Picture_1)
                 var find_city = res.data.PIC_company_address.split(',')
                 console.log(find_city)
                 var CityCompany = find_city[4]
                 setCityCompany(CityCompany)   
                 // console.log(res.data.User_Comments)
                 var comment_stringify = JSON.parse(res.data.User_Comments)
-                // console.log(comment_stringify)
-                setAllComment(comment_stringify)
-            
+                console.log(comment_stringify)
+
+
+                if(comment_stringify !== null &&  comment_stringify !== undefined ){
+
+                    var total_comment = comment_stringify.length
+                    if(total_comment === null || total_comment === undefined){
+                        total_comment = 0
+                    }
+                    console.log(total_comment)
+                    setTotalComment(total_comment)
+                    setAllComment(comment_stringify)
+                    setTimeout(()=>{
+                        setIsLoading(false)
+                    },500)
+                }else {
+                    setTotalComment(0)
+                    setTimeout(()=>{
+                        setIsLoading(false)
+                    },500)
+                    console.log('comment stringify masih null / undefined')
+                }
+                
             }).catch((err)=>{
                 console.log(err)
             })
@@ -87,6 +121,9 @@ export default function ProductDetail(){
             var finalHeight = elHeight - 270
             console.log(finalHeight)
     
+            if(totalComment === 0 ){
+                finalHeight = 250
+            }
             if(scrollY > finalHeight) {
                 setScrollNone(false)
             }else {
@@ -103,16 +140,35 @@ export default function ProductDetail(){
 
     const onInputQtyProduct=(qty)=>{
         console.log(parseInt(qty))
-        if(qty !==  0 && qty > 0 ){
+        var harga_product  = parseInt(ProductRender.Sell_Price)
+        
+        if(qty !==  0 && qty > 0  ){
             setIsInputQty(true)
             setInputQty(qty)
+            if(qty > ProductRender.Stock_Quantity){
+                var hitung_harga = ProductRender.Stock_Quantity * harga_product
+                setTotalHargaProduct(hitung_harga)
+                setTotalInputQty(ProductRender.Stock_Quantity)
+                
+            }else {
+                var hitung_harga = qty * harga_product
+                setTotalHargaProduct(hitung_harga)
+                setTotalInputQty(qty)
+            }
+            
         }else if (qty === 0  || qty < 0){
             setInputQty(1)
             setIsInputQty(false)
+            setTotalInputQty(1)
+            var hitung_harga = harga_product * 1
+            setTotalHargaProduct(hitung_harga)
         }else {
             console.log('masuk ke else line 72 product detail. lebih dari 0 / kurang dari 0')
             setInputQty(1)
+            setTotalInputQty(1)
             setIsInputQty(false)
+            var hitung_harga = harga_product * 1
+            setTotalHargaProduct(hitung_harga)
         }
     }
 
@@ -131,16 +187,72 @@ export default function ProductDetail(){
         }
     }
 
-    const renderComment = ( )=>{
-        console.log(ProductRender.User_Comments)
+    const renderComment = (params)=>{
+        // console.log(ProductRender.User_Comments)
+        
 
         if(ProductRender.User_Comments === undefined || ProductRender.User_Comments === null || ProductRender.User_Comments.length === 0 ) {
             console.log('masih kosong')
         }else {
             console.log(allComment)
-                return allComment.map((val,index)=>{
-                    console.log(val)
-                })
+           
+                // return allComment.map((val,index)=>{
+                    return (
+                        <ProductCard data={dataToCardPromo}/>
+                    )
+                // })
+        }
+    }
+
+
+    const changeImg=(img,id)=>{
+        if(id === 1){
+            setImgActive(img)
+            setImgActiveId(1)
+        }else if ( id === 2){
+            setImgActive(img)
+            setImgActiveId(2)
+        }else{
+            setImgActive(img)
+            setImgActiveId(3)
+        }
+    }
+    const changeScrollStatus=(id)=>{
+        if(id === 1) {
+            setIsScrollActive(1)
+        }else if (id === 2) {
+            setIsScrollActive(2)
+        }else {
+            setIsScrollActive(3)
+        }
+    }
+
+
+
+    const tambahQtyTotal=()=>{
+        if(totalInputQty  === ProductRender.Stock_Quantity || totalInputQty > ProductRender.Stock_Quantity) {
+
+        }else {
+            var qty_now = parseInt(totalInputQty)
+            var hitung_harga = parseInt(ProductRender.Sell_Price) * (qty_now + 1)
+            setTotalInputQty(qty_now + 1)
+            setTotalHargaProduct(hitung_harga)
+            
+        }
+    }
+    const kurangQtyTotal=()=>{
+        if(totalInputQty < ProductRender.Stock_Quantity && totalInputQty > 0) {
+            var qty_now = totalInputQty
+            var hitung_harga = parseInt(ProductRender.Sell_Price) * (qty_now - 1)
+            setTotalInputQty(totalInputQty - 1)
+            setTotalHargaProduct(hitung_harga)
+        }else if ( totalInputQty > 0) {
+            var qty_now = totalInputQty
+            var hitung_harga = parseInt(ProductRender.Sell_Price) * (qty_now - 1)
+            setTotalInputQty(totalInputQty - 1)
+            setTotalHargaProduct(hitung_harga)
+        }else if ( totalInputQty === 0 || totalInputQty < 0){
+            console.log('input qty 0')
         }
     }
     
@@ -155,7 +267,7 @@ export default function ProductDetail(){
     }
     return (
         <>
-            <div className="box-container-product-detail">
+            <div className="box-container-product-detail" id="box-top-product" >
                 <Header/>
                 {/* <div className="header-slider-product-detail "> */}
                 <div className={scrollZero ? "header-slider-product-detail" : "header-slider-product-detail active-box-slider" }>
@@ -163,17 +275,14 @@ export default function ProductDetail(){
                         <p>{ProductRender.Name}</p>
                     </div>
                     <div className="box-option-product-slider">
-                        <div className="box-option-1 slider-active-product-detail">
-                            <p>Info Product</p>
+                        <div className={ isScrollActive === 1 ? 'box-option-1 slider-active-product-detail' : 'box-option-1'}>
+                            <Link to="box-top-product" onClick={()=>changeScrollStatus(1)} smooth={true} duration={100}>Info Product</Link>
                         </div>
-                        <div className="box-option-1">
-                            <p>Ulasan</p>
+                        <div className={ isScrollActive === 2 ? 'box-option-1 slider-active-product-detail' : 'box-option-1'}>
+                            <Link to="ulasan-id" onClick={()=>changeScrollStatus(2)} smooth={true} duration={100}>Ulasan</Link>
                         </div>
-                        <div className="box-option-1">
-                            <p>Diskusi</p>
-                        </div>
-                        <div className="box-option-1">
-                            <p>Rekomendasi</p>
+                        <div className={ isScrollActive === 3 ? 'box-option-1 slider-active-product-detail' : 'box-option-1'}>
+                            <Link to="similar-product-id" onClick={()=>changeScrollStatus(3)} smooth={true} duration={100}>Rekomendasi</Link>
                         </div>
                     </div>
                 </div>
@@ -187,25 +296,44 @@ export default function ProductDetail(){
                     </Breadcrumb>
                 </div>
 
-                <div className="detail-product-box ">
+                <div className="detail-product-box " >
                     {/* <section className="box-detail-product-img"> */}
-                    <section className={scrollNone ? 'box-detail-product-img img-appeared' : 'box-detail-product-img img-hide'}>
+                    <section className={scrollNone ? 'box-detail-product-img img-appeared' : 'box-detail-product-img img-hide'} id="top-info" >
                         <div className="box-img-pd">
-                                <img src={ProductRender.Picture_1} alt="" />
+                                <img src={imgActive} alt="pic_1" />
                         </div>
                         <div className="box-option-img-product">
-                            <div className="final-box-img-option active-final-box-img">
-                                <img src={Sealant} alt="" />
-                            </div>
-                            <div className="final-box-img-option">
-                                <img src={Sealant} alt="" />
-                            </div>
-                            <div className="final-box-img-option">
-                                <img src={Sealant} alt="" />
-                            </div>
-                            <div className="final-box-img-option">
-                                <img src={Sealant} alt="" />
-                            </div>
+                            {
+                                ProductRender.Picture_1 !== null && ProductRender.Picture_1 !== "" ? 
+                                    <div className={imgActiveId === 1 ? 'final-box-img-option active-final-box-img' : 'final-box-img-option'} onClick={()=>changeImg(ProductRender.Picture_1,1)}>
+                                        <img src={ProductRender.Picture_1} alt="pic_1" />
+                                    </div>
+                                :
+                                <>
+                                
+                                </>
+                            }
+                            {
+                                ProductRender.Picture_2 !== null && ProductRender.Picture_2 !== "" ? 
+                                    <div className={imgActiveId === 2 ? 'final-box-img-option active-final-box-img' : 'final-box-img-option'} onClick={()=>changeImg(ProductRender.Picture_2,2)}>
+                                        <img src={ProductRender.Picture_2} alt="pic_2" />
+                                    </div>
+                                :
+                                <>
+                                
+                                </>
+                            }
+                            {
+                                ProductRender.Picture_3 !== null && ProductRender.Picture_1 !== "" ? 
+                                    <div className={imgActiveId === 3 ? 'final-box-img-option active-final-box-img' : 'final-box-img-option'} onClick={()=>changeImg(ProductRender.Picture_3,3)}>
+                                        <img src={ProductRender.Picture_3} alt="pic_3" />
+                                    </div>
+                                :
+                                <>
+                                
+                                </>
+                            }
+                           
                         </div>
 
                     </section>
@@ -256,8 +384,6 @@ export default function ProductDetail(){
                                                         <p>
                                                             <GrLocation/> <span>Pengiriman Dari {CityCompany}</span>
                                                         </p>
-                                                        {renderComment()}
-                                                        {/* <p>PENGIRIMAN DARI : JAKARTA</p> */}
                                                     </div>
                                                 </div>
                                         </div>
@@ -311,12 +437,18 @@ export default function ProductDetail(){
                                 {
                                 isInputQty ? 
                                     <div className="box-for-plus-minus-qty">
-                                        <div className="box-qty-plus">
-                                            <FiMinus className="icon-minus"/>
-                                            <input type="text" className="input-qty-plus"  placeholder='1'/>
-                                            <BsPlus className="icon-plus"/>
+                                        <div className="box-btn-plus-minus">
+                                            <div className="box-qty-plus">
+                                                <FiMinus className="icon-minus" onClick={kurangQtyTotal}/>
+                                                <input type="text" className="input-qty-plus"  value={totalInputQty}  placeholder='1'/>
+                                                <BsPlus className="icon-plus" onClick={tambahQtyTotal}/>
+                                            </div>
+                                            <p>Stock {ProductRender.Stock_Quantity}</p>
                                         </div>
-                                        <p>Stok 100</p>
+                                        <div className="subtotal-product-detail">
+                                            <p>Subtotal</p>
+                                            <p>RP {commafy(totalHargaProduct)}</p>
+                                        </div> 
                                     </div>
                                     : 
                                     <>
@@ -348,254 +480,43 @@ export default function ProductDetail(){
                     </section>
                 </div>
 
-                <div className="ulasan-product-detail" >
-                    <div className="total-ulasan-box">
-                        <p>Semua Ulasan (320)</p>
-                    </div>
+                <div className="ulasan-product-detail" id="ulasan-id">
+                    {
+                        totalComment === 0 ? 
+                        <>
+                            <div className="input-comment-product-detail" >
+                                <div className="box-input-ulasan">
+                                    <p>Masukan Ulasan</p>
+                                    <input type="text" maxLength="100" className="input-ulasan-npd"/>
+                                    <div className="btn-upload-ulasan" >
+                                        Masukan
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                        :
+                        <>
+                            <div className="total-ulasan-box">
+                                <p>Semua Ulasan ({totalComment})</p>
+                            </div>
+                            {renderComment()}
+                            <div className="input-comment-product-detail">
+                                <div className="box-input-ulasan">
+                                    <p>Masukan Ulasan</p>
+                                    <input type="text" maxLength="100" className="input-ulasan-npd"/>
+                                    <div className="btn-upload-ulasan" >
+                                        Masukan
+                                    </div>
+                                </div>
+                            </div>
+                        </>
 
-                    <div className="all-total-comment-product-detail">
-                        <div className="comment-customer-product">
-                            <div className="customer-profile-img">
-                                <div className="img-box-customer">
-                                    <img src={Sealant} alt="" />
-                                </div>
-                                <div className="customer-name-box">
-                                    <p>BAYU DARMAWAN</p>
-                                </div>
-                            </div>
-                            <div className="box-comment-from-customer">
-                                <div className="comment-box-customer">
-                                    <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
-                                </div>
-                                <div className="seller-thankyou-comment">
-                                    <div className="box-for-img-tq">
-                                        <div className="img-box-customer">
-                                            <img src={Sealant} alt="" />
-                                        </div>
-                                    </div>
-                                    <div className="seller-information-detail-comment">
-                                        <div className="seller-name-detail">
-                                            <p>VANTSING INTERNATIONAL</p>
-                                            <div className="penjual-box-detail">
-                                                <p>Penjual</p>
-                                            </div>
-                                        </div>
-                                        <div className="all-comment-from-tq">
-                                            <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="all-total-comment-product-detail">
-                        <div className="comment-customer-product">
-                            <div className="customer-profile-img">
-                                <div className="img-box-customer">
-                                    <img src={Sealant} alt="" />
-                                </div>
-                                <div className="customer-name-box">
-                                    <p>BAYU DARMAWAN</p>
-                                </div>
-                            </div>
-                            <div className="box-comment-from-customer">
-                                <div className="comment-box-customer">
-                                    <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
-                                </div>
-                                <div className="seller-thankyou-comment">
-                                    <div className="box-for-img-tq">
-                                        <div className="img-box-customer">
-                                            <img src={Sealant} alt="" />
-                                        </div>
-                                    </div>
-                                    <div className="seller-information-detail-comment">
-                                        <div className="seller-name-detail">
-                                            <p>VANTSING INTERNATIONAL</p>
-                                            <div className="penjual-box-detail">
-                                                <p>Penjual</p>
-                                            </div>
-                                        </div>
-                                        <div className="all-comment-from-tq">
-                                            <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="all-total-comment-product-detail">
-                        <div className="comment-customer-product">
-                            <div className="customer-profile-img">
-                                <div className="img-box-customer">
-                                    <img src={Sealant} alt="" />
-                                </div>
-                                <div className="customer-name-box">
-                                    <p>BAYU DARMAWAN</p>
-                                </div>
-                            </div>
-                            <div className="box-comment-from-customer">
-                                <div className="comment-box-customer">
-                                    <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
-                                </div>
-                                <div className="seller-thankyou-comment">
-                                    <div className="box-for-img-tq">
-                                        <div className="img-box-customer">
-                                            <img src={Sealant} alt="" />
-                                        </div>
-                                    </div>
-                                    <div className="seller-information-detail-comment">
-                                        <div className="seller-name-detail">
-                                            <p>VANTSING INTERNATIONAL</p>
-                                            <div className="penjual-box-detail">
-                                                <p>Penjual</p>
-                                            </div>
-                                        </div>
-                                        <div className="all-comment-from-tq">
-                                            <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                    }
                 </div>
-                <div className="section-for-similar-item">
-                    <div key={1} className="card-product-box  hvr-float-shadow">
-                        <div className="box-badge-product-card">
-                            <img src={Sealant} alt="" id="badge_new"/>
-                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
-                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
-                        </div>
-                        <div className="box-img-product-card">
-                            <ImgEffect data={{
-                                img:Sealant,
-                                background:'#ccc'
-                                }}
-                            />
-                        </div>
-                        <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
-                            </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={Sealant} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div key={1} className="card-product-box  hvr-float-shadow">
-                        <div className="box-badge-product-card">
-                            <img src={Sealant} alt="" id="badge_new"/>
-                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
-                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
-                        </div>
-                        <div className="box-img-product-card">
-                            <ImgEffect data={{
-                                img:Sealant,
-                                background:'#ccc'
-                                }}
-                            />
-                        </div>
-                        <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
-                            </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={Sealant} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div key={1} className="card-product-box  hvr-float-shadow">
-                        <div className="box-badge-product-card">
-                            <img src={Sealant} alt="" id="badge_new"/>
-                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
-                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
-                        </div>
-                        <div className="box-img-product-card">
-                            <ImgEffect data={{
-                                img:Sealant,
-                                background:'#ccc'
-                                }}
-                            />
-                        </div>
-                        <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
-                            </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={Sealant} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div key={1} className="card-product-box  hvr-float-shadow">
-                        <div className="box-badge-product-card">
-                            <img src={Sealant} alt="" id="badge_new"/>
-                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
-                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
-                        </div>
-                        <div className="box-img-product-card">
-                            <ImgEffect data={{
-                                img:Sealant,
-                                background:'#ccc'
-                                }}
-                            />
-                        </div>
-                        <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
-                            </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={Sealant} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div key={1} className="card-product-box  hvr-float-shadow">
-                        <div className="box-badge-product-card">
-                            <img src={Sealant} alt="" id="badge_new"/>
-                            {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
-                            {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
-                        </div>
-                        <div className="box-img-product-card">
-                            <ImgEffect data={{
-                                img:Sealant,
-                                background:'#ccc'
-                                }}
-                            />
-                        </div>
-                        <div className="box-price-buy-product-card ">
-                            <div className="inner-price-box-product-card">
-                                <div className="box-top-price-product-card">
-                                    <p id="discount-price">RP.30.000</p>
-                                </div>
-                                <div className="box-top-price-product-card">
-                                    <p id="normal-price">RP.20.000</p>
-                                </div>
-                            </div>
-                            <div className="inner-buy-box-product-card">
-                                <img src={Sealant} alt="" />
-                            </div>
-                        </div>
-                    </div>
+                <div className="section-for-similar-item" ref={scrollToTop} id="similar-product-id">
+                    {/* {renderSimilarProduct()} */}
+                    <ProductCard data={dataToCardPromo}/>
+          
                 </div>
 
             </div>
