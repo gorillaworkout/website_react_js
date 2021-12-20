@@ -179,7 +179,7 @@ export default function ProductDetail(){
                 </div>
                 <div className="breadcrumb-product-detail-box container">
                     <Breadcrumb>
-                        <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
                         <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
                             Product Detail
                         </Breadcrumb.Item>
