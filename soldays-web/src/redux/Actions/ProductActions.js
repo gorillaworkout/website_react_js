@@ -103,12 +103,14 @@ export const getAllSubCategory=(Category)=>{
     }
 }
 
+// FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
 export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name)=>{
     return (dispatch)=>{
+        
         var cart = [
             {
                 productNo:Product_Code,
-                quantity:Total_Qty,
+                quantity:parseInt(Total_Qty),
                 company_address:Company_Address,
                 weight_kg:Product_Weight,
                 product_name:Product_Name
@@ -118,3 +120,52 @@ export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weig
         localStorage.setItem('itemsInCart',pushToStorage2)
     }
 }
+// FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
+
+
+// FUNCTION UNTUK UPDATE CART LOCALSTORAGE -> KALAU ITEMSINCART UDH ADA TAPI PRODUCT YANG MAU DITAMBAH BELUM ADA
+export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,dataParse)=>{
+    return (dispatch)=>{
+
+        // if(dataParse){
+            var filterdatakosong = dataParse.filter((filtering)=>{
+                console.log(filtering.productNo , Product_Code)
+                if(filtering.productNo === Product_Code){
+                    return filtering
+                }
+            })
+            if(filterdatakosong.length){
+                var objIndex = dataParse.findIndex(
+                    (obj) => obj.productNo === Product_Code
+                  );
+                  console.log(dataParse[objIndex])
+                  dataParse[objIndex].quantity = parseInt(dataParse[objIndex].quantity)  + parseInt(Total_Qty)
+            }else {
+
+                var data = {
+                    productNo:Product_Code,
+                    quantity:Total_Qty,
+                    company_address:Company_Address,
+                    weight_kg:Product_Weight,
+                    product_name:Product_Name
+                }
+                dataParse.push(data)
+            }
+            var pushToStorage = JSON.stringify(dataParse);
+            localStorage.setItem("itemsInCart", pushToStorage);
+        // }
+
+
+    }
+}
+// FUNCTION UNTUK UPDATE CART LOCALSTORAGE -> KALAU ITEMSINCART UDH ADA TAPI PRODUCT YANG MAU DITAMBAH BELUM ADA
+
+
+// FUNCTION UNTUK UPDATE QTY YANG UDAH ADA DI CART
+export const updateQtyToCartRedux=()=>{
+    return (dispatch)=>{
+
+    }
+}
+
+// FUNCTION UNTUK UPDATE QTY YANG UDAH ADA DI CART

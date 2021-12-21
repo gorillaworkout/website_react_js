@@ -28,9 +28,8 @@ import axios from 'axios';
 import {useDispatch,useSelector} from 'react-redux'
 import {Link} from 'react-scroll'
 import Modal from 'react-bootstrap/Modal'
-import { NonceProvider } from 'react-select';
-import { ToastContainer, toast } from 'react-toastify';
-import {addToCartRedux} from '../../redux/Actions/ProductActions'
+import { toast } from 'react-toastify';
+import {addToCartRedux,updateToCartRedux,updateQtyToCartRedux} from '../../redux/Actions/ProductActions'
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -115,11 +114,12 @@ export default function ProductDetail(){
             })
         }else {
             // console.log(scrollY)
-            if(scrollY === 0 ){
-                setScrollZero(true)
-            }else {
-                setScrollZero(false)
+            var Product_Code_Now = Product_Code
+            if(Product_Code_Now !== Product_Code){
+
             }
+            
+            
     
     
             let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
@@ -140,7 +140,7 @@ export default function ProductDetail(){
 
 
 
-    },[Product_Code, isLoading, scrollY, scrollZero])
+    },[Product_Code, isLoading, scrollY, scrollZero, totalComment])
 
     // SCROLL MENU HEADER
 
@@ -266,7 +266,7 @@ export default function ProductDetail(){
                                 }}
                             />
                         </div>
-                        <span className="span-name-product-success-cart">Sealant Asli Dari Bandung Hitam Putih Hijau</span>
+                        <span className="span-name-product-success-cart">{ProductRender.Name}</span>
                         <div className="new-price-card-success-cart">
                             <span>Rp{commafy(hargaAwal)}</span>
                             <span>Rp{commafy(hargaTotal)}</span>
@@ -377,36 +377,8 @@ export default function ProductDetail(){
             var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
             console.log(dataParse)
             if(dataParse){
-                var filterdatakosong = dataParse.filter((filtering)=>{
-                    console.log(filtering.productNo , Product_Code)
-                    if(filtering.productNo === Product_Code){
-                        return filtering
-                    }
-                })
-                console.log(filterdatakosong)
-                if(filterdatakosong.length){ // berarti data udah ada tinggal update qty
-                    var objIndex = dataParse.findIndex(
-                        (obj) => obj.productNo === Product_Code
-                      );
-                      console.log(dataParse[objIndex])
-                      dataParse[objIndex].quantity = parseInt(dataParse[objIndex].quantity)  + parseInt(totalInputQty)
-                      setShowModalSuccessCart(true)
-                      
-                }else { // berarti data belom ada. tambah qty ke cart
-                    var data = {
-                        productNo:Product_Code,
-                        quantity:totalInputQty,
-                        company_address:ProductRender.PIC_company_address,
-                        weight_kg:ProductRender.Weight_KG,
-                        product_name:ProductRender.Name
-                    }
-                    dataParse.push(data)
-                    var pushToStorage = JSON.stringify(dataParse);
-                    localStorage.setItem("itemsInCart", pushToStorage);
-                    setShowModalSuccessCart(true)
-                }
-                var pushToStorage = JSON.stringify(dataParse)
-                localStorage.setItem('itemsInCart',pushToStorage)
+                dispatch(updateToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,dataParse))
+                setShowModalSuccessCart(true)
             }else {
                 /**
                  *     ! Items in Cart Kosong, berarti langsung push bikin object di local storage

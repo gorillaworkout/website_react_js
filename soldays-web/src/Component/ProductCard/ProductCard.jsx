@@ -66,7 +66,7 @@ export default function ProductCard(data){
                                             <p id="normal-price">RP.{commafy(hargaTotal)}</p>
                                         </div>
                                     </div>
-                                    <div className="inner-buy-box-product-card">
+                                    <div className="inner-buy-box-product-card" onClick={()=>addToCartProduct(val.Product_Code,1,val.PIC_company_address,val.Weight_KG,val.Name)}>
                                         <img src={icon_cart} alt="" />
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@ export default function ProductCard(data){
                                         <p id="normal-price">RP.{commafy(hargaTotal)}</p>
                                     </div>
                                 </div>
-                                <div className="inner-buy-box-product-card">
+                                <div className="inner-buy-box-product-card" onClick={()=>addToCartProduct(val.Product_Code,1,val.PIC_company_address,val.Weight_KG,val.Name)}>
                                     <img src={icon_cart} alt="" />
                                 </div>
                             </div>
@@ -137,7 +137,7 @@ export default function ProductCard(data){
                                         <p id="normal-price">RP.{commafy(hargaTotal)}</p>
                                     </div>
                                 </div>
-                                <div className="inner-buy-box-product-card">
+                                <div className="inner-buy-box-product-card" onClick={()=>addToCartProduct(val.Product_Code,1,val.PIC_company_address,val.Weight_KG,val.Name)}>
                                     <img src={icon_cart} alt="" />
                                 </div>
                             </div>
@@ -147,6 +147,11 @@ export default function ProductCard(data){
             }
         })
       
+    }
+
+    const addToCartProduct=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name)=>{
+        console.log(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name)
+
     }
 
     return (
