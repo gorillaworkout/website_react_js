@@ -7,9 +7,8 @@ import {AiOutlineLogout,AiOutlineLogin} from 'react-icons/ai'
 import {logo_soldays,logo_login,logo_qr_scan,logo_shopping_cart,logo_unpaid_list} from '../../Assets/Assets'
 import Select from 'react-select'
 import {useDispatch,useSelector} from 'react-redux'
-
-
-
+import { useLocation } from 'react-router-dom';
+import {Link} from 'react-router-dom'
 export default function Header(data){
     const Product = useSelector(state=>state.Product)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
@@ -17,7 +16,7 @@ export default function Header(data){
     const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allCategory)
-
+    const [headerHome,setHeaderHome]=useState(true)
     const [allIsData,setAllIsData]=useState(
         {
             isLogin:false,
@@ -38,7 +37,9 @@ export default function Header(data){
     )
   
     const options_product_searching = []
-    
+    const location = useLocation();
+    console.log(location)
+
     
     useEffect(()=>{
      
@@ -55,6 +56,13 @@ export default function Header(data){
             })
         }
         // IF UNTUK RENDER SEARCHING PRODUCT
+
+        if(location.pathname === '/'){
+            console.log('location di home', location)
+            setHeaderHome(true)
+        }else {
+            setHeaderHome(false)
+        }
 
     })
     // function searching header
@@ -340,7 +348,7 @@ export default function Header(data){
 
     return(
         <>
-            <div className="header-container">
+            <div className={headerHome ? 'header-container' : 'header-container-fixed' }>
                 <div className="header-top">
                     <div className="header-download-app" onClick={open_download_app}>
                         <BsPhone className="icon-hp-download"/>
@@ -368,9 +376,9 @@ export default function Header(data){
                     </div>
                 </div>
                 <div className="header-bottom">
-                    <div className="box-logo-header">
+                    <Link to='/' className="box-logo-header">
                         <img src={logo_soldays} alt="" />
-                    </div>
+                    </Link>
                     <div className="all-category-header-box">
                         <p onClick={open_semua_kategori}>Semua  Kategori</p>
                     </div>

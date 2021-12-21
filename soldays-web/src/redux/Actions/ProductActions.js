@@ -102,3 +102,19 @@ export const getAllSubCategory=(Category)=>{
         })
     }
 }
+
+export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name)=>{
+    return (dispatch)=>{
+        var cart = [
+            {
+                productNo:Product_Code,
+                quantity:Total_Qty,
+                company_address:Company_Address,
+                weight_kg:Product_Weight,
+                product_name:Product_Name
+            }
+        ]
+        var pushToStorage2 = JSON.stringify(cart)
+        localStorage.setItem('itemsInCart',pushToStorage2)
+    }
+}

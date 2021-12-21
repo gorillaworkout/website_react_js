@@ -15,6 +15,7 @@ import {GetAllProduct,getAllSubCategory} from '../../redux/Actions/ProductAction
 import {FullPageLoading} from '../../Component/Loading/Loading'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {useDispatch,useSelector} from 'react-redux'
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -22,8 +23,8 @@ export default function Home({parentCallback}){
     const dispatch=useDispatch()
     const Product = useSelector(state=>state.Product)
     const Auth = useSelector(state=>state.Auth)
-    // console.log(Auth)
-    // console.log(Product)
+    const location = useLocation();
+
     const [allProductItem,setAllProductItem]=useState(Product.allProduct)
     const [allProductGroupbuy,setAllProductGroupbuy]=useState(Product.allCategoryGroupBuy)
     const [allProductNew,setAllProductNew]=useState(Product.allCategoryNew)
@@ -211,29 +212,7 @@ export default function Home({parentCallback}){
         // allProduct:allProductItem,
         // allCategory:allCategory
     }
-    // var data_to_highlight = {
-    //     allSubCategory:allSubCategory
-    // }
 
-    // var data_to_card_promo = {
-    //     isTokpedAds:true,
-    //     allProductItem: allProductGroupbuy
-    // }
-    // console.log(data_to_card_promo)
-    // var data_to_card_new={
-    //     isTokpedAds:false,
-    //     allProductItem: allProductNew
-    // }
-    // var data_to_cards_ads_1={
-    //     detail_Cards:'PROMO',
-    //     img:ads_panjang_1,
-    //     icon:icon_ads_panjang_brand
-    // }
-    var data_to_cards_ads_2 ={
-        detail_Cards:'NEW',
-        img:ads_panjang_2,
-        icon:icon_ads_panjang_new
-    }
     // FUNCTION FOR HEADER
     if(loadingFetchingData){
         return (
@@ -247,7 +226,7 @@ export default function Home({parentCallback}){
     return (
         <>
         <div className="home-container">
-           
+           {/* <h1>header</h1> */}
             <Header  parentCallback={handleCallbackFromHeader}/>
             <LazyLoad>
                 <div className="box-highlight">

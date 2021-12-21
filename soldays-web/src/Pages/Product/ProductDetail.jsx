@@ -27,15 +27,21 @@ import ProductCard from '../../Component/ProductCard/ProductCard';
 import axios from 'axios';
 import {useDispatch,useSelector} from 'react-redux'
 import {Link} from 'react-scroll'
+import Modal from 'react-bootstrap/Modal'
+import { NonceProvider } from 'react-select';
+import { ToastContainer, toast } from 'react-toastify';
+import {addToCartRedux} from '../../redux/Actions/ProductActions'
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductDetail(){
+    toast.configure()
+    const dispatch=useDispatch()
     const { Product_Code } = useParams();
     const Product = useSelector(state=>state.Product)
     const scrollToTop = useRef(null);
 
-    console.log(Product_Code)
-
-
+    const [showModalSuccessCart, setShowModalSuccessCart] = useState(false);
     const [inputQty,setInputQty]=useState(0)
     const [totalInputQty,setTotalInputQty]=useState(1)
     const [totalHargaProduct,setTotalHargaProduct]=useState(0)
@@ -108,7 +114,7 @@ export default function ProductDetail(){
                 console.log(err)
             })
         }else {
-            console.log(scrollY)
+            // console.log(scrollY)
             if(scrollY === 0 ){
                 setScrollZero(true)
             }else {
@@ -118,7 +124,8 @@ export default function ProductDetail(){
     
             let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
             // let elHeight = document.querySelector('.box-detail-product-description').clientHeight
-            var finalHeight = elHeight - 270
+            var finalHeight = elHeight - 100
+            console.log(elHeight)
             console.log(finalHeight)
     
             if(totalComment === 0 ){
@@ -135,7 +142,7 @@ export default function ProductDetail(){
 
     },[Product_Code, isLoading, scrollY, scrollZero])
 
-    // scroll menu header
+    // SCROLL MENU HEADER
 
 
     const onInputQtyProduct=(qty)=>{
@@ -155,6 +162,7 @@ export default function ProductDetail(){
                 setTotalHargaProduct(hitung_harga)
                 setTotalInputQty(qty)
             }
+
             
         }else if (qty === 0  || qty < 0){
             setInputQty(1)
@@ -196,14 +204,102 @@ export default function ProductDetail(){
         }else {
             console.log(allComment)
            
-                // return allComment.map((val,index)=>{
+                return allComment.map((val,index)=>{
                     return (
-                        <ProductCard data={dataToCardPromo}/>
+                        // <ProductCard data={dataToCardPromo}/>
+                        <div className="all-total-comment-product-detail">
+                            <div className="comment-customer-product">
+                                <div className="customer-profile-img">
+                                    <div className="img-box-customer">
+                                        <img src={Sealant} alt="" />
+                                    </div>
+                                    <div className="customer-name-box">
+                                        <p>BAYU DARMAWAN</p>
+                                    </div>
+                                </div>
+                                <div className="box-comment-from-customer">
+                                    <div className="comment-box-customer">
+                                        <p>SANGAT RECOMMENDED, TIDAK MENYESAL SAYA MEMBELINYA DISINI, LAIN KALI AKAN SAYA BELI LAGI DISINI, SUMPAH, GAK BOHONG, DEMI DEH. </p>
+                                    </div>
+                                    <div className="seller-thankyou-comment">
+                                        <div className="box-for-img-tq">
+                                            <div className="img-box-customer">
+                                                <img src={Sealant} alt="" />
+                                            </div>
+                                        </div>
+                                        <div className="seller-information-detail-comment">
+                                            <div className="seller-name-detail">
+                                                <p>VANTSING INTERNATIONAL</p>
+                                                <div className="penjual-box-detail">
+                                                    <p>Penjual</p>
+                                                </div>
+                                            </div>
+                                            <div className="all-comment-from-tq">
+                                                <p>Terima Kasih telah Berbelanja di Vantsing international, kepada teman teman anda dan favoritkan toko kami untuk terus</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     )
-                // })
+                })
         }
     }
 
+
+    const renderCardSuccessCart=()=>{
+
+        console.log(Product.allCategoryGroupBuy)
+        return Product.allCategoryGroupBuy.map((val,index)=>{
+            var hargaAwal = parseInt(val.Sell_Price)
+            var discount = parseInt(val.Sell_Price * 0.1)
+            var hargaTotal = hargaAwal - discount
+            if(index < 4){
+                return (
+                    <div key={index+1} className="new-card-success-cart">
+                        <div className="img-new-card-success-cart">
+                            <ImgEffect 
+                                data={{
+                                    img:ProductRender.Picture_1,
+                                    background:'transparent'
+                                }}
+                            />
+                        </div>
+                        <span className="span-name-product-success-cart">Sealant Asli Dari Bandung Hitam Putih Hijau</span>
+                        <div className="new-price-card-success-cart">
+                            <span>Rp{commafy(hargaAwal)}</span>
+                            <span>Rp{commafy(hargaTotal)}</span>
+                        </div>
+                    </div>
+                )
+            }
+        })
+    }
+    const renderAllProductSuccessCart=()=>{
+        return Product.allProduct.map((val,index)=>{
+            var hargaAwal = parseInt(val.Sell_Price)
+            var discount= parseInt(val.Sell_Price * 0.1)
+            var hargaTotal = hargaAwal - discount
+            return (
+                <div key={index+1} className="new-card-success-cart">
+                    <div className="img-new-card-success-cart">
+                        <ImgEffect 
+                            data={{
+                                img:ProductRender.Picture_1,
+                                background:'transparent'
+                            }}
+                        />
+                    </div>
+                    <span className="span-name-product-success-cart">Sealant Asli Dari Bandung Hitam Putih Hijau</span>
+                    <div className="new-price-card-success-cart">
+                        <span>Rp{commafy(hargaAwal)}</span>
+                        <span>Rp{commafy(hargaTotal)}</span>
+                    </div>
+                </div>
+            )
+        })
+    }
 
     const changeImg=(img,id)=>{
         if(id === 1){
@@ -255,6 +351,75 @@ export default function ProductDetail(){
             console.log('input qty 0')
         }
     }
+
+    const addToCart=(Product_Code)=>{
+        
+        var quantity_product = parseInt(ProductRender.Stock_Quantity)
+        if(
+            quantity_product === 0  ||
+            quantity_product === "0" ||
+            quantity_product === undefined ||
+            quantity_product === null ||
+            isNaN(quantity_product) || 
+            quantity_product < 0
+        ){
+            // alert('stock tidak tersedia')
+            toast.error('Stock Tidak Tersedia', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        }else {
+            var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
+            console.log(dataParse)
+            if(dataParse){
+                var filterdatakosong = dataParse.filter((filtering)=>{
+                    console.log(filtering.productNo , Product_Code)
+                    if(filtering.productNo === Product_Code){
+                        return filtering
+                    }
+                })
+                console.log(filterdatakosong)
+                if(filterdatakosong.length){ // berarti data udah ada tinggal update qty
+                    var objIndex = dataParse.findIndex(
+                        (obj) => obj.productNo === Product_Code
+                      );
+                      console.log(dataParse[objIndex])
+                      dataParse[objIndex].quantity = parseInt(dataParse[objIndex].quantity)  + parseInt(totalInputQty)
+                      setShowModalSuccessCart(true)
+                      
+                }else { // berarti data belom ada. tambah qty ke cart
+                    var data = {
+                        productNo:Product_Code,
+                        quantity:totalInputQty,
+                        company_address:ProductRender.PIC_company_address,
+                        weight_kg:ProductRender.Weight_KG,
+                        product_name:ProductRender.Name
+                    }
+                    dataParse.push(data)
+                    var pushToStorage = JSON.stringify(dataParse);
+                    localStorage.setItem("itemsInCart", pushToStorage);
+                    setShowModalSuccessCart(true)
+                }
+                var pushToStorage = JSON.stringify(dataParse)
+                localStorage.setItem('itemsInCart',pushToStorage)
+            }else {
+                /**
+                 *     ! Items in Cart Kosong, berarti langsung push bikin object di local storage
+                 */
+                 dispatch(addToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name))
+                setShowModalSuccessCart(true)
+            }
+        }
+    }
+
+    const BuyNow=(Product_Code)=>{
+        alert('buy now jalan')
+    }
     
     if(isLoading){
         return (
@@ -267,6 +432,49 @@ export default function ProductDetail(){
     }
     return (
         <>
+            <Modal
+                show={showModalSuccessCart}
+                onHide={() => setShowModalSuccessCart(false)}
+                dialogClassName="modal-90w"
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                >
+                <Modal.Header closeButton className="modal-header-success">
+                <Modal.Title className="modal-header-success-cart" id="example-custom-modal-styling-title">
+                    <p>Berhasil Ditambahkan</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-success-cart">
+                        <div className="box-success-cart-product">
+                            <div className="box-img-success-cart-product">
+                                <ImgEffect
+                                    data={{
+                                        img:ProductRender.Picture_1,
+                                        background:'#ccc'
+                                    }}
+                                />
+                            </div>
+                            <div className="box-name-success-cart-product">
+                                <span>{ProductRender.Name}</span>
+                            </div>
+                            <div className="box-btn-lihat-keranjang-success-cart-product">
+                                <span>Lihat Keranjang</span>
+                            </div>
+                        </div>
+                        <div className="lengkapi-kebutuhan-success-cart">
+                            <span>Lengkapi Kebutuhan</span>
+                            <div className="render-box-random-product-top-success-cart">
+                                {renderCardSuccessCart()}   
+                            </div>
+                            <span>Produk Lain Dari Toko Ini</span>
+                            <div className="render-box-random-product-top-success-cart">
+                                {renderAllProductSuccessCart()}   
+                            </div>
+
+                        </div>
+                </Modal.Body>
+            </Modal>
             <div className="box-container-product-detail" id="box-top-product" >
                 <Header/>
                 {/* <div className="header-slider-product-detail "> */}
@@ -300,13 +508,24 @@ export default function ProductDetail(){
                     {/* <section className="box-detail-product-img"> */}
                     <section className={scrollNone ? 'box-detail-product-img img-appeared' : 'box-detail-product-img img-hide'} id="top-info" >
                         <div className="box-img-pd">
-                                <img src={imgActive} alt="pic_1" />
+                                {/* <img src={imgActive} alt="pic_1" /> */}
+                                <ImgEffect
+                                    data={{
+                                        img:imgActive,
+                                        background:'#ccc'
+                                    }}
+                                />
                         </div>
                         <div className="box-option-img-product">
                             {
                                 ProductRender.Picture_1 !== null && ProductRender.Picture_1 !== "" ? 
                                     <div className={imgActiveId === 1 ? 'final-box-img-option active-final-box-img' : 'final-box-img-option'} onClick={()=>changeImg(ProductRender.Picture_1,1)}>
-                                        <img src={ProductRender.Picture_1} alt="pic_1" />
+                                        <ImgEffect
+                                            data={{
+                                                img:ProductRender.Picture_1,
+                                                background:'#ccc'
+                                            }}
+                                        />
                                     </div>
                                 :
                                 <>
@@ -316,7 +535,12 @@ export default function ProductDetail(){
                             {
                                 ProductRender.Picture_2 !== null && ProductRender.Picture_2 !== "" ? 
                                     <div className={imgActiveId === 2 ? 'final-box-img-option active-final-box-img' : 'final-box-img-option'} onClick={()=>changeImg(ProductRender.Picture_2,2)}>
-                                        <img src={ProductRender.Picture_2} alt="pic_2" />
+                                        <ImgEffect
+                                            data={{
+                                                img:ProductRender.Picture_2,
+                                                background:'#ccc'
+                                            }}
+                                        />
                                     </div>
                                 :
                                 <>
@@ -326,7 +550,12 @@ export default function ProductDetail(){
                             {
                                 ProductRender.Picture_3 !== null && ProductRender.Picture_1 !== "" ? 
                                     <div className={imgActiveId === 3 ? 'final-box-img-option active-final-box-img' : 'final-box-img-option'} onClick={()=>changeImg(ProductRender.Picture_3,3)}>
-                                        <img src={ProductRender.Picture_3} alt="pic_3" />
+                                        <ImgEffect
+                                            data={{
+                                                img:ProductRender.Picture_3,
+                                                background:'#ccc'
+                                            }}
+                                        />
                                     </div>
                                 :
                                 <>
@@ -421,7 +650,7 @@ export default function ProductDetail(){
                                     isInputQty ? 
                                         <>
                                             <p className="total_harga ">Total Harga dan quantity</p>
-                                            <IoIosArrowDropup className="icon-arrow-up nonactive-icon"/>
+                                            <IoIosArrowDropup className="icon-arrow-up"/>
                                         </>
                                         :
                                         <>
@@ -456,12 +685,27 @@ export default function ProductDetail(){
                                     </>
                                 }
                             </div>
-                            <div className="section-keranjang-product-detail">
-                                <p>+ Keranjang</p>
-                            </div>
-                            <div className="section-beli-product-detail">
-                                <p>+ Beli</p>
-                            </div>
+                            {
+                                isInputQty ? 
+                                <div className="section-keranjang-product-detail hover-effect-btn" disabled={isInputQty} onClick={()=>addToCart(ProductRender.Product_Code)}>
+                                    <p className="p-active-cart">+ Keranjang</p>
+                                </div>
+                                :
+                                <div className="section-keranjang-product-detail button-non-active" disabled={isInputQty}>
+                                    <p className="p-non-active">+ Keranjang</p>
+                                </div>
+                            }
+                            {
+                                isInputQty ? 
+                                <div className="section-beli-product-detail hover-effect-btn"disabled={isInputQty} onClick={()=>BuyNow(ProductRender.Product_Code)}>
+                                    <p className="p-active-buy">+ Beli</p>
+                                </div>
+                                :
+                                <div className="section-beli-product-detail button-non-active" disabled={isInputQty}>
+                                    <p className="p-non-active">+ Beli</p>
+                                </div>
+
+                            }
                             <div className="section-for-icon-input">
                                 <div className="box-icon-quantity-product">
                                     <FaCommentAlt className="icon-comment"/>

@@ -10,6 +10,7 @@ import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux'
 import Reducers from './redux/Reducers'
 import Thunk from 'redux-thunk'
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
   <React.StrictMode>

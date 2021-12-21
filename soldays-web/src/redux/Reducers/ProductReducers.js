@@ -25,7 +25,6 @@ export default  (state=INITIAL_STATE,action)=>{
             console.log('loading jalan',state.isLoadingProduct)
             return {...state,isLoadingProduct:true}
         case 'ALLPRODUCTLOAD':
-            console.log('allProductload harusnya udh false')
             return {...state,isLoadingProduct:false}
         default:
             return state

@@ -38,7 +38,7 @@ export default function ProductCard(data){
         return allDataFromHome.map((val,index)=>{
             var hargaAwal = parseInt(val.Sell_Price)
             var discount = parseInt(val.Sell_Price * 0.1)
-            var hargaTotal = hargaAwal + discount
+            var hargaTotal = hargaAwal - discount
             if(val.GroupBuy_Purchase === 'true' && isTokpedAds === true){
                 return (
                     <>
@@ -60,10 +60,10 @@ export default function ProductCard(data){
                                 <div className="box-price-product-detail">
                                     <div className="inner-price-box-product-card">
                                         <div className="box-top-price-product-card">
-                                            <p id="discount-price">RP.30.000</p>
+                                            <p id="discount-price">RP.{commafy(hargaAwal)}</p>
                                         </div>
                                         <div className="box-top-price-product-card">
-                                            <p id="normal-price">RP.20.000</p>
+                                            <p id="normal-price">RP.{commafy(hargaTotal)}</p>
                                         </div>
                                     </div>
                                     <div className="inner-buy-box-product-card">
@@ -96,10 +96,10 @@ export default function ProductCard(data){
                             <div className="box-price-product-detail">
                                 <div className="inner-price-box-product-card">
                                     <div className="box-top-price-product-card">
-                                        <p id="discount-price">RP.30.000</p>
+                                        <p id="discount-price">RP.{commafy(hargaAwal)}</p>
                                     </div>
                                     <div className="box-top-price-product-card">
-                                        <p id="normal-price">RP.20.000</p>
+                                        <p id="normal-price">RP.{commafy(hargaTotal)}</p>
                                     </div>
                                 </div>
                                 <div className="inner-buy-box-product-card">
@@ -131,10 +131,10 @@ export default function ProductCard(data){
                             <div className="box-price-product-detail">
                                 <div className="inner-price-box-product-card">
                                     <div className="box-top-price-product-card">
-                                        <p id="discount-price">RP.30.000</p>
+                                        <p id="discount-price">RP.{commafy(hargaAwal)}</p>
                                     </div>
                                     <div className="box-top-price-product-card">
-                                        <p id="normal-price">RP.20.000</p>
+                                        <p id="normal-price">RP.{commafy(hargaTotal)}</p>
                                     </div>
                                 </div>
                                 <div className="inner-buy-box-product-card">
