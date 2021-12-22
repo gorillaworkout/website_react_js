@@ -128,6 +128,8 @@ export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weig
         localStorage.setItem('itemsInCart',pushToStorage2)
         dispatch({type:'ADDPRODUCTTOCART',cart})
         dispatch({type:'GETALLCARTSTORAGE',cart})
+        console.log(cart)
+        
     }
 }
 // FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
@@ -163,11 +165,14 @@ export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_W
                     groupbuy_price:Groupbuy_Price
                 }
                 dataParse.push(data)
+                console.log('168 selesai else')
             }
+            console.log(dataParse)
             var pushToStorage = JSON.stringify(dataParse);
             localStorage.setItem("itemsInCart", pushToStorage);
-            dispatch({type:'ADDPRODUCTTOCART',data})
-            dispatch({type:'GETALLCARTSTORAGE',data})
+            dispatch({type:'ADDPRODUCTTOCART',dataParse})
+            dispatch({type:'GETALLCARTSTORAGE',dataParse})
+            console.log(dataParse)
 
 
     }

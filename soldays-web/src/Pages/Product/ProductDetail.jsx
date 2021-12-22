@@ -147,9 +147,9 @@ export default function ProductDetail(){
             let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
             // let elHeight = document.querySelector('.box-detail-product-description').clientHeight
             var finalHeight = elHeight - 100
-            console.log(elHeight)
-            console.log(finalHeight)
-            console.log(scrollY)
+            // console.log(elHeight)
+            // console.log(finalHeight)
+            // console.log(scrollY)
     
             if(totalComment === 0 ){
                 finalHeight = 250

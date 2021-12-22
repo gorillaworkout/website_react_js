@@ -24,14 +24,19 @@ export default function Header(data){
     const dispatch=useDispatch()
 
     const Product = useSelector(state=>state.Product)
+    const Cart = useSelector(state=>state.Cart)
+    console.log(Cart)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
     // const [category_random,setCategory_random]=useState('')
     const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allCategory)
     const [headerHome,setHeaderHome]=useState(true)
-    const [cartFromRedux,setCartFromRedux]=useState(Product.Cart)
+    const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
     const [totalCartRedux,setTotalCartRedux]=useState(0)
+    const [isMenuHoverCart,setIsMenuHoverCart]=useState(false) 
+    const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
+    const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
     console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
@@ -87,26 +92,36 @@ export default function Header(data){
     })
 
   
+    // useEffect(()=>{
+    //     console.log(Product)
+    //     setCartFromRedux(Product.Cart)
+    //     if(Product){
+    //         if(Product.Cart){
+    //             console.log('product cart ada,',Product.Cart.length)
+    //             setCartFromRedux(Product.Cart)
+    //             setTotalCartRedux(Product.Cart.length)
+    //         }else {
+    //             // console.log('Product Card gaada,' ,Product.Cart.length)
+    //             setTotalCartRedux(0)
+    //         }
+    //     }else {
+    //         console.log('masuk ke else 91')
+    //         var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
+    //         dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
+    //         setCartFromRedux(cartLocalStorage)
+    //         setTotalCartRedux(0)
+    //     }
+    // },[Product])
+
     useEffect(()=>{
-        console.log(Product)
-        setCartFromRedux(Product.Cart)
-        if(Product){
-            if(Product.Cart){
-                console.log('product cart ada,',Product.Cart.length)
-                setCartFromRedux(Product.Cart)
-                setTotalCartRedux(Product.Cart.length)
-            }else {
-                // console.log('Product Card gaada,' ,Product.Cart.length)
-                setTotalCartRedux(0)
-            }
+        if(Cart.Cart){
+            setTotalCartRedux(Cart.Cart.length)
+            console.log('Cart Reducer ada isinya',Cart.Cart)
         }else {
-            console.log('masuk ke else 91')
-            var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
-            dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
-            setCartFromRedux(cartLocalStorage)
             setTotalCartRedux(0)
+            console.log('Cart Reducer kosong',Cart.Cart)
         }
-    },[Product])
+    },[Cart.Cart])
     function commafy( num ) {
         if(num !==undefined){
             var str = num.toString().split('.');
@@ -402,11 +417,33 @@ export default function Header(data){
         }
     }
 
-    const onMouseEnter=()=>{
+    const onMouseEnter=(params)=>{
+        
+        if(params === 'Cart'){
+            setIsMenuHoverCart(true)
+        }else if (params === 'BulkOrder'){
+            setIsMenuHoverBulkOrder(true)
+        }else if(params === 'OrderList'){
+            setIsMenuHoverOrderList(true)
+        }
         setToggleCart(true)
+        var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
+        console.log(Cart.Cart !== cartLocalStorage,'cart.cart!== cart local storage')
+        if(Cart.Cart === cartLocalStorage){
+            setCartFromRedux(cartLocalStorage)
+            
+            setTotalCartRedux(cartLocalStorage.length)
+        }else {
+            dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
+            setCartFromRedux(cartLocalStorage)
+            setTotalCartRedux(cartLocalStorage.length)
+        }
     }
     const onMouseLeave=()=>{
         setToggleCart(false)
+        setIsMenuHoverCart(false)
+        setIsMenuHoverBulkOrder(false)
+        setIsMenuHoverOrderList(false)
     }
 
     const toggleCartFunc=()=>{
@@ -493,13 +530,13 @@ export default function Header(data){
                     </div>
                     <div className="menu-from-header">
                         <div className="item-menu-1">
-                            <div className="box-active-item-menu" onClick={open_order_list}>
+                            <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} onClick={open_order_list}>
                                 <img src={logo_unpaid_list} alt="" />
                                 <p>Order List</p>
                             </div>
                         </div>
                         <div className="item-menu-1">
-                            <div className="box-active-item-menu" onClick={open_bulk_order}>
+                            <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_bulk_order}>
                                 <img src={logo_qr_scan} alt="" />
                                 <p>Bulk Order</p>
                             </div>
@@ -507,17 +544,17 @@ export default function Header(data){
                         <div className="item-menu-1">
                             <Dropdown
                                 // className="d-inline-block"
-                                onMouseOver={onMouseEnter}
+                                onMouseOver={()=>onMouseEnter('Cart')}
                                 onMouseLeave={onMouseLeave}
                                 isOpen={toggleCart}
                                 onClick={open_cart}
                                 // toggle={toggleCartFunc}
                                 >
                                 <DropdownToggle caret>
-                                    <div className="box-active-item-menu">
+                                    <div className={isMenuHoverCart? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}>
                                         <div className="box-cart-counter" >
                                             <img src={logo_shopping_cart} alt=""  id="img-cart-counter"/>
-                                            <p id="cart-counter">0</p>
+                                            <p id="cart-counter">{totalCartRedux}</p>
                                         </div>
                                             <p>Cart</p>
                                     </div>
