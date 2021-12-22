@@ -1,4 +1,4 @@
-import React, {useRef, useState,useCustomHooks } from 'react'
+import React, {useRef, useState,useLayoutEffect } from 'react'
 import './ProductDetail.css'
 import Header from '../Header/Header'
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
@@ -29,8 +29,9 @@ import {useDispatch,useSelector} from 'react-redux'
 import {Link} from 'react-scroll'
 import Modal from 'react-bootstrap/Modal'
 import { toast } from 'react-toastify';
-import {addToCartRedux,updateToCartRedux,updateQtyToCartRedux} from '../../redux/Actions/ProductActions'
-
+import {addToCartRedux,updateToCartRedux} from '../../redux/Actions/ProductActions'
+import Footer from '../../Component/Footer/Footer'
+import LazyLoad from 'react-lazyload';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductDetail(){
@@ -39,6 +40,7 @@ export default function ProductDetail(){
     const { Product_Code } = useParams();
     const Product = useSelector(state=>state.Product)
     const scrollToTop = useRef(null);
+    const listRef = useRef(null)
 
     const [showModalSuccessCart, setShowModalSuccessCart] = useState(false);
     const [inputQty,setInputQty]=useState(0)
@@ -52,6 +54,8 @@ export default function ProductDetail(){
     const [imgActive,setImgActive]=useState(undefined)
     const [imgActiveId,setImgActiveId]=useState(1)
     const [totalComment,setTotalComment]=useState(undefined)
+    const [cartFromStorage,setCartFromStorage]=useState(undefined)
+    const [cartFromRedux,setCartFromRedux]=useState(Product.Cart)
     const [dataToCardPromo,setDataToCardPromo]=useState({
         isTokpedAds:false,
         allProductItem: Product.allProduct
@@ -59,12 +63,30 @@ export default function ProductDetail(){
 
     const [isScrollActive,setIsScrollActive]=useState(1)
 
-    // GET DATA FROM USEEFFECT
+    // GET DATA HEIGHT FOR SCROLLING 
+    const [dimensions, setDimensions] = useState({ width:0, height: 0 });
+    const [scrollProductPrice,setScrollProductPrice]=useState(true)
+
+    useLayoutEffect(() => {
+        if (listRef.current) {
+          setDimensions({
+            width: listRef.current.offsetWidth,
+            height: listRef.current.offsetHeight
+          });
+        }
+       
+    }, []);
+    // console.log(dimensions)
+
+    // GET DATA HEIGHT FOR SCROLLING 
+
     useEffect(()=>{
-
+        navigator.geolocation.getCurrentPosition(function(position) {
+            // console.log("Latitude is :", position.coords.latitude);
+            // console.log("Longitude is :", position.coords.longitude);
+          });
+          
     })
-
-    // GET DATA FROM USEEFFECT
 
 
 
@@ -77,16 +99,16 @@ export default function ProductDetail(){
         if(isLoading){
             Axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
             .then((res)=>{
-                console.log(res.data)
+                // console.log(res.data)
                 setProductRender(res.data)
                 setImgActive(res.data.Picture_1)
                 var find_city = res.data.PIC_company_address.split(',')
-                console.log(find_city)
+                // console.log(find_city)
                 var CityCompany = find_city[4]
                 setCityCompany(CityCompany)   
                 // console.log(res.data.User_Comments)
                 var comment_stringify = JSON.parse(res.data.User_Comments)
-                console.log(comment_stringify)
+                // console.log(comment_stringify)
 
 
                 if(comment_stringify !== null &&  comment_stringify !== undefined ){
@@ -95,7 +117,7 @@ export default function ProductDetail(){
                     if(total_comment === null || total_comment === undefined){
                         total_comment = 0
                     }
-                    console.log(total_comment)
+                    // console.log(total_comment)
                     setTotalComment(total_comment)
                     setAllComment(comment_stringify)
                     setTimeout(()=>{
@@ -106,9 +128,11 @@ export default function ProductDetail(){
                     setTimeout(()=>{
                         setIsLoading(false)
                     },500)
-                    console.log('comment stringify masih null / undefined')
+                    // console.log('comment stringify masih null / undefined')
                 }
                 
+                // var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
+                // console.log(cartFromRedux)
             }).catch((err)=>{
                 console.log(err)
             })
@@ -117,9 +141,7 @@ export default function ProductDetail(){
             var Product_Code_Now = Product_Code
             if(Product_Code_Now !== Product_Code){
 
-            }
-            
-            
+            }     
     
     
             let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
@@ -127,6 +149,7 @@ export default function ProductDetail(){
             var finalHeight = elHeight - 100
             console.log(elHeight)
             console.log(finalHeight)
+            console.log(scrollY)
     
             if(totalComment === 0 ){
                 finalHeight = 250
@@ -136,7 +159,18 @@ export default function ProductDetail(){
             }else {
                 setScrollNone(true)
             }
+
+          
+            // console.log(dimensions.height)
+            // if(scrollY > 600){
+            //     setScrollProductPrice(false)
+            // }else {
+            //     setScrollProductPrice(true)
+            // }
+            
         }
+
+        
 
 
 
@@ -202,7 +236,7 @@ export default function ProductDetail(){
         if(ProductRender.User_Comments === undefined || ProductRender.User_Comments === null || ProductRender.User_Comments.length === 0 ) {
             console.log('masih kosong')
         }else {
-            console.log(allComment)
+            // console.log(allComment)
            
                 return allComment.map((val,index)=>{
                     return (
@@ -250,7 +284,7 @@ export default function ProductDetail(){
 
     const renderCardSuccessCart=()=>{
 
-        console.log(Product.allCategoryGroupBuy)
+        // console.log(Product.allCategoryGroupBuy)
         return Product.allCategoryGroupBuy.map((val,index)=>{
             var hargaAwal = parseInt(val.Sell_Price)
             var discount = parseInt(val.Sell_Price * 0.1)
@@ -377,13 +411,13 @@ export default function ProductDetail(){
             var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
             console.log(dataParse)
             if(dataParse){
-                dispatch(updateToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,dataParse))
+                dispatch(updateToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,dataParse,ProductRender.Picture_1,ProductRender.Sell_Price,ProductRender.GroupBuy_SellPrice))
                 setShowModalSuccessCart(true)
             }else {
                 /**
                  *     ! Items in Cart Kosong, berarti langsung push bikin object di local storage
                  */
-                 dispatch(addToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name))
+                 dispatch(addToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,ProductRender.Picture_1,ProductRender.Sell_Price,ProductRender.GroupBuy_SellPrice))
                 setShowModalSuccessCart(true)
             }
         }
@@ -447,7 +481,7 @@ export default function ProductDetail(){
                         </div>
                 </Modal.Body>
             </Modal>
-            <div className="box-container-product-detail" id="box-top-product" >
+            <div className="box-container-product-detail" id="box-top-product"ref={listRef}  >
                 <Header/>
                 {/* <div className="header-slider-product-detail "> */}
                 <div className={scrollZero ? "header-slider-product-detail" : "header-slider-product-detail active-box-slider" }>
@@ -476,11 +510,10 @@ export default function ProductDetail(){
                     </Breadcrumb>
                 </div>
 
-                <div className="detail-product-box " >
-                    {/* <section className="box-detail-product-img"> */}
+                <div className="detail-product-box " >    
                     <section className={scrollNone ? 'box-detail-product-img img-appeared' : 'box-detail-product-img img-hide'} id="top-info" >
                         <div className="box-img-pd">
-                                {/* <img src={imgActive} alt="pic_1" /> */}
+                                
                                 <ImgEffect
                                     data={{
                                         img:imgActive,
@@ -538,7 +571,6 @@ export default function ProductDetail(){
                         </div>
 
                     </section>
-
                     <section className="box-detail-product-description">
                         <div className="description-detail-pd">
                             <p>{ProductRender.Name}</p>
@@ -596,8 +628,7 @@ export default function ProductDetail(){
                             </Tabs>
                         </div>
                     </section>
-
-                    <section className="box-detail-product-price">
+                    <section className={scrollProductPrice ? 'box-detail-product-price' : 'box-detail-product-price scroll-off-absolute'}>
 
                         {/* <div className="section-input-item input-terisi"> */}
                         <div className={isInputQty ? 'section-input-item input-terisi':'section-input-item'}>
@@ -730,11 +761,14 @@ export default function ProductDetail(){
                     }
                 </div>
                 <div className="section-for-similar-item" ref={scrollToTop} id="similar-product-id">
-                    {/* {renderSimilarProduct()} */}
                     <ProductCard data={dataToCardPromo}/>
-          
                 </div>
 
+                {/* <div className="box-highlight2">
+                        <LazyLoad>
+                                <Footer/>
+                        </LazyLoad>
+                </div> */}
             </div>
         </>
     )

@@ -9,7 +9,20 @@ import Select from 'react-select'
 import {useDispatch,useSelector} from 'react-redux'
 import { useLocation } from 'react-router-dom';
 import {Link} from 'react-router-dom'
+import {
+    Dropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+  } from "reactstrap";
+  import ImgEffect from '../../Component/Effect/img_effect'
+
+
+
+
 export default function Header(data){
+    const dispatch=useDispatch()
+
     const Product = useSelector(state=>state.Product)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
     // const [category_random,setCategory_random]=useState('')
@@ -17,6 +30,11 @@ export default function Header(data){
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allCategory)
     const [headerHome,setHeaderHome]=useState(true)
+    const [cartFromRedux,setCartFromRedux]=useState(Product.Cart)
+    const [totalCartRedux,setTotalCartRedux]=useState(0)
+    console.log(cartFromRedux)
+
+    const [toggleCart,setToggleCart]=useState(false)
     const [allIsData,setAllIsData]=useState(
         {
             isLogin:false,
@@ -38,7 +56,7 @@ export default function Header(data){
   
     const options_product_searching = []
     const location = useLocation();
-    console.log(location)
+    // console.log(location)
 
     
     useEffect(()=>{
@@ -58,13 +76,51 @@ export default function Header(data){
         // IF UNTUK RENDER SEARCHING PRODUCT
 
         if(location.pathname === '/'){
-            console.log('location di home', location)
+            // console.log('location di home', location)
             setHeaderHome(true)
         }else {
             setHeaderHome(false)
         }
 
+        
+
     })
+
+  
+    useEffect(()=>{
+        console.log(Product)
+        setCartFromRedux(Product.Cart)
+        if(Product){
+            if(Product.Cart){
+                console.log('product cart ada,',Product.Cart.length)
+                setCartFromRedux(Product.Cart)
+                setTotalCartRedux(Product.Cart.length)
+            }else {
+                // console.log('Product Card gaada,' ,Product.Cart.length)
+                setTotalCartRedux(0)
+            }
+        }else {
+            console.log('masuk ke else 91')
+            var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
+            dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
+            setCartFromRedux(cartLocalStorage)
+            setTotalCartRedux(0)
+        }
+    },[Product])
+    function commafy( num ) {
+        if(num !==undefined){
+            var str = num.toString().split('.');
+            if (str[0].length >= 5) {
+                str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+            }
+            if (str[1] && str[1].length >= 5) {
+                str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+            }
+            return str.join('.');
+        }else {
+            return '0'
+        }
+    }
     // function searching header
     const open_product=(e)=>{
         var nama_product = e
@@ -346,6 +402,47 @@ export default function Header(data){
         }
     }
 
+    const onMouseEnter=()=>{
+        setToggleCart(true)
+    }
+    const onMouseLeave=()=>{
+        setToggleCart(false)
+    }
+
+    const toggleCartFunc=()=>{
+        setToggleCart(!toggleCart)
+    }
+    const renderProductCart=()=>{
+
+        if(cartFromRedux){
+            return cartFromRedux.map((val,index)=>{
+                var total_cart = cartFromRedux.length
+                var item_weight = parseFloat(val.weight_kg)
+                var total_weight = (item_weight * parseInt(val.quantity)).toFixed(2)
+                var total_price = parseInt(val.quantity) * (parseInt(val.normal_price))
+                return (
+                    <div  key={index+1} className="render-item-list-cart">
+                        <div className="render-img-list-cart">
+                            <ImgEffect data={{
+                                img:val.img,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="render-name-list-cart">
+                            <p className='p-limited-text'>{val.product_name}</p>
+                            <p>{val.quantity} Barang ({total_weight}kg)</p>
+                        </div>
+                        <div className="render-price-list-cart">
+                            <p className="p-price-limited">RP.{commafy(total_price)}</p>
+                        </div>
+                    </div>
+                )
+            })
+        }else {
+
+        }
+    }
     return(
         <>
             <div className={headerHome ? 'header-container' : 'header-container-fixed' }>
@@ -408,13 +505,40 @@ export default function Header(data){
                             </div>
                         </div>
                         <div className="item-menu-1">
-                            <div className="box-active-item-menu">
-                                <div className="box-cart-counter" onClick={open_cart}>
-                                    <img src={logo_shopping_cart} alt=""  id="img-cart-counter"/>
-                                    <p id="cart-counter">0</p>
-                                </div>
-                                    <p>Cart</p>
-                            </div>
+                            <Dropdown
+                                // className="d-inline-block"
+                                onMouseOver={onMouseEnter}
+                                onMouseLeave={onMouseLeave}
+                                isOpen={toggleCart}
+                                onClick={open_cart}
+                                // toggle={toggleCartFunc}
+                                >
+                                <DropdownToggle caret>
+                                    <div className="box-active-item-menu">
+                                        <div className="box-cart-counter" >
+                                            <img src={logo_shopping_cart} alt=""  id="img-cart-counter"/>
+                                            <p id="cart-counter">0</p>
+                                        </div>
+                                            <p>Cart</p>
+                                    </div>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-menu-toggle-cart">
+                                    
+                                    <div className="dropdown-item-list-cart">
+                                        <div className="dropdown-item-keranjang-list-cart">
+                                            <p>Keranjang ({totalCartRedux})</p>
+                                            <p>Lihat Sekarang</p>
+                                        </div>
+                                        {renderProductCart()}
+                               
+
+
+                                    </div>
+                                    {/* <DropdownItem>Submenu 1.1</DropdownItem> */}
+                                </DropdownMenu>
+                                {/* &nbsp;&nbsp;&nbsp; */}
+                            </Dropdown>
+                           
                         </div>
                         <div className="item-menu-1">
                             {

@@ -22,6 +22,9 @@ function App(props) {
     var all_product = JSON.parse(localStorage.getItem('all_product'))
     var all_category = JSON.parse(localStorage.getItem('all_category'))
     var all_subcategory = JSON.parse(localStorage.getItem('all_subcategory'))
+    var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
+    console.log(Cart,'line 26')
+    dispatch({type:'GETALLCARTSTORAGE',Cart})
     var all_array_groupbuy = []
     var all_array_new = []
     
@@ -57,6 +60,7 @@ function App(props) {
               dispatch({type:'GETALLCATEGORYNEW',allCategoryNew:all_array_new}) // saving all product to category new
               dispatch({type:'GETALLCATEGORY',allCategory:all_category}) // saving all data to allcategory
               dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_subcategory})
+
               // dispatch(getAllSubCategory(all_category)) // get all subcategory , saving to getallsubcategory
               setTimeout(()=>{
                 // console.log('all product load jalan seharusnya udh false')

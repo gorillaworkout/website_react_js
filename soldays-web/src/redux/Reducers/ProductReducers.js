@@ -4,6 +4,7 @@ const INITIAL_STATE = {
     allSubCategory      :[],
     allCategoryGroupBuy :[],
     allCategoryNew      :[],
+    Cart                :[],
     isLoadingProduct    :true
 } 
 
@@ -21,11 +22,17 @@ export default  (state=INITIAL_STATE,action)=>{
             return {...state,allCategoryGroupBuy:action.allCategoryGroupBuy}
         case 'GETALLCATEGORYNEW':
             return {...state,allCategoryNew:action.allCategoryNew}
+        case 'GETALLCARTSTORAGE':
+            console.log('get all cart storage jalan',action.Cart)
+            return {...state,Cart:action.Cart}
         case 'LOADINGPRODUCT' :
             console.log('loading jalan',state.isLoadingProduct)
             return {...state,isLoadingProduct:true}
         case 'ALLPRODUCTLOAD':
             return {...state,isLoadingProduct:false}
+        case 'ADDPRODUCTTOCART':
+            console.log('addProduct to cart product reducer jalan',state.Cart)
+            return {...state,Cart:action.Cart}
         default:
             return state
     }

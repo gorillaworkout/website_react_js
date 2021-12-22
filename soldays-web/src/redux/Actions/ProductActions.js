@@ -9,6 +9,11 @@ export const GetAllProduct=()=>{
           var all_array_new      = []
         axios.post('https://products.sold.co.id/get-product-details')
         .then((res)=>{
+            // GET ALL CART FROM STORAGE
+            var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
+            dispatch({type:'GETALLCARTSTORAGE',Cart})
+            console.log(Cart)
+            // GET ALL CART FROM STORAGE
             var allProduct = res.data
             dispatch({type:'GETALLPRODUCT',allProduct:allProduct})
             var stringify_all_product = JSON.stringify(res.data)
@@ -104,7 +109,7 @@ export const getAllSubCategory=(Category)=>{
 }
 
 // FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
-export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name)=>{
+export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,Product_Img,Normal_Price,Groupbuy_Price)=>{
     return (dispatch)=>{
         
         var cart = [
@@ -113,18 +118,23 @@ export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weig
                 quantity:parseInt(Total_Qty),
                 company_address:Company_Address,
                 weight_kg:Product_Weight,
-                product_name:Product_Name
+                product_name:Product_Name,
+                img:Product_Img,
+                normal_price:Normal_Price,
+                groupbuy_price:Groupbuy_Price
             }
         ]
         var pushToStorage2 = JSON.stringify(cart)
         localStorage.setItem('itemsInCart',pushToStorage2)
+        dispatch({type:'ADDPRODUCTTOCART',cart})
+        dispatch({type:'GETALLCARTSTORAGE',cart})
     }
 }
 // FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
 
 
 // FUNCTION UNTUK UPDATE CART LOCALSTORAGE -> KALAU ITEMSINCART UDH ADA TAPI PRODUCT YANG MAU DITAMBAH BELUM ADA
-export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,dataParse)=>{
+export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,dataParse,Product_Img,Normal_Price,Groupbuy_Price)=>{
     return (dispatch)=>{
 
         // if(dataParse){
@@ -144,16 +154,20 @@ export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_W
 
                 var data = {
                     productNo:Product_Code,
-                    quantity:Total_Qty,
+                    quantity:parseInt(Total_Qty),
                     company_address:Company_Address,
                     weight_kg:Product_Weight,
-                    product_name:Product_Name
+                    product_name:Product_Name,
+                    img:Product_Img,
+                    normal_price:Normal_Price,
+                    groupbuy_price:Groupbuy_Price
                 }
                 dataParse.push(data)
             }
             var pushToStorage = JSON.stringify(dataParse);
             localStorage.setItem("itemsInCart", pushToStorage);
-        // }
+            dispatch({type:'ADDPRODUCTTOCART',data})
+            dispatch({type:'GETALLCARTSTORAGE',data})
 
 
     }
