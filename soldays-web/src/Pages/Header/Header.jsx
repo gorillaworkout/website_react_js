@@ -16,6 +16,9 @@ import {
     DropdownItem
   } from "reactstrap";
   import ImgEffect from '../../Component/Effect/img_effect'
+  import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
+import {FcMoneyTransfer} from 'react-icons/fc'
+import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
 
 
 
@@ -37,9 +40,11 @@ export default function Header(data){
     const [isMenuHoverCart,setIsMenuHoverCart]=useState(false) 
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
+    const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
     console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
+    const [toggleLogin,setToggleLogin]=useState(false)
     const [allIsData,setAllIsData]=useState(
         {
             isLogin:false,
@@ -80,38 +85,17 @@ export default function Header(data){
         }
         // IF UNTUK RENDER SEARCHING PRODUCT
 
-        if(location.pathname === '/'){
-            // console.log('location di home', location)
+        if(location.pathname === '/' || location.pathname.includes('/beli-langsung')){
+            console.log('location di home', location)
             setHeaderHome(true)
         }else {
+            console.log(location)
             setHeaderHome(false)
         }
 
         
 
     })
-
-  
-    // useEffect(()=>{
-    //     console.log(Product)
-    //     setCartFromRedux(Product.Cart)
-    //     if(Product){
-    //         if(Product.Cart){
-    //             console.log('product cart ada,',Product.Cart.length)
-    //             setCartFromRedux(Product.Cart)
-    //             setTotalCartRedux(Product.Cart.length)
-    //         }else {
-    //             // console.log('Product Card gaada,' ,Product.Cart.length)
-    //             setTotalCartRedux(0)
-    //         }
-    //     }else {
-    //         console.log('masuk ke else 91')
-    //         var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
-    //         dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
-    //         setCartFromRedux(cartLocalStorage)
-    //         setTotalCartRedux(0)
-    //     }
-    // },[Product])
 
     useEffect(()=>{
         if(Cart.Cart){
@@ -421,29 +405,39 @@ export default function Header(data){
         
         if(params === 'Cart'){
             setIsMenuHoverCart(true)
+            setToggleCart(true)
         }else if (params === 'BulkOrder'){
             setIsMenuHoverBulkOrder(true)
         }else if(params === 'OrderList'){
             setIsMenuHoverOrderList(true)
+        }else if (params === 'Login'){
+            setIsMenuHoverLogin(true)
+            setToggleLogin(true)
         }
-        setToggleCart(true)
+
         var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
         console.log(Cart.Cart !== cartLocalStorage,'cart.cart!== cart local storage')
-        if(Cart.Cart === cartLocalStorage){
-            setCartFromRedux(cartLocalStorage)
-            
-            setTotalCartRedux(cartLocalStorage.length)
+        if(cartLocalStorage){
+            if(Cart.Cart === cartLocalStorage){
+                setCartFromRedux(cartLocalStorage)
+                setTotalCartRedux(cartLocalStorage.length)
+            }else {
+                dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
+                setCartFromRedux(cartLocalStorage)
+                setTotalCartRedux(cartLocalStorage.length)
+            }
         }else {
-            dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
-            setCartFromRedux(cartLocalStorage)
-            setTotalCartRedux(cartLocalStorage.length)
+            setTotalCartRedux(0)
         }
     }
     const onMouseLeave=()=>{
         setToggleCart(false)
+        setToggleLogin(false)
+
         setIsMenuHoverCart(false)
         setIsMenuHoverBulkOrder(false)
         setIsMenuHoverOrderList(false)
+        setIsMenuHoverLogin(false)
     }
 
     const toggleCartFunc=()=>{
@@ -560,17 +554,31 @@ export default function Header(data){
                                     </div>
                                 </DropdownToggle>
                                 <DropdownMenu className="dropdown-menu-toggle-cart">
-                                    
-                                    <div className="dropdown-item-list-cart">
-                                        <div className="dropdown-item-keranjang-list-cart">
-                                            <p>Keranjang ({totalCartRedux})</p>
-                                            <p>Lihat Sekarang</p>
+                                    {
+                                    cartFromRedux ? 
+                                        <div className="dropdown-item-list-cart">
+                                            <div className="dropdown-item-keranjang-list-cart">
+                                                <p>Keranjang ({totalCartRedux})</p>
+                                                <p>Lihat Sekarang</p>
+                                            </div>
+                                            {renderProductCart()}
+                                
+
+
                                         </div>
-                                        {renderProductCart()}
-                               
-
-
-                                    </div>
+                                        :
+                                        <div className="cart-kosong-list-cart">
+                                            <div className="box-img-cart-kosong">
+                                                <ImgEffect data={{
+                                                    img:CartKosongTokped,
+                                                    background:'transparent'
+                                                    }}
+                                                />
+                                            </div>
+                                            <p>Wah Keranjang Belanjaaanmu Kosong!</p>
+                                            <p>Daripada dianggurin, isi saja dengan barang-barang menarik. Lihat-lihat dulu, siapa tahu ada yang kamu suka!</p>
+                                        </div> 
+                                    }
                                     {/* <DropdownItem>Submenu 1.1</DropdownItem> */}
                                 </DropdownMenu>
                                 {/* &nbsp;&nbsp;&nbsp; */}
@@ -579,17 +587,83 @@ export default function Header(data){
                         </div>
                         <div className="item-menu-1">
                             {
-                                allIsData.isLogin ?      
-                                <div className="box-active-item-menu" onClick={open_logout}>
-                                    <AiOutlineLogout className="icon-login-logout"/>
-                                    <p>Logout</p>
+                            allIsData.isLogin?
+                                <Dropdown
+                                    // className="d-inline-block"
+                                    onMouseOver={()=>onMouseEnter('Login')}
+                                    onMouseLeave={onMouseLeave}
+                                    isOpen={toggleLogin}
+                                    // onClick={open_cart}
+                                    // toggle={toggleCartFunc}
+                                    >
+                                    <DropdownToggle caret>   
+                                        <div className={isMenuHoverLogin? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_logout}>
+                                            <AiOutlineLogout className="icon-login-logout"/>
+                                            <p>Logout</p>
+                                        </div>
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-toggle-cart">
+                                    <div className="dropdown-menu-auth-header">
+                                        <div className="profile-menu-auth-header">
+                                            <div className="box-img-profile-menu-auth-header">
+                                                <img src={CartKosongTokped} alt="" />
+                                            </div>
+                                            <p>BAYU DARMAWAN</p>
+                                        </div>
+                                        <div className="box-option-auth-header">
+                                            <div className="box-option-left-auth">
+                                                <div className="small-box-option-auth">
+                                                    <div className="box-img-icon-payment-auth">
+                                                        <img src={Gopay_icon} alt="" />
+                                                    </div>
+                                                    <p>GoPay</p>
+                                                    <p>Aktifkan</p>
+                                                </div>
+                                                <div className="small-box-option-auth">
+                                                    <div className="box-img-icon-payment-auth">
+                                                        <img src={Gopay_icon} alt="" />
+                                                    </div>
+                                                    <p>GoPay</p>
+                                                    <p>Aktifkan</p>
+                                                </div>
+                                                <div className="small-box-option-auth">
+                                                    <div className="box-img-icon-payment-auth">
+                                                        <img src={Gopay_icon} alt="" />
+                                                    </div>
+                                                    <p>GoPay</p>
+                                                    <p>Aktifkan</p>
+                                                </div>
+                                            </div>
+                                            <div className="box-option-right-auth">
+                                                <div className="box-menu-right-auth">
+                                                    <p>Pembelian</p>
+                                                    <p>Wishlist</p>
+                                                    <p>Product Favorite</p>
+                                                    <p>Pengaturan</p>
+                                                </div>     
+                                                <div className="box-login-logout-auth">
+                                                    <AiOutlineLogout className="icon-login-logout"/>
+                                                    <p>Logout</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        {/* <DropdownItem>Submenu 1.1</DropdownItem> */}
+                                    </DropdownMenu>
+                                    {/* &nbsp;&nbsp;&nbsp; */}
+                                </Dropdown>
+                                :
+                                <div className='new-box-login-register-header'>
+                                    <div className="new-box-login-auth">
+                                        <p>Masuk</p>
+                                    </div>
+                                    <div className="new-box-register-auth">
+                                        <p>Daftar</p>
+                                    </div>
                                 </div>
-                            :
-                                <div className="box-active-item-menu" onClick={open_login}>
-                                    <AiOutlineLogin className="icon-login-logout"/>
-                                    <p>Login</p>
-                                </div>
+
                             }
+                          
                         </div>
                         
                     </div>

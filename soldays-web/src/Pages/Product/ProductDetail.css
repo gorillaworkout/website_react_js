@@ -451,6 +451,7 @@
     margin-top:10px;
     border:1px solid #27aae1;
     transition:0.5s;
+    text-decoration: none;
 }
 
 .section-beli-product-detail p {

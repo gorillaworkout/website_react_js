@@ -26,7 +26,8 @@ import {FullPageLoading} from '../../Component/Loading/Loading'
 import ProductCard from '../../Component/ProductCard/ProductCard';
 import axios from 'axios';
 import {useDispatch,useSelector} from 'react-redux'
-import {Link} from 'react-scroll'
+import {Link as LinkScroll} from 'react-scroll'
+import {Link} from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
 import { toast } from 'react-toastify';
 import {addToCartRedux,updateToCartRedux} from '../../redux/Actions/ProductActions'
@@ -490,13 +491,13 @@ export default function ProductDetail(){
                     </div>
                     <div className="box-option-product-slider">
                         <div className={ isScrollActive === 1 ? 'box-option-1 slider-active-product-detail' : 'box-option-1'}>
-                            <Link to="box-top-product" onClick={()=>changeScrollStatus(1)} smooth={true} duration={100}>Info Product</Link>
+                            <LinkScroll to="box-top-product" onClick={()=>changeScrollStatus(1)} smooth={true} duration={100}>Info Product</LinkScroll>
                         </div>
                         <div className={ isScrollActive === 2 ? 'box-option-1 slider-active-product-detail' : 'box-option-1'}>
-                            <Link to="ulasan-id" onClick={()=>changeScrollStatus(2)} smooth={true} duration={100}>Ulasan</Link>
+                            <LinkScroll to="ulasan-id" onClick={()=>changeScrollStatus(2)} smooth={true} duration={100}>Ulasan</LinkScroll>
                         </div>
                         <div className={ isScrollActive === 3 ? 'box-option-1 slider-active-product-detail' : 'box-option-1'}>
-                            <Link to="similar-product-id" onClick={()=>changeScrollStatus(3)} smooth={true} duration={100}>Rekomendasi</Link>
+                            <LinkScroll to="similar-product-id" onClick={()=>changeScrollStatus(3)} smooth={true} duration={100}>Rekomendasi</LinkScroll>
                         </div>
                     </div>
                 </div>
@@ -672,7 +673,7 @@ export default function ProductDetail(){
                                         <div className="box-btn-plus-minus">
                                             <div className="box-qty-plus">
                                                 <FiMinus className="icon-minus" onClick={kurangQtyTotal}/>
-                                                <input type="text" className="input-qty-plus"  value={totalInputQty}  placeholder='1'/>
+                                                <input type="text" className="input-qty-plus"  value={totalInputQty} x/>
                                                 <BsPlus className="icon-plus" onClick={tambahQtyTotal}/>
                                             </div>
                                             <p>Stock {ProductRender.Stock_Quantity}</p>
@@ -700,9 +701,9 @@ export default function ProductDetail(){
                             }
                             {
                                 isInputQty ? 
-                                <div className="section-beli-product-detail hover-effect-btn"disabled={isInputQty} onClick={()=>BuyNow(ProductRender.Product_Code)}>
+                                <Link to={`/beli-langsung/${ProductRender.Product_Code}`} className="section-beli-product-detail hover-effect-btn" disabled={isInputQty} >
                                     <p className="p-active-buy">+ Beli</p>
-                                </div>
+                                </Link>
                                 :
                                 <div className="section-beli-product-detail button-non-active" disabled={isInputQty}>
                                     <p className="p-non-active">+ Beli</p>

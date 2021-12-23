@@ -4,6 +4,7 @@ import {Routes,Route} from 'react-router-dom'
 import './App.css';
 import Home from '../src/Pages/Home/Home'
 import ProductDetail from '../src/Pages/Product/ProductDetail'
+import BuyNow from '../src/Pages/BuyNow/BuyNow.jsx'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {FullPageLoading} from './Component/Loading/Loading'
 import {GetAllProduct,getAllSubCategory} from './redux/Actions/ProductActions'
@@ -114,6 +115,7 @@ function App(props) {
       <Routes>
         <Route exact path = '/' element={<Home new_params={"testing"}/>}/>
         <Route exact path = '/ProductDetail/:Product_Code' element={<ProductDetail new_params={"testing"}/>}/>
+        <Route exact path ='/beli-langsung/:Product_Code' element={<BuyNow new_params={"testing"}/>}/>
       </Routes>
     </>
   );
