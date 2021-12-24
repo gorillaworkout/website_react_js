@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import './BuyNow.css'
 import Header from '../Header/Header'
 import Footer from '../../Component/Footer/Footer'
@@ -17,23 +17,40 @@ import Geocode from "react-geocode";
 export default function BuyNow(){
 
     // GOOGLE
-    Geocode.setApiKey("AIzaSyANwlt_9pwBvZqBn1ht68_y14aToZoeEts");
+
+    const [longitude,setLongitude]=useState('')
+    const [latitude,setLatitude]=useState('')
+    Geocode.setApiKey("AIzaSyBQFCGbZcy-XyvOBd0fiQSFOVzrXnp63No");
     Geocode.setRegion("id");
     Geocode.setLocationType("ROOFTOP");
 
     // Enable or disable logs. Its optional.
     Geocode.enableDebug();
+    // Get address from latitude & longitude.
+    
+    const find_address =()=>{
+        Geocode.fromLatLng(`${latitude}`, `${longitude}`).then(
+            (response) => {
+              const address = response.results[0].formatted_address;
+              console.log(address);
+            },
+            (error) => {
+              console.error(error);
+            }
+        );
 
-    Geocode.fromLatLng("48.8583701", "2.2922926").then(
-        (response) => {
-          const address = response.results[0].formatted_address;
-          console.log(address);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-      
+    }      
+      useEffect(()=>{
+          if(latitude === '' && longitude === ''){
+            navigator.geolocation.getCurrentPosition(function(position) {
+                setLongitude(position.coords.longitude)
+                setLatitude(position.coords.latitude)
+                // console.log("Latitude is :", position.coords.latitude);
+                // console.log("Longitude is :", position.coords.longitude);
+                });
+          }
+    })
+    
 
     // GOOGLE
     const {Product_Code} = useParams()
