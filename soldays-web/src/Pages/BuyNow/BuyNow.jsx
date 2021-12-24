@@ -12,9 +12,19 @@ import { css,  } from '@emotion/react'
 import {useParams} from 'react-router-dom'
 import axios from 'axios'
 import Geocode from "react-geocode";
-
+import Modal from 'react-bootstrap/Modal'
+import {BsSearch} from 'react-icons/bs'
+import { FullPageLoading } from '../../Component/Loading/Loading'
 
 export default function BuyNow(){
+
+    const {Product_Code} = useParams()
+    const [showModalAlamat,setShowModalAlamat] = useState(false)
+    const [ProductDetail,setProductDetail]=useState(undefined)
+    const [isLoading,setIsLoading]=useState(true)
+    const [dikirimDari,setDikirimDari]=useState(undefined)
+    const [hargaNormal,setHargaNormal]=useState(undefined)
+    const [hargaDiscount,setHargaDiscount]=useState(undefined)
 
     // GOOGLE
 
@@ -50,15 +60,129 @@ export default function BuyNow(){
                 });
           }
     })
-    
+    // GOOGLE END
+    function commafy( num ) {
+        if(num !==undefined){
+            var str = num.toString().split('.');
+            if (str[0].length >= 5) {
+                str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+            }
+            if (str[1] && str[1].length >= 5) {
+                str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+            }
+            return str.join('.');
+        }else {
+            return '0'
+        }
+    }
 
-    // GOOGLE
-    const {Product_Code} = useParams()
+    // SEARCHING PRODUCT DETAIL
+
+    const product_detail_func=()=>{
+        axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
+        .then((res)=>{
+            console.log(res.data)
+            var alamat = res.data.PIC_company_address
+            var split_alamat = alamat.split(',')
+            var dikirim_dari = split_alamat[4]
+            var hargaAwal = parseInt(res.data.Sell_Price)
+            var discount = parseInt(res.data.Sell_Price * 0.1)
+            var hargaTotal = hargaAwal-discount
+           
+            setHargaNormal(hargaAwal)
+            setHargaDiscount(hargaTotal)
+            setDikirimDari(dikirim_dari)
+            console.log(dikirim_dari)
+            setProductDetail(res.data)
+            setIsLoading(false)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+    useEffect(()=>{
+        if(ProductDetail === undefined){
+            product_detail_func()
+        }else {
+            setIsLoading(false)
+        }
+    },[])
+    // SEARCHING PRODUCT DETAIL END
+    
     const [totalProduct,setTotalProduct]=useState(1)
     const [tooltipOpen, setTooltipOpen] = useState(false);
+  
+    const [defaultAlamatCustomer,setDefaultAlamatCustomer]=useState([
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN JALAN DEH YOK",
+            "no_hp":"087785192296",
+            "status":"Utama"
+        },
+        {
+            "nama_customer":"BAYU",
+            "alamat":"JALAN LAGI",
+            "no_hp":"087785192296",
+            "status":"Rumah"
+        },
+        {
+            "nama_customer":" DARMAWAN",
+            "alamat":"JALAN YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN GIh YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN COk YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        }
+
+        ])
+    const [alamatCustomer,setAlamatCustomer]=useState([
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN JALAN DEH YOK",
+            "no_hp":"087785192296",
+            "status":"Utama"
+        },
+        {
+            "nama_customer":"BAYU",
+            "alamat":"JALAN LAGI",
+            "no_hp":"087785192296",
+            "status":"Rumah"
+        },
+        {
+            "nama_customer":" DARMAWAN",
+            "alamat":"JALAN YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN GIh YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN COk YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        }
+
+        ])
+        
 
     const toggle = () => setTooltipOpen(!tooltipOpen);
     const options_product_searching = []
+
+
     const renderPengiriman=()=>{
         return (
             <>
@@ -115,9 +239,168 @@ export default function BuyNow(){
             </>
         )
     }
+
+    const changeAddressToThis=(item)=>{
+
+        // console.log(item)
+        var allAlamat = alamatCustomer
+        alamatCustomer.forEach((val,index)=>{
+            if(alamatCustomer[index].status === 'Utama'){
+                alamatCustomer[index].status = "Rumah"
+            }
+        })
+        allAlamat[item].status = 'Utama'
+        setAlamatCustomer(allAlamat)
+        setShowModalAlamat(false)
+    }
+    const renderAlamatCustomer=()=>{
+        return alamatCustomer.map((val,index)=>{
+            // console.log(val)
+            if(val.status === 'Utama' ){
+                return (
+                    <div key={index + 1} className='box-alamat-card active-alamat-card-utama'>
+                        <div className="alamat-nama-customer">
+                            <p>{val.nama_customer} <span>({val.status})</span></p>
+                            <div className="utama-alamat-box">
+                                <p>{val.status}</p>
+                            </div>
+                        </div>
+                        <p className="nomor-hp-customer">{val.no_hp}</p>
+                        <div className="box-detail-alamat-customer">
+                            <p>{val.alamat}</p>
+                        </div>
+                        <div className="box-btn-alamat">
+                            <div className="btn-ganti-alamat">
+                                <p>Ubah Alamat</p>
+                            </div>         
+                        </div>
+                    </div>
+                )
+            }else {
+                return (
+                    <div  key={ index + 1} className="box-alamat-card" >
+                        <div className="alamat-nama-customer">
+                            <p>BAYU <span>({val.status})</span></p>
+                            <div className="utama-alamat-box">
+                                <p>{val.status}</p>
+                            </div>
+                        </div>
+                        <p className="nomor-hp-customer">{val.no_hp}</p>
+                        <div className="box-detail-alamat-customer">
+                            <p>{val.alamat}</p>
+                        </div>
+                        <div className="box-btn-alamat">
+                            <div className="btn-ganti-alamat">
+                                <p>Ubah Alamat</p>
+                            </div>
+                            <div className="btn-jadikan-utama" onClick={()=>changeAddressToThis(index)}>
+                                <p>Jadikan Alamat Utama</p>
+                            </div>          
+                        </div>
+                    </div>
+                )
+            }
+        })
+    }
+
+    const renderAlamatUtama=()=>{
+        // console.log(alamatCustomer)
+        return alamatCustomer.map((val,index)=>{
+            if(val.status === 'Utama'){
+                return (
+                    <>
+                        <div  key={index+1} className="checking-alamat-left">
+                            <div className="alamat-name-belilangsung">
+                                <div className="status-alamat-box">
+                                    <p>{val.status}</p>
+                                </div>
+                                <p>{val.status} - <span>{val.nama_customer}({val.no_hp})</span></p>
+                            </div>
+                            <div className="alamat-detail-belilangsung">
+                                <p>{val.alamat}</p>
+                            </div>
+                        </div>
+                        <div className="checking-alamat-right">
+                            <BsChevronRight className="icon-right"/>
+                        </div>
+                    </>
+                )
+            }
+        })
+    }
+
+    const open_change_address=()=>{
+        setAlamatCustomer(defaultAlamatCustomer)
+        setShowModalAlamat(true)
+    }
+    const searching_alamat=(params)=>{
+
+        if(params.length > 2 ){
+            console.log(params)
+            var data_searching = []
+            var searching = alamatCustomer.filter((filter)=>{
+                if(filter.alamat.toUpperCase().includes(params.toUpperCase())){
+                    console.log(filter)
+                    data_searching.push(filter)
+                    return filter
+                }
+            })
+            setAlamatCustomer(data_searching)
+        }else if(params.length === 0) {
+            setAlamatCustomer(defaultAlamatCustomer)
+        }
+    }
+
+    const tambah_qty_product=()=>{
+
+    }
+
+    const kurang_qty_product=()=>{
+        
+    }
+    if(isLoading){
+        return (
+            <>
+                <div className='d-flex justify-content-center align-items-center' style={{height:"100vh", width:"100vw"}}>
+                    {FullPageLoading(isLoading,100,'#0095DA')}
+                </div>
+            </>
+        )
+    }
     return(
 
         <>
+
+            <Modal
+                show={showModalAlamat}
+                onHide={() => setShowModalAlamat(false)}
+                dialogClassName="modal-90w"
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                >
+                <Modal.Header closeButton className="modal-header-success">
+                <Modal.Title className="modal-header-success-cart" id="example-custom-modal-styling-title">
+                    <p>Pilih Alamat Pengiriman</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-alamat-buynow">
+                    <div className="searching-box-alamat">
+                        <input type="text"  className="input-searching-alamat" placeholder='Tulis Nama Alamat / Kota / Kecamatan tujuan pengiriman' onChange={(e)=>searching_alamat(e.target.value)}/>
+                        <div className="box-icon-searching">
+                            <BsSearch className="icon-searching"/>
+                        </div>
+                    </div>
+                    <div className="modal-body-for-scroll-alamat">
+                        <div className="box-tambah-alamat-baru">
+                            <p>Tambah Alamat Baru</p>
+                        </div>
+                        
+                       {renderAlamatCustomer()}
+                    </div>
+
+                </Modal.Body>
+            </Modal>
             <div className="container-buy-now">
                 <Header/>
                 <div className="box-beli-langsung container">
@@ -132,33 +415,32 @@ export default function BuyNow(){
                         <div className="box-barang-dibeli">
                             <p>Barang yang dibeli</p>
                             <div className="company-name-belisekarang">
-                                <p>VANTSING INTERNATIONAL</p>
-                                <p>JAKARTA BARAT</p>
+                                <p>{ProductDetail.PIC_company_name}</p>
+                                <p>{dikirimDari}</p>
                             </div>
                             <div className="product-card-dibeli">
                                 <div className="box-img-dibeli">
                                     <ImgEffect data={{
-                                        img:Sealant,
+                                        img:ProductDetail.Picture_1,
                                         background:'#ccc'
                                         }}
                                     />
                                 </div>
                                 <div className="box-product-name-dibeli">
                                     <div className="name-dibeli-box">
-                                        <p>Logitech M100R MOUSE OPTIKAL USB KABEL DEWA BANGET PANJANGNYA</p>
+                                        <p>{ProductDetail.Name}</p>
                                     </div>
                                     <div className="harga-dibeli-box">
-                                        <p>RP 109.000</p>
-                                        <p>RP 100.000</p>
+                                        <p>RP {commafy(hargaNormal)}</p>
+                                        <p>RP {commafy(hargaDiscount)}</p>
                                     </div>
                                     <div className="box-note-dibeli">
-                                        <p>Tulis Catatan</p>
-                                        
+                                        <p>Tulis Catatan</p>     
                                         <div className="box-tambah-product-dibeli">
                                             <div className="plus-minus-box-dibeli">
-                                                <FiMinus className='icon-minus-dibeli'/>
+                                                <FiMinus className='icon-minus-dibeli' onclick={kurang_qty_product}/>
                                                 <input type="number"  default={totalProduct} placeholder="1" className="input-product-dibeli"/>
-                                                <BsPlus className='icon-plus-dibeli'/>
+                                                <BsPlus className='icon-plus-dibeli' onClick={tambah_qty_product}/>
                                             </div>
                                         </div>
                                     </div>
@@ -170,21 +452,8 @@ export default function BuyNow(){
                 <div className="box-alamat-belilangsung container">
                     <p>Pengiriman dan Pembayaran</p>
                     <div className="box-pilih-alamat">
-                        <div className="checking-alamat-belilangsung">
-                            <div className="checking-alamat-left">
-                                <div className="alamat-name-belilangsung">
-                                    <div className="status-alamat-box">
-                                        <p>UTAMA</p>
-                                    </div>
-                                    <p>RUMAH - <span>Bayu(6287785192296)</span></p>
-                                </div>
-                                <div className="alamat-detail-belilangsung">
-                                    <p>PT.VANTSING INTERNATIONAL, Jalan PURI PINANG RANTI KECAMATAN kebon jeruk, manado bandung selatan 11550 JAKARTA BARAT TERCINTA INDONESIA</p>
-                                </div>
-                            </div>
-                            <div className="checking-alamat-right">
-                                <BsChevronRight className="icon-right"/>
-                            </div>
+                        <div className="checking-alamat-belilangsung" onClick={open_change_address}>
+                            {renderAlamatUtama()}
                         </div>
                         <div className="checking-kurir-belilangsung">
                             <div className="checking-kurir-left">
@@ -218,7 +487,7 @@ export default function BuyNow(){
                                             <p>
                                                 Total Harga (1 Barang)
                                             </p>
-                                            <p>RP.18.679</p>
+                                            <p>RP.{commafy(hargaDiscount)}</p>
                                         </li>
                                         <li>
                                             <p>
@@ -239,10 +508,12 @@ export default function BuyNow(){
                                 <div className="box-price-ringkasan">
                                     <ul>
                                         <li>
-                                            <p>
-                                                Total Harga (1 Barang)
+                                            <p className="total-tagihan">
+                                                Total Tagihan
                                             </p>
-                                            <p>RP.18.679.000</p>
+                                            <p className="price-tagihan">
+                                                RP.18.679.000
+                                                </p>
                                         </li>
                                        
                                     </ul>

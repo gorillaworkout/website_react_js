@@ -191,8 +191,15 @@
 .icon-minus-dibeli {
     font-size:20px;
 }
+.icon-minus-dibeli:hover{
+    cursor: pointer;
+}
+
 .icon-plus-dibeli {
     font-size:20px;
+}
+.icon-plus-dibeli:hover{
+    cursor: pointer;
 }
 
 .box-alamat-belilangsung{
@@ -511,4 +518,209 @@
     align-items: center;
     /* border:1px solid red; */
     flex-direction: column;
+}
+
+.box-alamat-buynow{
+    width:95%;
+    height:80px;
+    border-radius:8px;
+    border:1px solid #dedede;
+    box-shadow:0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12));
+    display: flex;
+    flex-direction: row;
+    padding:10px;   
+    align-items: center;
+}
+
+
+.searching-box-alamat{
+    width:100%;
+    height:50px;
+    min-height:50px;;
+    border-radius:8px;
+    border:1px solid #dedede;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:10px;
+
+}
+
+.modal-body-alamat-buynow{
+    height:auto;
+    max-height:500px;
+    display: flex;
+    flex-direction: column;
+    padding:16px;
+    /* overflow-x:scroll; */
+    /* justify-content: space-evenly; */
+    /* align-items: center; */
+    /* overflow-x: scroll; */
+}
+.modal-body-for-scroll-alamat{
+    width:100%;
+    height:auto;
+    max-height:300px;
+    overflow-x: scroll;
+}
+.input-searching-alamat{
+    width:90%;
+    height:100%;
+    border:none;
+    border-radius:8px;
+}
+.input-searching-alamat:focus{
+    border:none;
+    outline: none;
+}
+.input-searching-alamat::after{
+    border:none !important;
+    outline: none;
+}
+.input-searching-alamat::placeholder{
+    margin-left:10px;
+    color:#dedede;
+}
+.box-icon-searching{
+    width:10%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #dedede;
+    border-top-right-radius:8px;
+    border-bottom-right-radius:8px;
+}
+
+.box-tambah-alamat-baru{
+    margin-top:10px;
+    margin-bottom:10px;
+    width:100%;
+    height:70px;
+    min-height:70px;
+    border-radius:8px;
+    border:1px solid #dedede;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box-tambah-alamat-baru p {
+    font-weight:600;
+    font-size:1em;
+    color:#a5a6a9;
+}
+.box-tambah-alamat-baru p:hover{
+    cursor: pointer;
+}
+
+.box-alamat-card {
+    width:100%;
+    height:200px;
+    border:1px solid #dedede;
+    border-radius:8px;
+    display: flex;
+    flex-direction: column;
+    padding:16px;
+    margin-bottom:10px;
+
+}
+.active-alamat-card-utama{
+    border:1px solid #27aae1;
+}
+.alamat-nama-customer{
+    width:100%;
+    height:auto;
+    display: flex;
+    flex-direction: row;
+    
+}
+.alamat-nama-customer p {
+    font-size:1em;
+    font-weight:600;
+
+}
+.alamat-nama-customer p span{
+    font-weight:300;
+}
+.utama-alamat-box{
+    width:80px;
+    height:30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #c4e5fd;
+    border-radius:5px;
+    margin-left:10px;
+}
+.utama-alamat-box p {
+    font-size:0.7em;
+    color:#276ef1;
+    font-weight:800;
+}
+.nomor-hp-customer{
+    font-size:0.9em;
+}
+.box-detail-alamat-customer{
+    width:70%;
+    height:50%;
+    max-height:50%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top:5px;
+}
+
+.box-btn-alamat{
+    width:100%;
+    height:20%;
+    /* border:1px solid black; */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.btn-ganti-alamat{
+    width:20%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-ganti-alamat p {
+    font-size:0.9em;
+    font-weight:800;
+    color:#27aae1;
+}
+.btn-ganti-alamat:hover{
+    cursor: pointer;
+}
+.btn-jadikan-utama{
+    width:30%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    border-left:1px solid #dedede;
+
+}
+.btn-jadikan-utama:hover{
+    cursor: pointer;
+}
+.btn-jadikan-utama p {
+    font-size:0.9em;
+    font-weight:800;
+    color:#27aae1;
+}
+
+.total-tagihan {
+    font-size:1em !important;
+    font-weight:800 !important;
+    color:black !important;
+}
+.price-tagihan {
+    font-size:1em !important;
+    font-weight:800 !important;
+    color:#27aae1 !important;
 }
