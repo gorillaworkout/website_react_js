@@ -25,7 +25,76 @@ export default function BuyNow(){
     const [dikirimDari,setDikirimDari]=useState(undefined)
     const [hargaNormal,setHargaNormal]=useState(undefined)
     const [hargaDiscount,setHargaDiscount]=useState(undefined)
+    const [totalProduct,setTotalProduct]=useState(1)
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+  
+    const [defaultAlamatCustomer,setDefaultAlamatCustomer]=useState([
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN JALAN DEH YOK",
+            "no_hp":"087785192296",
+            "status":"Utama"
+        },
+        {
+            "nama_customer":"BAYU",
+            "alamat":"JALAN LAGI",
+            "no_hp":"087785192296",
+            "status":"Rumah"
+        },
+        {
+            "nama_customer":" DARMAWAN",
+            "alamat":"JALAN YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN GIh YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN COk YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        }
 
+        ])
+    const [alamatCustomer,setAlamatCustomer]=useState([
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN JALAN DEH YOK",
+            "no_hp":"087785192296",
+            "status":"Utama"
+        },
+        {
+            "nama_customer":"BAYU",
+            "alamat":"JALAN LAGI",
+            "no_hp":"087785192296",
+            "status":"Rumah"
+        },
+        {
+            "nama_customer":" DARMAWAN",
+            "alamat":"JALAN YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN GIh YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        },
+        {
+            "nama_customer":"BAYU DARMAWAN",
+            "alamat":"JALAN COk YOK",
+            "no_hp":"087785192296",
+            "status":"Kantor"
+        }
+
+        ])
+        
     // GOOGLE
 
     const [longitude,setLongitude]=useState('')
@@ -104,80 +173,12 @@ export default function BuyNow(){
             product_detail_func()
         }else {
             setIsLoading(false)
+            setAlamatCustomer(defaultAlamatCustomer)
         }
     },[])
     // SEARCHING PRODUCT DETAIL END
     
-    const [totalProduct,setTotalProduct]=useState(1)
-    const [tooltipOpen, setTooltipOpen] = useState(false);
   
-    const [defaultAlamatCustomer,setDefaultAlamatCustomer]=useState([
-        {
-            "nama_customer":"BAYU DARMAWAN",
-            "alamat":"JALAN JALAN DEH YOK",
-            "no_hp":"087785192296",
-            "status":"Utama"
-        },
-        {
-            "nama_customer":"BAYU",
-            "alamat":"JALAN LAGI",
-            "no_hp":"087785192296",
-            "status":"Rumah"
-        },
-        {
-            "nama_customer":" DARMAWAN",
-            "alamat":"JALAN YOK",
-            "no_hp":"087785192296",
-            "status":"Kantor"
-        },
-        {
-            "nama_customer":"BAYU DARMAWAN",
-            "alamat":"JALAN GIh YOK",
-            "no_hp":"087785192296",
-            "status":"Kantor"
-        },
-        {
-            "nama_customer":"BAYU DARMAWAN",
-            "alamat":"JALAN COk YOK",
-            "no_hp":"087785192296",
-            "status":"Kantor"
-        }
-
-        ])
-    const [alamatCustomer,setAlamatCustomer]=useState([
-        {
-            "nama_customer":"BAYU DARMAWAN",
-            "alamat":"JALAN JALAN DEH YOK",
-            "no_hp":"087785192296",
-            "status":"Utama"
-        },
-        {
-            "nama_customer":"BAYU",
-            "alamat":"JALAN LAGI",
-            "no_hp":"087785192296",
-            "status":"Rumah"
-        },
-        {
-            "nama_customer":" DARMAWAN",
-            "alamat":"JALAN YOK",
-            "no_hp":"087785192296",
-            "status":"Kantor"
-        },
-        {
-            "nama_customer":"BAYU DARMAWAN",
-            "alamat":"JALAN GIh YOK",
-            "no_hp":"087785192296",
-            "status":"Kantor"
-        },
-        {
-            "nama_customer":"BAYU DARMAWAN",
-            "alamat":"JALAN COk YOK",
-            "no_hp":"087785192296",
-            "status":"Kantor"
-        }
-
-        ])
-        
 
     const toggle = () => setTooltipOpen(!tooltipOpen);
     const options_product_searching = []
