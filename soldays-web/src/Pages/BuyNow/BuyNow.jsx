@@ -131,6 +131,8 @@ export default function BuyNow(){
           }
     })
     // GOOGLE END
+
+    
     function commafy( num ) {
         if(num !==undefined){
             var str = num.toString().split('.');

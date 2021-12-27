@@ -17,6 +17,7 @@
     "react-bootstrap": "^2.0.4",
     "react-dom": "^17.0.2",
     "react-geocode": "^0.2.3",
+    "react-google-login": "^5.2.2",
     "react-icons": "^4.3.1",
     "react-iframe": "^1.8.0",
     "react-indiana-drag-scroll": "^2.1.0",
