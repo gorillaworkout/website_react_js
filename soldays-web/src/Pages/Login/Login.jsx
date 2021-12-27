@@ -90,7 +90,7 @@ export default function Login(){
                                 </div>
                                 <div className="box-input-email-login">
                                     <p>Password</p>
-                                    <div className="password-keisi-login">
+                                    <div className="password-keisi-login" tabIndex={0}>
                                         {
                                             lihatPassword ? 
                                             <>
@@ -100,11 +100,11 @@ export default function Login(){
                                             : 
                                             <>
                                                 <IoEyeSharp className="icon-mata" onClick={()=>setLihatPassword(true)}/>
-                                                <input type="text" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
+                                                <input type="text" className="input-email-keisi testing" onChange={(e)=>onInputPassword(e.target.value)} />
                                             </>
                                         }
                                         
-                                        <input type="email" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
+                                        {/* <input type="email" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} /> */}
                                         {/* <p>Ubah</p> */}
                                     </div>
                                     {/* <p>Contoh:email@soldays.com</p> */}

@@ -302,8 +302,9 @@
 .input-email-keisi:focus .password-keisi-login{
     border:1px solid #27aae1 !important;
 }
+
 .icon-mata{
-    font-size:40px;
+    font-size:20px;
     margin-right:10px;
 }
 .icon-mata:hover{
@@ -322,9 +323,12 @@
     border:1px solid #dedede;
     border-radius:5px;
     padding-left:10px;
+    transition:1s;
 }
 
 
-.password-keisi-login:focus{
-    border:1px solid #27aae1;
+
+
+.password-keisi-login:focus-within{
+    border:1px solid #27aae1;;
 }
