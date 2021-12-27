@@ -20,6 +20,7 @@ export default function BuyNow(){
 
     const {Product_Code} = useParams()
     const [showModalAlamat,setShowModalAlamat] = useState(false)
+    const [showModalTambahAlamat,setShowModalTambahAlamat] = useState(false)
     const [ProductDetail,setProductDetail]=useState(undefined)
     const [isLoading,setIsLoading]=useState(true)
     const [dikirimDari,setDikirimDari]=useState(undefined)
@@ -359,6 +360,10 @@ export default function BuyNow(){
     const kurang_qty_product=()=>{
         
     }
+
+    const tambahAlamatFunc=()=>{
+        setShowModalTambahAlamat(true)
+    }
     if(isLoading){
         return (
             <>
@@ -371,7 +376,7 @@ export default function BuyNow(){
     return(
 
         <>
-
+            {/* MODAL PILIH ALAMAT */}
             <Modal
                 show={showModalAlamat}
                 onHide={() => setShowModalAlamat(false)}
@@ -393,7 +398,7 @@ export default function BuyNow(){
                         </div>
                     </div>
                     <div className="modal-body-for-scroll-alamat">
-                        <div className="box-tambah-alamat-baru">
+                        <div className="box-tambah-alamat-baru" onClick={tambahAlamatFunc}>
                             <p>Tambah Alamat Baru</p>
                         </div>
                         
@@ -402,6 +407,61 @@ export default function BuyNow(){
 
                 </Modal.Body>
             </Modal>
+            {/* MODAL PILIH ALAMAT */}
+
+            {/* MODAL TAMBAH ALAMAT */}
+            <Modal
+                show={showModalTambahAlamat}
+                onHide={() => setShowModalTambahAlamat(false)}
+                dialogClassName="modal-90w"
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                >
+                <Modal.Header closeButton className="modal-header-success">
+                <Modal.Title className="modal-header-buynow" id="example-custom-modal-styling-title">
+                    <p>Pilih Alamat Pengiriman</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-alamat-buynow">
+                    <div className="box-modal-tambah-alamat">
+                        <div className="box-top-alamat-status">
+                            <div className="box-top-number-status">
+                                <div className="box-bulat-status active-status-bulat">
+                                    <p>1</p>
+                                </div>
+                                <div className="box-garis-status">
+
+                                </div>
+                                <div className="box-bulat-status ">
+                                    <p>2</p>
+                                </div>
+                                <div className="box-garis-status">
+                                    
+                                </div>
+                                <div className="box-bulat-status ">
+                                    <p>3</p>
+                                </div>
+                            </div>
+                            <div className="box-top-detail-status">
+                                <div className="detail-box-item-status">
+                                    <p>Cari Lokasi Pengirimanmu</p>
+                                </div>
+                                <div className="detail-box-item-status">
+                                    <p>Cari Lokasi Pengirimanmu</p>
+                                </div>
+                                <div className="detail-box-item-status">
+                                    <p>Cari Lokasi Pengirimanmu</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </Modal.Body>
+            </Modal>
+            {/* MODAL TAMBAH ALAMAT */}
+
+
             <div className="container-buy-now">
                 <Header/>
                 <div className="box-beli-langsung container">
