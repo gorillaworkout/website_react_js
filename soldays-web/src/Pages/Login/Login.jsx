@@ -6,14 +6,33 @@ import { GoogleLogin,GoogleLogout } from 'react-google-login';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 import {IoEyeSharp} from 'react-icons/io5'
 import {BsFillEyeSlashFill} from 'react-icons/bs'
+import axios from 'axios'
+import { css } from "@emotion/react";
+import BeatLoader from 'react-spinners/BeatLoader'
+import Modal from 'react-bootstrap/Modal'
+import OtpInput from 'react-otp-input';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useDispatch,useSelector} from 'react-redux'
+import {Login  as Login_Redux} from '../../redux/Actions/AuthActions'
 
-
-
+const oathClientID = '624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com'
 
 export default function Login(){
-
-    const [oathClientID,setOathClientID]= useState('624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com')
-    
+    toast.configure()
+    const dispatch=useDispatch()
+    // const [oathClientID,setOathClientID]= useState('624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com')
+    const override = css`
+    display: flex;
+    margin: 0 auto;
+    color:#27aae1;
+    border-color: #27aae1;
+    speedMultiplier: 1;
+    size:12;
+    margin:2;
+    `
+    let [loading, setLoading] = useState(true);
+    let [color, setColor] = useState("#f6941c");
     const responseGoogle = (response) => {
         console.log(response);
       }
@@ -21,8 +40,19 @@ export default function Login(){
       const [showloginButton, setShowloginButton] = useState(true);
       const [showlogoutButton, setShowlogoutButton] = useState(false);
       const [emailCorrect,setEmailCorrect]=useState(false) // input email udh ke isi atau belum
-      const [emailState,setEmailState]=useState(true) // state untuk kalo email ke isi berarti masuk password muncul
+      const [emailState,setEmailState]=useState(false) // state untuk kalo email ke isi berarti masuk password muncul
       const [lihatPassword,setLihatPassword]=useState(false)
+      const [emailCustomer,setEmailCustomer]=useState('')
+      const [passwordCustomer,setPasswordCustomer]=useState('')
+      const [loadingCheckEmail,setLoadingCheckEmail]=useState(false)
+      const [showModalEmailUnknown,setshowModalEmailUnknown]=useState(false)
+      const [showModalOTP,setShowModalOTP]=useState(false)
+
+      const [otp,setOtp] = useState('')
+      const handleChangeOtp=(otp)=>{
+          setOtp(otp)
+      }
+
       const onLoginSuccess = (res) => {
           console.log('Login Success:', res.profileObj);
           setShowloginButton(false);
@@ -45,21 +75,176 @@ export default function Login(){
     }
 
       const onInputEmail=(email)=>{
-          console.log(email)
+        //   console.log(email)
           var checking_email = validateEmail(email)
-          console.log(checking_email)
+        //   console.log(checking_email)
           if(checking_email){
+            setEmailCustomer(email)
             setEmailCorrect(true)
+            setLoadingCheckEmail(false)
           }else {
             setEmailCorrect(false)
-              console.log('struktur email salah')
+            //   console.log('struktur email salah')
           }   
       }
       const onInputPassword=(password)=>{
+        setPasswordCustomer(password)
+      }
+      const backToDefault=(params)=>{
+          setEmailState(params)
+      }
+      const onCheckEmailLogin=()=>{
+        setLoadingCheckEmail(true)
+        axios.post(`https://customers.sold.co.id/get-customer-information?email=${emailCustomer}`)
+        .then((res)=>{
+                console.log(res.data)
+                if(res.data !== false){
+                    setLoadingCheckEmail(false)
+                    setEmailState(true)
+                }else {
+                    console.log(emailCustomer)
+                    setLoadingCheckEmail(true)
+                    setshowModalEmailUnknown(true)
+                    // alert('email blm terdaftar')
+                }
+        }).catch((err)=>{
+            console.log(err)
+        })
+      }
 
+      const changeEmail=()=>{
+          setEmailCorrect(false)
+          setshowModalEmailUnknown(false)
+          setEmailCorrect(true)
+          setLoadingCheckEmail(false)
+      }
+
+      const verifyOTP=()=>{
+          console.log('otp nya ', otp,emailCustomer,passwordCustomer)
+          
+          axios.post(`https://customers.sold.co.id/customer-login-request?Email=${emailCustomer}&Password=${passwordCustomer}&otp=${otp}`)
+          .then((res)=>{
+            console.log(res.data)
+            if(res.data){
+                toast.error('Berhasil Login', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                // dispatch(Login_Redux(res.data))
+                var data = res.data
+                localStorage.setItem('token',data)
+                dispatch({type:'LOGIN',data})
+            }else {
+                toast.error('Gagal Login, Check kembali Password/Email/Otp', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+          }).catch((err)=>{
+              console.log(err)
+          })
+        }
+      const login_customer=()=>{
+        if(emailCustomer && passwordCustomer ){
+            axios.post(`https://customers.sold.co.id/get-otp?Email=${emailCustomer}`)
+            .then((res)=>{
+                console.log(res.data)
+                if(res.data){
+                    setShowModalOTP(true)
+                   
+                }else {
+                    toast.error('OTP Gagal Terkirim', {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        });
+                }
+                
+            }).catch((err)=>[
+                console.log(err)
+            ])
+        }
       }
     return (
         <>
+            {/* MODALS EMAIL BELUM TERDAFTAR */}
+            <Modal
+                show={showModalEmailUnknown}
+                onHide={() => setshowModalEmailUnknown(false)}
+                dialogClassName="modal-90w"
+                size="md"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                className="modal-content-unknown"
+                >
+                <Modal.Header closeButton className="modal-header-unknown">
+                <Modal.Title className="modal-header-success-cart" id="example-custom-modal-styling-title">
+                    <p>Email belum terdaftar</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-unknown">
+                      <div className="box-lanjutkan-unknown">
+                        <p>Lanjut daftar dengan email ini</p>
+                        <p>{emailCustomer}</p>
+                      </div>
+                      <div className="btn-daftar-ubah">
+                            <div className="btn-ubah-unknown" onClick={changeEmail}>
+                                <p>Ubah</p>
+                            </div>
+                            <div className="btn-daftar-unknown">
+                                <p>Ya,Daftar</p>
+                            </div>
+                      </div>
+                </Modal.Body>
+            </Modal>
+            {/* MODALS EMAIL BELUM TERDAFTAR */}
+
+            {/* MODALS OTP */}
+            <Modal
+                show={showModalOTP}
+                onHide={() => setShowModalOTP(false)}
+                dialogClassName="modal-90w"
+                size="md"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                className="modal-content-unknown"
+                >
+                <Modal.Header closeButton className="modal-header-unknown">
+                <Modal.Title className="modal-header-success-cart" id="example-custom-modal-styling-title">
+                    <p>Masukan OTP</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-unknown">
+                    <OtpInput
+                        value={otp}
+                        onChange={handleChangeOtp}
+                        numInputs={8}
+                        separator={<span>-</span>}
+                        className="otp-input"
+                    />
+                    <div className="box-for-verify">
+                        <div className="box-verify" onClick={verifyOTP}>
+                            <p>Verify OTP</p>
+                        </div>
+                        <p>OTP tidak diterima? <span>Kirim Ulang</span></p>
+                    </div>
+                </Modal.Body>
+            </Modal>
+            {/* MODALS OTP END */}
         {
             emailState ?
             <>
@@ -85,7 +270,7 @@ export default function Login(){
                                     <p>Email</p>
                                     <div className="email-keisi-login">
                                         <input type="email" className="input-email-keisi" value={'darmawanbayu1@gmail.com'} onChange={(e)=>onInputEmail(e.target.value)} />
-                                        <p>Ubah</p>
+                                        <p id="id_back_login" onClick={()=>backToDefault(false)}>Ubah</p>
                                     </div>
                                 </div>
                                 <div className="box-input-email-login">
@@ -105,14 +290,14 @@ export default function Login(){
                                         }
                                         
                                         {/* <input type="email" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} /> */}
-                                        {/* <p>Ubah</p> */}
+                                        
                                     </div>
                                     {/* <p>Contoh:email@soldays.com</p> */}
                                 </div>
                                 <div className="btn-selanjutnya-login">
                                     <p>Lupa Kata Sandi?</p>
-                                    <div className="btn-next-login active-login">
-                                        <p>Selanjutnya</p>
+                                    <div className="btn-next-login active-login" onClick={login_customer}> 
+                                        <p>Login</p>   
                                     </div>
                                 </div>
                                 <div className="login-with-another">
@@ -196,9 +381,16 @@ export default function Login(){
                                         </div>
                                         <div className="btn-selanjutnya-login">
                                             <p>Lupa Kata Sandi?</p>
-                                            <div className="btn-next-login active-login">
-                                                <p>Selanjutnya</p>
-                                            </div>
+                                            {loadingCheckEmail ? 
+                                                <div className="btn-next-login active-login">
+                                                    <BeatLoader color={color} loading={loading} css={override} size={20} />
+                                                    {/* <p>Selanjutnya</p>       */}
+                                                </div>
+                                                :
+                                                <div className="btn-next-login active-login" onClick={onCheckEmailLogin}>
+                                                    <p>Selanjutnya</p>      
+                                                </div>
+                                            }
                                         </div>
                                     </>
                                     :

@@ -328,7 +328,147 @@
 
 
 
-
+.modal-dialog{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
 .password-keisi-login:focus-within{
     border:1px solid #27aae1;;
+}
+/* .modal-content-unknown {
+    width:250px;
+    height:200px;
+} */
+.modal-header-unknown {
+    width:100%;
+    /* height:50%; */
+}
+.modal-body-unknown {
+    width:100%;
+    height:150px;
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.modal-body-unknown p:nth-child(1){
+    font-size:1em;
+    color:#a5a6a9;
+}
+.modal-body-unknown p:nth-child(2){
+    font-size:1em;
+    font-weight:700;
+    color:#a5a6a9;
+    text-align: center;
+}
+
+.btn-daftar-ubah{
+    width:100%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-ubah-unknown{
+    width:120px;
+    height:30px;
+    border-radius:5px;
+    border:1px solid #27aae1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right:10px;
+}
+.btn-ubah-unknown:hover{
+    cursor: pointer;
+}
+.btn-ubah-unknown p {
+    font-size:1em;
+    color:#27aae1 !important;
+    font-weight:700;
+}
+.btn-daftar-unknown{
+    width:120px;
+    height:30px;
+    border-radius:5px;
+    border:1px solid #27aae1;
+    background-color: #27aae1;;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right:10px;
+}
+.btn-daftar-unknown:hover{
+    cursor: pointer;
+}
+.btn-daftar-unknown p {
+    font-size:1em;
+    color:white !important;
+    font-weight:700;
+}
+
+#id_back_login{
+    color:#27aae1 !important;
+}
+#id_back_login:hover{
+    cursor: pointer;
+}
+
+.otp-input input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:40px !important;
+    height:40px !important;
+}
+
+.box-for-verify{
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.box-verify{
+    width:150px;
+    height:30px;
+    border:1px solid #27aae1;;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:3px;
+    transition:0.5s;
+}
+
+.box-verify p{
+    color:#27aae1 !important;
+    font-weight:700;
+}
+.box-verify:hover{
+    cursor: pointer;
+    background-color: #27aae1;
+}
+.box-verify:hover p {
+    color:white !important;
+}
+
+.box-for-verify p:nth-child(2) {
+    font-weight:500;
+    font-size:0.8em !important;
+    position: relative;
+    top:20px;
+}
+
+.box-for-verify p:nth-child(2) span{
+    color:#27aae1;
+    font-weight:700;
+}
+.box-for-verify p:nth-child(2) span:hover{
+cursor: pointer;
 }

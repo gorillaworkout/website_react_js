@@ -25,6 +25,7 @@ function App(props) {
     var all_product = JSON.parse(localStorage.getItem('all_product'))
     var all_category = JSON.parse(localStorage.getItem('all_category'))
     var all_subcategory = JSON.parse(localStorage.getItem('all_subcategory'))
+    var token = JSON.parse(localStorage.getItem('token'))
     var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
     console.log(Cart,'line 26')
     dispatch({type:'GETALLCARTSTORAGE',Cart})
@@ -40,7 +41,7 @@ function App(props) {
         setTimeout(()=>{
           console.log(Auth)
           setLoading(false)
-        },2000)
+        },1000)
     }else {
       console.log('masuk ke else')
       console.log(all_product)

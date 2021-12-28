@@ -2,6 +2,7 @@ const INITIAL_STATE = {
     cart              :[],
     isLogin           :false,
     isLoading         :false,
+    token             : ''
 }
 
 
@@ -9,7 +10,8 @@ const INITIAL_STATE = {
 export default  (state=INITIAL_STATE,action)=>{
     switch(action.type){
         case 'LOGIN':
-            return {...state,isLogin:true,isLoading:false}
+            console.log('login reducer jalan')
+            return {...state,isLogin:true,isLoading:false,token:action.token}
         case 'LOADING' :
             // console.log('loading jalan')
             return {...state,isLoading:true}
