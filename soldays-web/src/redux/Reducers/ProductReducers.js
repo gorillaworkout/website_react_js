@@ -23,12 +23,12 @@ export default  (state=INITIAL_STATE,action)=>{
         case 'GETALLCATEGORYNEW':
             return {...state,allCategoryNew:action.allCategoryNew}
         case 'LOADINGPRODUCT' :
-            console.log('loading jalan',state.isLoadingProduct)
+            // console.log('loading jalan',state.isLoadingProduct)
             return {...state,isLoadingProduct:true}
         case 'ALLPRODUCTLOAD':
             return {...state,isLoadingProduct:false}
         case 'ADDPRODUCTTOCART':
-            console.log('addProduct to cart product reducer jalan',state.Cart)
+            // console.log('addProduct to cart product reducer jalan',state.Cart)
             return {...state,Cart:action.Cart}
         default:
             return state

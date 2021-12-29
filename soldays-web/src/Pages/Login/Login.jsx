@@ -14,7 +14,7 @@ import OtpInput from 'react-otp-input';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useDispatch,useSelector} from 'react-redux'
-import {Login  as Login_Redux} from '../../redux/Actions/AuthActions'
+import {LoginRedux} from '../../redux/Actions/AuthActions'
 
 const oathClientID = '624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com'
 
@@ -137,8 +137,8 @@ export default function Login(){
                 });
                 // dispatch(Login_Redux(res.data))
                 var data = res.data
-                localStorage.setItem('token',data)
-                dispatch({type:'LOGIN',data})
+                dispatch(LoginRedux(data))
+                
             }else {
                 toast.error('Gagal Login, Check kembali Password/Email/Otp', {
                     position: "top-center",

@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 export default (state=INITIAL_STATE,action)=>{
     switch(action.type){
         case 'GETALLCARTSTORAGE':
-            console.log('get all cart reducers',action.Cart)
+            // console.log('get all cart reducers',action.Cart)
             return {...state,Cart:action.Cart}
         default:
             return state

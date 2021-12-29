@@ -24,13 +24,14 @@ export default function Home({parentCallback}){
     const Product = useSelector(state=>state.Product)
     const Auth = useSelector(state=>state.Auth)
     const location = useLocation();
+    
 
     const [allProductItem,setAllProductItem]=useState(Product.allProduct)
     const [allProductGroupbuy,setAllProductGroupbuy]=useState(Product.allCategoryGroupBuy)
     const [allProductNew,setAllProductNew]=useState(Product.allCategoryNew)
     const [allCategory,setAllCategory]=useState(Product.AllCategory)
     const [allSubCategory,setAllSubCategory]=useState(Product.allSubCategory)
-    const [loadingFetchingData,setLoadingFetchingData]=useState(true)
+    const [loadingFetchingData,setLoadingFetchingData]=useState(Auth.isLoading)
     const [callbackFromHeader,setCallbackFromHeader]=useState([])
     const [callbackFromHighlight,setCallbackFromHighlight]=useState([])
     const [callbackFromCardPromo,setCallbackFromCardPromo]=useState([])

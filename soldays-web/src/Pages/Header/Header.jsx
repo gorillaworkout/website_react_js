@@ -19,7 +19,7 @@ import {
   import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
 import {FcMoneyTransfer} from 'react-icons/fc'
 import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
-
+import {LogoutRedux} from '../../redux/Actions/AuthActions'
 
 
 
@@ -28,7 +28,8 @@ export default function Header(data){
 
     const Product = useSelector(state=>state.Product)
     const Cart = useSelector(state=>state.Cart)
-    console.log(Cart)
+    const Auth = useSelector(state=>state.Auth)
+    // console.log(Auth)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
     // const [category_random,setCategory_random]=useState('')
     const [dataSearching,setDataSearching]=useState([])
@@ -41,13 +42,13 @@ export default function Header(data){
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
-    console.log(cartFromRedux)
+    // console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
     const [toggleLogin,setToggleLogin]=useState(false)
     const [allIsData,setAllIsData]=useState(
         {
-            isLogin:false,
+            isLogin:Auth.isLoading,
             isSemuaKategori:false,
             isOrderList:false,
             isBulkOrder:false,
@@ -63,6 +64,8 @@ export default function Header(data){
             category_random:''
         }
     )
+
+    const [isLoginHeader,setIsLoginHeader]=useState(Auth.isLogin)
   
     const options_product_searching = []
     const location = useLocation();
@@ -71,6 +74,7 @@ export default function Header(data){
     
     useEffect(()=>{
      
+        console.log(Auth)
         // IF UNTUK RENDER SEARCHING PRODUCT
         if(allProductFromHome !==null || allProductFromHome.length > 0){
             allProductFromHome.forEach((val,index)=>{
@@ -86,10 +90,10 @@ export default function Header(data){
         // IF UNTUK RENDER SEARCHING PRODUCT
 
         if(location.pathname === '/' || location.pathname.includes('/beli-langsung')){
-            console.log('location di home', location)
+            // console.log('location di home', location)
             setHeaderHome(true)
         }else {
-            console.log(location)
+            // console.log(location)
             setHeaderHome(false)
         }
 
@@ -100,12 +104,15 @@ export default function Header(data){
     useEffect(()=>{
         if(Cart.Cart){
             setTotalCartRedux(Cart.Cart.length)
-            console.log('Cart Reducer ada isinya',Cart.Cart)
+            // console.log('Cart Reducer ada isinya',Cart.Cart)
         }else {
             setTotalCartRedux(0)
-            console.log('Cart Reducer kosong',Cart.Cart)
+            // console.log('Cart Reducer kosong',Cart.Cart)
         }
-    },[Cart.Cart])
+        
+        setIsLoginHeader(Auth.isLogin)
+        
+    },[Auth.isLogin, Cart.Cart])
     function commafy( num ) {
         if(num !==undefined){
             var str = num.toString().split('.');
@@ -416,7 +423,7 @@ export default function Header(data){
         }
 
         var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
-        console.log(Cart.Cart !== cartLocalStorage,'cart.cart!== cart local storage')
+        // console.log(Cart.Cart !== cartLocalStorage,'cart.cart!== cart local storage')
         if(cartLocalStorage){
             if(Cart.Cart === cartLocalStorage){
                 setCartFromRedux(cartLocalStorage)
@@ -471,8 +478,15 @@ export default function Header(data){
                 )
             })
         }else {
-
+            return (
+                null
+            )
         }
+    }
+
+    const logout_user=()=>{
+        alert('function logout jalan')
+        dispatch(LogoutRedux())
     }
     return(
         <>
@@ -587,7 +601,7 @@ export default function Header(data){
                         </div>
                         <div className="item-menu-1">
                             {
-                            allIsData.isLogin?
+                            isLoginHeader?
                                 <Dropdown
                                     // className="d-inline-block"
                                     onMouseOver={()=>onMouseEnter('Login')}
@@ -643,7 +657,7 @@ export default function Header(data){
                                                 </div>     
                                                 <div className="box-login-logout-auth">
                                                     <AiOutlineLogout className="icon-login-logout"/>
-                                                    <p>Logout</p>
+                                                    <p onClick={logout_user}>Logout</p>
                                                 </div>
                                             </div>
                                         </div>

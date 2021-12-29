@@ -11,6 +11,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {FullPageLoading} from './Component/Loading/Loading'
 import {GetAllProduct,getAllSubCategory} from './redux/Actions/ProductActions'
 import {useDispatch,useSelector} from 'react-redux'
+import {LoginRedux} from './redux/Actions/AuthActions'
 function App(props) {
   
   const Auth=useSelector((state)=>state.Auth)
@@ -22,16 +23,32 @@ function App(props) {
   const [ProductFromReducers,setProductFromReducers]=useState(Product)
 
   useEffect(()=>{
+    var token = JSON.parse(localStorage.getItem('token'))
+    var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
+    // console.log(token)
+    // dispatch({type:'GETALLCARTSTORAGE',Cart})
+
+    
+
+    if(token) {
+      console.log('masuk ke if token ada')
+      dispatch(LoginRedux(token))
+      checking_data_product()
+    }else {
+      console.log('masuk ke if token  gaada ')
+      // checking_data_product()
+    }
+    
+  },[])
+
+  const checking_data_product=()=>{
     var all_product = JSON.parse(localStorage.getItem('all_product'))
     var all_category = JSON.parse(localStorage.getItem('all_category'))
     var all_subcategory = JSON.parse(localStorage.getItem('all_subcategory'))
-    var token = JSON.parse(localStorage.getItem('token'))
-    var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
-    console.log(Cart,'line 26')
-    dispatch({type:'GETALLCARTSTORAGE',Cart})
+    
+    // var token = JSON.parse(localStorage.getItem('token'))
     var all_array_groupbuy = []
     var all_array_new = []
-    
     if(  
       (all_product === null || all_product === '') && 
       (all_category === null || all_category === '') &&
@@ -43,13 +60,9 @@ function App(props) {
           setLoading(false)
         },1000)
     }else {
-      console.log('masuk ke else')
-      console.log(all_product)
-
-      dispatch({type:'LOADINGPRODUCT',isLoading:true})
+      console.log('masuk ke else line 63 app js')
+      dispatch({type:'LOADINGPRODUCT'})
       dispatch({type:'GETALLPRODUCT',allProduct:all_product}) // saving all product to getallProduct
-
-
       // console.log(Auth)
       all_product.forEach((val,index,array)=>{
           if(val.GroupBuy_Purchase === true || val.GroupBuy_Purchase === 'true'){
@@ -59,53 +72,32 @@ function App(props) {
               all_array_new.push(val)
           }
           if(index === array.length - 1){
-              // console.log(all_subcategory)
               dispatch({type:'GETALLCATEGORYGROUPBUY',allCategoryGroupBuy:all_array_groupbuy}) // saving all product to category groupbuy
               dispatch({type:'GETALLCATEGORYNEW',allCategoryNew:all_array_new}) // saving all product to category new
               dispatch({type:'GETALLCATEGORY',allCategory:all_category}) // saving all data to allcategory
               dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_subcategory})
-
-              // dispatch(getAllSubCategory(all_category)) // get all subcategory , saving to getallsubcategory
               setTimeout(()=>{
-                // console.log('all product load jalan seharusnya udh false')
                 dispatch({type:'ALLPRODUCTLOAD'})
                 setLoading(Product.isLoadingProduct)
-                // console.log(Product)
-        
-            
               },1000)
-              // console.log('isloading udh false')
-           
           }
       })
     }
-    // console.log(Product.isLoadingProduct)
-
-  },[])
+  }
 
   useEffect(()=>{
-    // console.log(ProductFromReducers)
-    // if(ProductFromReducers !== undefined){
-    //   if(ProductFromReducers.length > 0){
-    //     console.log(Product)
-    //     setLoading(Product.isLoadingProduct)
-    //   }else {
-    //     console.log('masuk ke else product from reducer 0')
-    //   }
-    // }else {
-    //   console.log('masuk ke else product reducer undefined')
-    // }
-
+    // console.log('useEffecr 89 jalan')
     if(loading){  
+      // console.log('loading', Product.isLoadingProduct)
       setLoading(Product.isLoadingProduct)
     }else {
-      console.log('loading masih false')
+      console.log('loading masih false line 94 useEffect App JS')
     }
 
-  },[Product, Product.isLoadingProduct, ProductFromReducers])
+  },[Product, Product.isLoadingProduct, ProductFromReducers, loading])
 
   if(loading){
-    console.log('masih stuck di app')
+    // console.log('masih stuck di app page baru jalan')
     return (
       <div className='d-flex justify-content-center align-items-center' style={{height:"100vh", width:"100vw"}}>
           {FullPageLoading(loading,100,'#0095DA')}

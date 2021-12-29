@@ -40,7 +40,7 @@ import ImgEffect from '../Effect/img_effect'
     }
     return (
         <>
-            <div key={1} className="highlight-container">
+            <div key={12} className="highlight-container">
                 {/* <div className="inside-highlight"> */}
                     <div className="highlight-judul">
                         <h1>HIGHLIGHT</h1>
