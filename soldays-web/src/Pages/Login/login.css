@@ -119,10 +119,14 @@
     font-weight:700;
     font-size:1em;
 }
-.box-top-detail-login p:nth-child(2){
+.box-top-detail-login  a p:nth-child(1){
     font-weight:400;
     font-size:0.9em;
     color:#27aae1;
+    text-decoration: none;
+}
+.box-top-detail-login a {
+    text-decoration: none;
 }
 .box-top-detail-login p:nth-child(2):hover{
     cursor: pointer;
@@ -167,7 +171,7 @@
     /* border:1px solid green; */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     /* align-items: center; */
 }
 .box-input-email-login p:nth-child(1){
@@ -403,6 +407,7 @@
     justify-content: center;
     align-items: center;
     margin-right:10px;
+    text-decoration: none;
 }
 .btn-daftar-unknown:hover{
     cursor: pointer;

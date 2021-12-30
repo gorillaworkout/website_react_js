@@ -368,7 +368,6 @@ export default function ProductDetail(){
             var hitung_harga = parseInt(ProductRender.Sell_Price) * (qty_now + 1)
             setTotalInputQty(qty_now + 1)
             setTotalHargaProduct(hitung_harga)
-            
         }
     }
     const kurangQtyTotal=()=>{

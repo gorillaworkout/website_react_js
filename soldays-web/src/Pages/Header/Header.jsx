@@ -673,9 +673,9 @@ export default function Header(data){
                                     <Link to ='/login' className="new-box-login-auth">
                                         <p>Masuk</p>
                                     </Link>
-                                    <div className="new-box-register-auth">
+                                    <Link to='/register' className="new-box-register-auth">
                                         <p>Daftar</p>
-                                    </div>
+                                    </Link>
                                 </div>
 
                             }

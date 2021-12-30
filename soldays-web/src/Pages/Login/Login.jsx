@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './login.css'
 import {LogoLoginTokped,logo_soldays} from '../../Assets/Assets'
 import ImgEffect from '../../Component/Effect/img_effect'
-import { GoogleLogin,GoogleLogout } from 'react-google-login';
+import { GoogleLogin,GoogleLogout } from 'react-google-login'; 
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 import {IoEyeSharp} from 'react-icons/io5'
 import {BsFillEyeSlashFill} from 'react-icons/bs'
@@ -16,9 +16,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from '../../redux/Actions/AuthActions'
 import { Link,useNavigate } from 'react-router-dom';
+import {OathClientId} from '../../helpers/OathGoogle'
 
-
-const oathClientID = '624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com'
+// const oathClientID = OathGoogleId
 
 export default function Login(){
     const navigate = useNavigate()
@@ -84,7 +84,7 @@ export default function Login(){
       function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
-    }
+        }
 
       const onInputEmail=(email)=>{
         //   console.log(email)
@@ -247,9 +247,9 @@ export default function Login(){
                             <div className="btn-ubah-unknown" onClick={changeEmail}>
                                 <p>Ubah</p>
                             </div>
-                            <div className="btn-daftar-unknown">
+                            <Link to='/register' className="btn-daftar-unknown">
                                 <p>Ya,Daftar</p>
-                            </div>
+                            </Link>
                       </div>
                 </Modal.Body>
             </Modal>
@@ -306,7 +306,9 @@ export default function Login(){
                             <div className="card-login">
                                 <div className="box-top-detail-login">
                                     <p>Masuk</p>
-                                    <p>Daftar</p>
+                                    <Link to='/register'>
+                                        <p>Daftar</p>
+                                    </Link>
                                 </div>
                                 <div className="box-input-email-login">
                                     <p>Email</p>
@@ -356,7 +358,7 @@ export default function Login(){
                                         {
                                             showloginButton ? 
                                             <GoogleLogin
-                                                clientId={oathClientID}
+                                                clientId={OathClientId}
                                                 buttonText="Google"
                                                 onSuccess={onLoginSuccess}
                                                 onFailure={onLoginFailure}
@@ -367,7 +369,7 @@ export default function Login(){
                                         }
                                         {showlogoutButton ? 
                                             <GoogleLogout
-                                            clientId={oathClientID}
+                                            clientId={OathClientId}
                                             buttonText="Sign Out"
                                             onLogoutSuccess={onSignoutSuccess}
                                             className="btn-google-real"
@@ -411,7 +413,9 @@ export default function Login(){
                             <div className="card-login">
                                 <div className="box-top-detail-login">
                                     <p>Masuk</p>
-                                    <p>Daftar</p>
+                                    <Link to='/register'>
+                                        <p>Daftar</p>
+                                    </Link>
                                 </div>
                                 {
                                     emailCorrect ? 
@@ -465,7 +469,7 @@ export default function Login(){
                                         {
                                             showloginButton ? 
                                             <GoogleLogin
-                                                clientId={oathClientID}
+                                                clientId={OathClientId}
                                                 buttonText="Google"
                                                 onSuccess={onLoginSuccess}
                                                 onFailure={onLoginFailure}
@@ -476,7 +480,7 @@ export default function Login(){
                                         }
                                         {showlogoutButton ? 
                                             <GoogleLogout
-                                            clientId={oathClientID}
+                                            clientId={OathClientId}
                                             buttonText="Sign Out"
                                             onLogoutSuccess={onSignoutSuccess}
                                             className="btn-google-real"
