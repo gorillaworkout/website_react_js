@@ -12,8 +12,9 @@ import {FullPageLoading} from './Component/Loading/Loading'
 import {GetAllProduct,getAllSubCategory} from './redux/Actions/ProductActions'
 import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from './redux/Actions/AuthActions'
+import { useNavigate } from 'react-router-dom';
 function App(props) {
-  
+  const navigate = useNavigate()
   const Auth=useSelector((state)=>state.Auth)
   const Product = useSelector((state)=>state.Product)
   
@@ -34,9 +35,11 @@ function App(props) {
       console.log('masuk ke if token ada')
       dispatch(LoginRedux(token))
       checking_data_product()
+      navigate('/')
+      
     }else {
       console.log('masuk ke if token  gaada ')
-      // checking_data_product()
+      checking_data_product()
     }
     
   },[])

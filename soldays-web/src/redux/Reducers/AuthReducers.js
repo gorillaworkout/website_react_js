@@ -20,6 +20,6 @@ export default  (state=INITIAL_STATE,action)=>{
             // console.log('loading jalan')
             return {...state,isLoading:true}
         default:
-            return {INITIAL_STATE}
+            return state
     }
 }

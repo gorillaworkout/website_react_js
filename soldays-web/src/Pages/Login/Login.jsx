@@ -15,10 +15,13 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from '../../redux/Actions/AuthActions'
+import { Link,useNavigate } from 'react-router-dom';
+
 
 const oathClientID = '624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com'
 
 export default function Login(){
+    const navigate = useNavigate()
     toast.configure()
     const dispatch=useDispatch()
     // const [oathClientID,setOathClientID]= useState('624689136381-n8qrmrn7cfe16hfhdgurb0jqpjeevr1l.apps.googleusercontent.com')
@@ -64,7 +67,16 @@ export default function Login(){
       };
   
       const onSignoutSuccess = () => {
-          alert("You have been logged out successfully");
+        //   alert("You have been logged out successfully");
+          toast.error('Berhasil Logout', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
           console.clear();
           setShowloginButton(true);
           setShowlogoutButton(false);
@@ -138,6 +150,7 @@ export default function Login(){
                 // dispatch(Login_Redux(res.data))
                 var data = res.data
                 dispatch(LoginRedux(data))
+                navigate('/')
                 
             }else {
                 toast.error('Gagal Login, Check kembali Password/Email/Otp', {
@@ -153,6 +166,35 @@ export default function Login(){
           }).catch((err)=>{
               console.log(err)
           })
+        }
+
+        const kirim_ulang_otp=()=>{
+            axios.post(`https://customers.sold.co.id/get-otp?Email=${emailCustomer}`)
+            .then((res)=>{
+                if(res.data){
+                    toast.error('OTP Berhasil Dikirimkan', {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }else {
+                    toast.error('OTP Gagal Terkirim', {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }).catch((err)=>{
+                console.log(err)
+            })
         }
       const login_customer=()=>{
         if(emailCustomer && passwordCustomer ){
@@ -240,7 +282,7 @@ export default function Login(){
                         <div className="box-verify" onClick={verifyOTP}>
                             <p>Verify OTP</p>
                         </div>
-                        <p>OTP tidak diterima? <span>Kirim Ulang</span></p>
+                        <p>OTP tidak diterima? <span onClick={kirim_ulang_otp}>Kirim Ulang</span></p>
                     </div>
                 </Modal.Body>
             </Modal>
@@ -250,14 +292,14 @@ export default function Login(){
             <>
                 <div className="box-container-login">
                     <div className="box-solped-logo container">
-                        <div className="box-img-login">
+                        <Link to="/" className="box-img-login">
                             <ImgEffect
                                 data={{
                                     img:logo_soldays,
                                     background:'transparent'
                                 }}
                             />
-                        </div>
+                        </Link>
                     </div>
                     <div className="box-solped-isi container">
                         <div className="box-card-login">
@@ -355,14 +397,14 @@ export default function Login(){
             {/* page kebuka masuk ke false dulu buat check email kalo bener state berubah jd true */}
                 <div className="box-container-login">
                     <div className="box-solped-logo container">
-                        <div className="box-img-login">
+                        <Link to="/" className="box-img-login">
                             <ImgEffect
                                 data={{
                                     img:logo_soldays,
                                     background:'transparent'
                                 }}
                             />
-                        </div>
+                        </Link>
                     </div>
                     <div className="box-solped-isi container">
                         <div className="box-card-login">

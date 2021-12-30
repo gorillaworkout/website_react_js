@@ -75,6 +75,7 @@ export default function Header(data){
     useEffect(()=>{
      
         console.log(Auth)
+        console.log(Auth.isLogin)
         // IF UNTUK RENDER SEARCHING PRODUCT
         if(allProductFromHome !==null || allProductFromHome.length > 0){
             allProductFromHome.forEach((val,index)=>{
@@ -111,6 +112,7 @@ export default function Header(data){
         }
         
         setIsLoginHeader(Auth.isLogin)
+        console.log('Auth is Login skrng ' , Auth.isLogin)
         
     },[Auth.isLogin, Cart.Cart])
     function commafy( num ) {
@@ -485,7 +487,7 @@ export default function Header(data){
     }
 
     const logout_user=()=>{
-        alert('function logout jalan')
+        // alert('function logout jalan')
         dispatch(LogoutRedux())
     }
     return(
@@ -668,9 +670,9 @@ export default function Header(data){
                                 </Dropdown>
                                 :
                                 <div className='new-box-login-register-header'>
-                                    <div className="new-box-login-auth">
+                                    <Link to ='/login' className="new-box-login-auth">
                                         <p>Masuk</p>
-                                    </div>
+                                    </Link>
                                     <div className="new-box-register-auth">
                                         <p>Daftar</p>
                                     </div>

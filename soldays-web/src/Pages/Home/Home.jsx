@@ -161,7 +161,7 @@ export default function Home({parentCallback}){
             check_all_data()
             
         },[])
-        console.log(dataToHighlight)
+        // console.log(dataToHighlight)
     // STATE YANG DIKIRIM UNTUK SETIAP CHILD END
    
 
