@@ -41,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "transfer":"rsync -avP build/ root@139.162.42.213:/var/www/soldays/"
   },
   "eslintConfig": {
     "extends": [
