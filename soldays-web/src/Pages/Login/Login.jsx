@@ -333,10 +333,7 @@ export default function Login(){
                                             </>
                                         }
                                         
-                                        {/* <input type="email" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} /> */}
-                                        
                                     </div>
-                                    {/* <p>Contoh:email@soldays.com</p> */}
                                 </div>
                                 <div className="btn-selanjutnya-login">
                                     <p>Lupa Kata Sandi?</p>

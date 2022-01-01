@@ -162,7 +162,7 @@
 }
 .box-garis-login{
     width:25%;
-    border:1px solid #b8b8b8;
+    border:1px solid #9c7b7b;
     
 }
 .box-input-email-login{
@@ -181,6 +181,7 @@
 .box-input-email-login p:nth-child(3){
     font-size:400;
     font-size:0.7em;
+    color:#a5a6a9;
 }
 .input-email-login{
     width:100%;
@@ -332,6 +333,7 @@
     padding-left:10px;
     transition:1s;
 }
+
 
 
 
