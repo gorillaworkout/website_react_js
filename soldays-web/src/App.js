@@ -27,7 +27,7 @@ function App(props) {
 
   useEffect(()=>{
     var token = JSON.parse(localStorage.getItem('token'))
-    var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
+    // var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
     // console.log(token)
     // dispatch({type:'GETALLCARTSTORAGE',Cart})
 

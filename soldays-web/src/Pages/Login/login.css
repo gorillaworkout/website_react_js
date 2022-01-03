@@ -303,8 +303,6 @@
 }
 .input-email-keisi:focus{
     outline: none;
-    /* border:1px solid #27aae1; */
-    /* border:1px solid #27aae1;; */
 }
 
 .input-email-keisi:focus .password-keisi-login{

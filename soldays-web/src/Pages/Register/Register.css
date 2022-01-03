@@ -110,7 +110,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border:1px solid #dedede;
+    /* border:1px solid #dedede; */
     
 }
 
@@ -218,4 +218,14 @@
 }
 .icon-back:hover{
     cursor: pointer;
+}
+
+
+
+.input-email-keisi:focus .password-keisi-login{
+    border:1px solid #27aae1 !important;
+}
+
+.wrong-input{
+    border:1px solid red !important;
 }

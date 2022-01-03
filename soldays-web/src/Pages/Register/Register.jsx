@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import {IoEyeSharp} from 'react-icons/io5'
 import {BsFillEyeSlashFill} from 'react-icons/bs'
 import {BiArrowBack} from 'react-icons/bi'
-
+import axios from 'axios'
 
 export default function Register(){
     toast.configure()
@@ -25,6 +25,7 @@ export default function Register(){
     const [passwordCustomer,setPasswordCustomer]=useState('')
     const [customerName,setCustomerName]=useState('')
     const [passwordError,setPasswordError]=useState(false)
+    const [isEmailEmpty,setIsEmailEmpty]=useState(true)
 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -38,8 +39,12 @@ export default function Register(){
     }
     const onLoginSuccess = (res) => {
         console.log('Login Success:', res.profileObj);
-        setShowloginButton(false);
-        setShowlogoutButton(true);
+        setCustomerName(res.profileObj.name)
+        setEmailCustomer(res.profileObj.email)
+        setPasswordCustomer('BesarSepertiTokped2022')
+        setShowloginButton(true);
+        setShowlogoutButton(false);
+        registerCustomer()
     };
     const onSignoutSuccess = () => {
         //   alert("You have been logged out successfully");
@@ -69,16 +74,138 @@ export default function Register(){
             setEmailCustomer(email)
             setEmailCorrect(true)
             setLoadingCheckEmail(false)
+            setIsEmailEmpty(true)
           }else {
             setEmailCorrect(false)
+            setIsEmailEmpty(false)
             
           }   
     }
 
     const CheckingEmailCustomer=()=>{
+        console.log('checking email customer jalan',emailCustomer)
+        axios.post(`https://customers.sold.co.id/get-customer-information?email=${emailCustomer}`)
+        .then((res)=>{
+            console.log(res.data)
+            if(res.data !== false){
+                setEmailState(false)
+                toast.error('Email Sudah Terdaftar', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }else { // email blm ke daftar
 
-        
-        setEmailState(true)
+                setEmailState(true)
+
+            }
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+    const registerCustomer=()=>{
+        var default_address = 'Jl. Dr. Susilo Raya No.C2 RT.1/RW.5 Grogol Kec. Grogol petamburan Kota Jakarta Barat DKI Jakarta'
+        var tanggal_lahir = '02/08/1996'
+        var default_number = '087785192297'
+
+
+
+
+        axios.post(`https://customers.sold.co.id/password-generator?Password=${passwordCustomer}`)
+        .then((res)=>{
+            var final_pass = res.data
+
+            axios.post(`https://customers.sold.co.id/get-customer-code`)
+            .then((res)=>{
+                var token = JSON.stringify(res.data)
+                localStorage.setItem('token',token)
+                var data = {
+                    customer_data : {
+                       Customer_Code : localStorage.getItem("token"),
+                       First_Name : customerName,
+                       Last_Name : '',
+                       User_Password :final_pass,
+                       Birthday : tanggal_lahir,
+                       Created_Date : "CURRENT_TIMESTAMP()",
+                       Last_Login : "CURRENT_TIMESTAMP()",
+                       Email : emailCustomer,
+                       Contact_Number_1 : default_number,
+                       Contact_Number_2 : '',
+                       Address_1 : default_address,
+                       Address_2 : '',
+                       Address_3 : '',
+                       Address_4 : '',
+                       Address_5 : '',
+                       Status : "pending",
+                       User_Type : "Customer",
+                       account_number: '',
+                       referral_customer_code: '',
+                       ktp:''
+                   }
+               }
+               axios.post(`https://customers.sold.co.id/create-new-customer-direct-from-user`,data,{
+                headers:{
+                    "Content-Type":'application/json'
+                },
+                "data":JSON.stringify({
+                    "Customer_Code": data.customer_data.Customer_Code,
+                    "First_Name": data.customer_data.First_Name,
+                    "Last_Name": data.customer_data.Last_Name,
+                    "User_Password": data.customer_data.User_Password,
+                    "Birthday": data.customer_data.Birthday,
+                    "Created_Date": data.customer_data.Created_Date,
+                    "Last_Login": data.customer_data.Last_Login,
+                    "Email": data.customer_data.Email,
+                    "Contact_Number_1": data.customer_data.Contact_Number_1,
+                    "Contact_Number_2": data.customer_data.Contact_Number_2,
+                    "Address_1": data.customer_data.Address_1,
+                    "Address_2": data.customer_data.Address_2,
+                    "Address_3": data.customer_data.Address_3,
+                    "Address_4": data.customer_data.Address_4,
+                    "Address_5": data.customer_data.Address_5,
+                    "Status": data.customer_data.Status,
+                    "User_Type": data.customer_data.User_Type,
+                    "ktp":data.customer_data.ktp
+                })
+            }).then((res)=>{
+                console.log(res.data)
+                console.log(data)
+                
+                if(res.data === true){
+                    toast.error('Register Berhasil', {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }else {
+                    toast.error('Register Gagal, Kemungkinan Email Sudah digunakan', {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }).catch((err)=>{
+                
+            })
+               
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }).catch((err)=>{
+            console.log(err)
+        })
     }
 
     const onInputPassword=(password)=>{
@@ -154,34 +281,55 @@ export default function Register(){
                                 </div>
                                 <div className="box-input-email-login">
                                     <p>Password</p>
-                                    <div className="password-keisi-login" tabIndex={0}>
-                                        {
-                                            lihatPassword ? 
-                                            <>
-                                                <IoEyeSharp className="icon-mata" onClick={()=>onClickLihatPassword(true)}/>
-                                                <input type="text" className="input-email-keisi testing" onChange={(e)=>onInputPassword(e.target.value)} />
-                                                
-                                            </>
-                                            : 
-                                            <>
-                                                <BsFillEyeSlashFill className="icon-mata" onClick={()=>onClickLihatPassword(false)}/>
-                                                <input type="password" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
-                                                
-                                            </>
-                                        }
-                                        
-                                    </div>
                                     {
-                                        passwordError ? 
-                                        <p>Format Email Salah</p>
+                                        passwordError?
+                                        <>
+                                            <div className="password-keisi-login wrong-input" tabIndex={0}>
+                                                {
+                                                    lihatPassword ? 
+                                                    <>
+                                                        <IoEyeSharp className="icon-mata" onClick={()=>onClickLihatPassword(true)}/>
+                                                        <input type="text" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
+                                                        
+                                                    </>
+                                                    : 
+                                                    <>
+                                                        <BsFillEyeSlashFill className="icon-mata" onClick={()=>onClickLihatPassword(false)}/>
+                                                        <input type="password" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
+                                                        
+                                                    </>
+                                                }
+                                                
+                                            </div>
+                                            <p>Format Password Salah</p>
+                                        </>
                                         :
-                                        <p>Minimal 8 Karakter</p>
+                                        <>
+                                            <div className="password-keisi-login" tabIndex={0}>
+                                                {
+                                                    lihatPassword ? 
+                                                    <>
+                                                        <IoEyeSharp className="icon-mata" onClick={()=>onClickLihatPassword(true)}/>
+                                                        <input type="text" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
+                                                        
+                                                    </>
+                                                    : 
+                                                    <>
+                                                        <BsFillEyeSlashFill className="icon-mata" onClick={()=>onClickLihatPassword(false)}/>
+                                                        <input type="password" className="input-email-keisi" onChange={(e)=>onInputPassword(e.target.value)} />
+                                                        
+                                                    </>
+                                                }
+                                            </div>
+                                            <p>Minimal 8 Karakter</p>
+                                        </>
+
                                     }
                                 </div>
                                 <div className="btn-selanjutnya-register">
                                     {
                                         passwordCorrect ? 
-                                        <div className="btn-next-register active-register" onClick={CheckingEmailCustomer}>
+                                        <div className="btn-next-register active-register" onClick={registerCustomer}>
                                             <p>Daftar</p>
                                         </div>
                                         :   
@@ -244,8 +392,34 @@ export default function Register(){
                                 </div>
                                 <div className="box-input-email-login">
                                     <p>Email</p>
-                                    <input type="email" className="input-email-login"  onChange={(e)=>onInputEmailRegister(e.target.value)} />
-                                    <p>Contoh:email@soldays.com</p>
+                                    {
+                                        isEmailEmpty ?
+                                        <>
+                                          
+                                            <>
+                                                <input type="email" className="input-email-login"  onChange={(e)=>onInputEmailRegister(e.target.value)} />
+                                                <p>Contoh:email@soldays.com</p>
+                                            </>
+                            
+                                        </>
+                                        :
+                                        <>
+                                            {
+                                                emailCorrect ?
+                                                <>
+                                                    <input type="email" className="input-email-login"  onChange={(e)=>onInputEmailRegister(e.target.value)} />
+                                                    <p>Contoh:email@soldays.com</p>
+                                                </>
+                                                :
+                                                <>
+                                                    <input type="email" className="input-email-login wrong-input"  onChange={(e)=>onInputEmailRegister(e.target.value)} />
+                                                    <p>Format Email Salah</p>
+                                                </>
+
+                                            }
+                                        </>
+                                    }
+                   
                                 </div>
                                 <div className="btn-selanjutnya-register">
                                     {
@@ -273,7 +447,7 @@ export default function Register(){
                     }
                 </div>
                  <div className="box-solped-footer container">
-                    <p>PT Solusi Data Internusa  <span>|</span></p>
+                    <p>PT Solusi Digital Internusa  <span>|</span></p>
                     <p>Bantuan</p>
                 </div>
             </div>

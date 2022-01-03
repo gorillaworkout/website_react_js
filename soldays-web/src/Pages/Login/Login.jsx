@@ -122,6 +122,9 @@ export default function Login(){
         }).catch((err)=>{
             console.log(err)
         })
+        setTimeout(()=>{
+            setLoadingCheckEmail(false)
+        },3000)
       }
 
       const changeEmail=()=>{
