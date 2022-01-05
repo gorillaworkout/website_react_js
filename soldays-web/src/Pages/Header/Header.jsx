@@ -13,31 +13,39 @@ import {
     Dropdown,
     DropdownToggle,
     DropdownMenu,
-    DropdownItem
+    DropdownItem,
+    
   } from "reactstrap";
-  import Nav from 'react-bootstrap/Nav'
+//   import Nav from 'react-bootstrap/Nav'
   import ImgEffect from '../../Component/Effect/img_effect'
   import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
 import {FcMoneyTransfer} from 'react-icons/fc'
 import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
 import {LogoutRedux} from '../../redux/Actions/AuthActions'
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
+// import Tabs from 'react-bootstrap/Tabs'
+// import Tab from 'react-bootstrap/Tab'
 import ProductCard from '../../Component/ProductCard/ProductCard'
 import Highlight from '../../Component/Highlight/highlight'
 import TabPane from 'react-bootstrap/TabPane'
+import { Tabs, Tab, Row, Nav } from "react-bootstrap";
+import axios from 'axios'
 export default function Header(data){
     const dispatch=useDispatch()
 
     const Product = useSelector(state=>state.Product)
+    console.log(Product)
+    console.log(Product.allSubCategory)
     const Cart = useSelector(state=>state.Cart)
     const Auth = useSelector(state=>state.Auth)
+
+
     // console.log(Auth)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
     // const [category_random,setCategory_random]=useState('')
     const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allCategory)
+    const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory)
     const [headerHome,setHeaderHome]=useState(true)
     const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
     const [totalCartRedux,setTotalCartRedux]=useState(0)
@@ -46,11 +54,15 @@ export default function Header(data){
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
     const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(false)
+
+
+    const [typeHoverCategory,setTypeHoverCategory] = useState(0)
+    const [typeActiveCategory,setTypeActiveCategory]=useState(0)
     // console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
     const [toggleLogin,setToggleLogin]=useState(false)
-    const [toggleAllCategory,setToggleAllCategory]=useState(true)
+    const [toggleAllCategory,setToggleAllCategory]=useState(false)
     const [allIsData,setAllIsData]=useState(
         {
             isLogin:Auth.isLoading,
@@ -503,31 +515,57 @@ export default function Header(data){
 
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
         const render_product_allCategory=()=>{
-
-
-
             return Product.allCategory.map((val,index)=>{
-                console.log(val.Category)
+                // console.log(val.Category)
                 return (
                     <>
-                        <TabPane eventKey={val.Category} title="Detail">
+                        <Nav.Item>
+                            <Nav.Link eventKey={index+1}>{val.Category}</Nav.Link>
+                        </Nav.Item>
+                                           
+                    </>
+                    
+                )
+            })
+        }
+
+        const render_isi_allCategory=()=>{
+            console.log(allSubcategoryFromHome)
+
+            const renderListSubCategory=(subcategory)=>{
+                if(subcategory.length > 0 ){
+                    return subcategory.map((val,index)=>{
+                        return (
+                            <>
+                                <li>
+                                    {val.Subcategory}
+                                </li>
+                            </>
+                        )
+
+                    })
+                }else {
+                    return (
+                        <>
+                        <li>
+                            {subcategory[0].allSubcategory}
+                        </li>
+                        </>
+                    )
+                }
+                
+            }
+            
+              return allSubcategoryFromHome.map((val,index)=>{ 
+                  console.log(val[0])
+                  console.log(val[0].Category)
+                  console.log(val[0].allSubcategory)
+                    return (
+                        <Tab.Pane eventKey={index+1} title={val.Category}>
                             <div className="box-category-hover">
                                 <div className="box-subcategory-hover">
                                     <ul>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
-                                        <li>TESTING</li>
+                                        {renderListSubCategory(val[0].allSubcategory)}
                                     </ul>
                                 </div>
                                 <div className="box-product-category-hover">
@@ -537,14 +575,13 @@ export default function Header(data){
                                     
                                 </div>
                             </div>
-                        </TabPane>
-                    </>
-                    
-                )
+                        </Tab.Pane>
+                    )
             })
         }
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
     return(
+        
         <>
             <div className={headerHome ? 'header-container' : 'header-container-fixed' }>
                 <div className="header-top">
@@ -580,29 +617,46 @@ export default function Header(data){
                     <div className="all-category-header-box">
                         
                         <Dropdown
-                                onMouseOver={()=>onMouseEnter('allCategory')}
-                                onMouseLeave={onMouseLeave}
-                                isOpen={toggleAllCategory}
-                                onClick={open_cart}
-                                >
-                                <DropdownToggle caret>
-                                    <p onClick={open_semua_kategori}>Semua  Kategori</p>
-                                </DropdownToggle>
-                                <DropdownMenu className="dropdown-menu-toggle-allcategory">
-                                    <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example" className="mb-3">
-                                      {render_product_allCategory()}
+                            onMouseOver={()=>onMouseEnter('allCategory')}
+                            onMouseLeave={onMouseLeave}
+                            isOpen={toggleAllCategory}
+                            onClick={open_cart}
+                            >
+                            <DropdownToggle caret>
+                                <p onClick={open_semua_kategori}>Semua  Kategori</p>
+                            </DropdownToggle>
+                            <DropdownMenu className="dropdown-menu-toggle-allcategory">
+                                {/* <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example" className="mb-3">
                                 
-                                    </Tabs>
-                                </DropdownMenu>
+                                </Tabs> */}
+                          
+                                <Tab.Container defaultActiveKey={1}>
+                                    <Nav variant="pills" className="flex-column">
+                                        <Row>        
+                                            {render_product_allCategory()}
+                                        </Row>
+                                    </Nav>
+
+                                    <Tab.Content>
+                                        {render_isi_allCategory()}
+                                        {/* <Tab.Pane eventKey={1} title="Tab 1">
+                                            1
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={2} title="Tab 2">
+                                            2
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={3} title="Tab 3">
+                                            3
+                                        </Tab.Pane> */}
+                                    </Tab.Content>
+                                </Tab.Container>
+                            </DropdownMenu>
                         </Dropdown>
                     </div>
                     <div className="box-searching-product-header">
                         <div className="input-box-searching">
-                            {/* <div className="input-product-searching"> */}
-                               {render_searching_product()}
-                                {/* <input type="text"className="input-product-header" />
-                                <BsSearch className="icon-searching-product"/> */}
-                            {/* </div> */}
+                            {/* SEARCHING INPUT */}
+                            {render_searching_product()}
                         </div>
                         <div className="category-random-box">
                                 {render_random_category()}

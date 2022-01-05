@@ -43,28 +43,27 @@ export const GetAllProduct=()=>{
 
                 var all_array_subcategory = []
                 var allCategory = res.data
-                allCategory.forEach((val,index,array)=>{
+                allCategory.forEach((val,indexCategory,arrayCategory)=>{
+                 
+                    // console.log(all_array_subcategory)
                     axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
                     .then((res)=>{
-                        if(res.data.length > 0){
-                            res.data.forEach((val,index,array)=>{
-                                all_array_subcategory.push(val)
-                            })
-                            
-                        }else {
-                            all_array_subcategory.push(res.data)
-                            // setLoadingFetchingData(false)
-                        }
+                        var allSubcategory = res.data
+                        all_array_subcategory.push([{"Category":val.Category,allSubcategory}])
                         var stringify_subcategory = JSON.stringify(all_array_subcategory)
-                        localStorage.setItem('all_subcategory',stringify_subcategory)
-                        if(index === array.length - 1 ){
+                        console.log(all_array_subcategory)
+                        if(indexCategory === arrayCategory.length - 1){
+                            localStorage.setItem('all_subcategory',stringify_subcategory)
                             dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_array_subcategory})
                             dispatch({type:'ALLPRODUCTLOAD'})
+                            // console.log(all_array_subcategory)
                         }
                     }).catch((err)=>{
                         console.log(err)
                     })
                 })
+
+
 
             }).catch((err)=>{
                 console.log(err)
@@ -80,31 +79,57 @@ export const getAllSubCategory=(Category)=>{
     return (dispatch)=>{
         var all_array_subcategory = []
         var allCategory = Category
-        allCategory.forEach((val,index,array)=>{
+    
+        allCategory.forEach((val,indexCategory,arrayCategory)=>{
+            all_array_subcategory.push({
+                Category:val.Category
+            })
             axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
             .then((res)=>{
-                if(res.data.length > 0){
+                if(res.data.length > 0 ){
                     res.data.forEach((val,index,array)=>{
-                        all_array_subcategory.push(val)
+                        all_array_subcategory[indexCategory].push(val)
                     })
-                    
                 }else {
-                    all_array_subcategory.push(res.data)
-                    // setLoadingFetchingData(false)
+                    all_array_subcategory[indexCategory].push(res.data)
                 }
                 var stringify_subcategory = JSON.stringify(all_array_subcategory)
-                if(index === array.length - 1 ){
+                console.log(all_array_subcategory)
+                if(indexCategory === arrayCategory.length - 1){
                     localStorage.setItem('all_subcategory',stringify_subcategory)
-                    // console.log(all_array_subcategory)
                     dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_array_subcategory})
                     dispatch({type:'ALLPRODUCTLOAD'})
-                    console.log(all_array_subcategory)
-                    // console.log('dispatch loading, harusnya false')
+                    // console.log(all_array_subcategory)
                 }
             }).catch((err)=>{
                 console.log(err)
             })
         })
+        // allCategory.forEach((val,index,array)=>{
+        //     axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
+        //     .then((res)=>{
+        //         if(res.data.length > 0){
+        //             res.data.forEach((val,index,array)=>{
+        //                 all_array_subcategory.push(val)
+        //             })
+                    
+        //         }else {
+        //             all_array_subcategory.push(res.data)
+        //             // setLoadingFetchingData(false)
+        //         }
+        //         var stringify_subcategory = JSON.stringify(all_array_subcategory)
+        //         if(index === array.length - 1 ){
+        //             localStorage.setItem('all_subcategory',stringify_subcategory)
+        //             // console.log(all_array_subcategory)
+        //             dispatch({type:'GETALLSUBCATEGORY',allSubCategory:all_array_subcategory})
+        //             dispatch({type:'ALLPRODUCTLOAD'})
+        //             console.log(all_array_subcategory)
+        //             // console.log('dispatch loading, harusnya false')
+        //         }
+        //     }).catch((err)=>{
+        //         console.log(err)
+        //     })
+        // })
     }
 }
 
