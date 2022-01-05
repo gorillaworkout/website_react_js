@@ -3,7 +3,7 @@ import './Register.css'
 import {LogoLoginTokped,logo_soldays} from '../../Assets/Assets'
 import ImgEffect from '../../Component/Effect/img_effect'
 import Register_Tokped from '../../Assets/tokped_gambar/register_gambar.png'
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 import {OathClientId} from '../../helpers/OathGoogle'
 import { GoogleLogin,GoogleLogout } from 'react-google-login'; 
 import { toast } from 'react-toastify';
@@ -11,9 +11,17 @@ import {IoEyeSharp} from 'react-icons/io5'
 import {BsFillEyeSlashFill} from 'react-icons/bs'
 import {BiArrowBack} from 'react-icons/bi'
 import axios from 'axios'
+import Modal from 'react-bootstrap/Modal'
+import OtpInput from 'react-otp-input';
+import {useDispatch,useSelector} from 'react-redux'
+import {LoginRedux} from '../../redux/Actions/AuthActions'
+
+
 
 export default function Register(){
     toast.configure()
+    const navigate = useNavigate()
+    const dispatch=useDispatch()
     const [showloginButton, setShowloginButton] = useState(true);
     const [showlogoutButton, setShowlogoutButton] = useState(false);
     const [emailCustomer,setEmailCustomer]=useState('')
@@ -26,6 +34,78 @@ export default function Register(){
     const [customerName,setCustomerName]=useState('')
     const [passwordError,setPasswordError]=useState(false)
     const [isEmailEmpty,setIsEmailEmpty]=useState(true)
+    const [showModalOTP,setShowModalOTP]=useState(false)
+    
+    const [otp,setOtp] = useState('')
+    const handleChangeOtp=(otp)=>{
+        setOtp(otp)
+    }
+    const verifyOTP=()=>{
+        console.log('otp nya ', otp,emailCustomer,passwordCustomer)
+        
+        axios.post(`https://customers.sold.co.id/customer-login-request?Email=${emailCustomer}&Password=${passwordCustomer}&otp=${otp}`)
+        .then((res)=>{
+          console.log(res.data)
+          if(res.data){
+                toast.error('Register Berhasil', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+              // dispatch(Login_Redux(res.data))
+              var data = res.data
+              dispatch(LoginRedux(data))
+              navigate('/')
+              
+          }else {
+              toast.error('Gagal Login, Check kembali Password/Email/Otp', {
+                  position: "top-center",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+              });
+          }
+        }).catch((err)=>{
+            console.log(err)
+        })
+      }
+
+      const kirim_ulang_otp=()=>{
+          axios.post(`https://customers.sold.co.id/get-otp?Email=${emailCustomer}`)
+          .then((res)=>{
+              if(res.data){
+                  toast.error('OTP Berhasil Dikirimkan', {
+                      position: "top-center",
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                  });
+              }else {
+                  toast.error('OTP Gagal Terkirim', {
+                      position: "top-center",
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                  });
+              }
+          }).catch((err)=>{
+              console.log(err)
+          })
+      }
+
 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -176,15 +256,28 @@ export default function Register(){
                 console.log(data)
                 
                 if(res.data === true){
-                    toast.error('Register Berhasil', {
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    setShowModalOTP(true)
+                    axios.post(`https://customers.sold.co.id/get-otp?Email=${emailCustomer}`)
+                    .then((res)=>{
+                        console.log(res.data)
+                        if(res.data){
+                            setShowModalOTP(true)
+                           
+                           
+                        }else {
+                            toast.error('OTP Gagal Terkirim', {
+                                position: "top-center",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                });
+                        }   
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
                 }else {
                     toast.error('Register Gagal, Kemungkinan Email Sudah digunakan', {
                         position: "top-center",
@@ -238,8 +331,38 @@ export default function Register(){
           setLihatPassword(!lihatPassword)
       }
     return (
+        
         <>
-        {}
+            <Modal
+                show={showModalOTP}
+                onHide={() => setShowModalOTP(false)}
+                dialogClassName="modal-90w"
+                size="md"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                className="modal-content-unknown"
+                >
+                <Modal.Header closeButton className="modal-header-unknown">
+                <Modal.Title className="modal-header-success-cart" id="example-custom-modal-styling-title">
+                    <p>Masukan OTP</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-unknown">
+                    <OtpInput
+                        value={otp}
+                        onChange={handleChangeOtp}
+                        numInputs={8}
+                        separator={<span>-</span>}
+                        className="otp-input"
+                    />
+                    <div className="box-for-verify">
+                        <div className="box-verify" onClick={verifyOTP}>
+                            <p>Verify OTP</p>
+                        </div>
+                        <p>OTP tidak diterima? <span onClick={kirim_ulang_otp}>Kirim Ulang</span></p>
+                    </div>
+                </Modal.Body>
+            </Modal>
             <div className="container-register">
                 <div className="box-top-judul-register container">
                     <Link to="/" className="box-img-login">
@@ -354,7 +477,13 @@ export default function Register(){
                             <div className="box-card-register">
                                 <div className="register-top-card-detail">
                                     <p>Daftar Sekarang</p>
-                                    <p>Sudah punya akun Tokopedia ? <span>Masuk</span></p>
+                                    <p>Sudah punya akun Tokopedia ? 
+                                        <span>
+                                            <Link to='/login' style={{textDecoration:'none',color:'#27aae1',marginLeft:'5px'}}>
+                                            Masuk
+                                            </Link>
+                                        </span>
+                                    </p>
                                 </div>
                                 <div className="register-with-google-detail">
                                     {

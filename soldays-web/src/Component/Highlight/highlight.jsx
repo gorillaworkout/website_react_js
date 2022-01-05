@@ -3,7 +3,7 @@ import './highlight.css'
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImgEffect from '../Effect/img_effect'
     export default function Highlight(data){
-    // console.log(data)
+    console.log(data)
 
     const [allSubCategoryFromHome,setAllSubCategpryFromHome]=useState(data.data.allSubCategory)
     const [open_Category,setOpen_Category] = useState(false)

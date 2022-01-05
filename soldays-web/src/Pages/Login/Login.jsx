@@ -217,11 +217,10 @@ export default function Login(){
                         draggable: true,
                         progress: undefined,
                         });
-                }
-                
-            }).catch((err)=>[
+                }   
+            }).catch((err)=>{
                 console.log(err)
-            ])
+            })
         }
       }
     return (
@@ -389,7 +388,7 @@ export default function Login(){
 
                     </div>
                     <div className="box-solped-footer container">
-                        <p>PT Solusi Data Internusa  <span>|</span></p>
+                        <p>PT Solusi Digital Internusa  <span>|</span></p>
                         <p>Bantuan</p>
                     </div>
                 </div>

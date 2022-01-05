@@ -176,10 +176,6 @@ export default function Home({parentCallback}){
     },
     [Product.isLoadingProduct, Product.AllCategory, Product.AllCategoryNew, Product.allCategoryGroupBuy, Product.allProduct, Product.allSubCategory, allProductItem])
     
-
-
-
-
     // FUNCTION FOR HEADER
     const handleCallbackFromHeader=(childData)=>{
         setCallbackFromHeader(childData)

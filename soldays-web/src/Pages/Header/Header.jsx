@@ -15,14 +15,17 @@ import {
     DropdownMenu,
     DropdownItem
   } from "reactstrap";
+  import Nav from 'react-bootstrap/Nav'
   import ImgEffect from '../../Component/Effect/img_effect'
   import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
 import {FcMoneyTransfer} from 'react-icons/fc'
 import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
 import {LogoutRedux} from '../../redux/Actions/AuthActions'
-
-
-
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
+import ProductCard from '../../Component/ProductCard/ProductCard'
+import Highlight from '../../Component/Highlight/highlight'
+import TabPane from 'react-bootstrap/TabPane'
 export default function Header(data){
     const dispatch=useDispatch()
 
@@ -42,10 +45,12 @@ export default function Header(data){
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
+    const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(false)
     // console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
     const [toggleLogin,setToggleLogin]=useState(false)
+    const [toggleAllCategory,setToggleAllCategory]=useState(true)
     const [allIsData,setAllIsData]=useState(
         {
             isLogin:Auth.isLoading,
@@ -422,6 +427,9 @@ export default function Header(data){
         }else if (params === 'Login'){
             setIsMenuHoverLogin(true)
             setToggleLogin(true)
+        }else if (params === 'allCategory'){
+            setisMenuHoverAllCategory(true)
+            setToggleAllCategory(true)
         }
 
         var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
@@ -442,6 +450,7 @@ export default function Header(data){
     const onMouseLeave=()=>{
         setToggleCart(false)
         setToggleLogin(false)
+        setToggleAllCategory(false)
 
         setIsMenuHoverCart(false)
         setIsMenuHoverBulkOrder(false)
@@ -490,6 +499,51 @@ export default function Header(data){
         // alert('function logout jalan')
         dispatch(LogoutRedux())
     }
+
+
+    // RENDER PRODUCT CARD HOVER ALL CATEGORY
+        const render_product_allCategory=()=>{
+
+
+
+            return Product.allCategory.map((val,index)=>{
+                console.log(val.Category)
+                return (
+                    <>
+                        <TabPane eventKey={val.Category} title="Detail">
+                            <div className="box-category-hover">
+                                <div className="box-subcategory-hover">
+                                    <ul>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                        <li>TESTING</li>
+                                    </ul>
+                                </div>
+                                <div className="box-product-category-hover">
+                                    {/* <Highlight data={{
+                                        allSubCategory:Product.allProduct
+                                    }}/> */}
+                                    
+                                </div>
+                            </div>
+                        </TabPane>
+                    </>
+                    
+                )
+            })
+        }
+    // RENDER PRODUCT CARD HOVER ALL CATEGORY
     return(
         <>
             <div className={headerHome ? 'header-container' : 'header-container-fixed' }>
@@ -524,15 +578,31 @@ export default function Header(data){
                         <img src={logo_soldays} alt="" />
                     </Link>
                     <div className="all-category-header-box">
-                        <p onClick={open_semua_kategori}>Semua  Kategori</p>
+                        
+                        <Dropdown
+                                onMouseOver={()=>onMouseEnter('allCategory')}
+                                onMouseLeave={onMouseLeave}
+                                isOpen={toggleAllCategory}
+                                onClick={open_cart}
+                                >
+                                <DropdownToggle caret>
+                                    <p onClick={open_semua_kategori}>Semua  Kategori</p>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-menu-toggle-allcategory">
+                                    <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example" className="mb-3">
+                                      {render_product_allCategory()}
+                                
+                                    </Tabs>
+                                </DropdownMenu>
+                        </Dropdown>
                     </div>
                     <div className="box-searching-product-header">
                         <div className="input-box-searching">
                             {/* <div className="input-product-searching"> */}
-                                {render_searching_product()}
+                               {render_searching_product()}
                                 {/* <input type="text"className="input-product-header" />
                                 <BsSearch className="icon-searching-product"/> */}
-                            {/* </div>/ */}
+                            {/* </div> */}
                         </div>
                         <div className="category-random-box">
                                 {render_random_category()}
@@ -553,12 +623,10 @@ export default function Header(data){
                         </div>
                         <div className="item-menu-1">
                             <Dropdown
-                                // className="d-inline-block"
                                 onMouseOver={()=>onMouseEnter('Cart')}
                                 onMouseLeave={onMouseLeave}
                                 isOpen={toggleCart}
                                 onClick={open_cart}
-                                // toggle={toggleCartFunc}
                                 >
                                 <DropdownToggle caret>
                                     <div className={isMenuHoverCart? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}>
@@ -578,9 +646,6 @@ export default function Header(data){
                                                 <p>Lihat Sekarang</p>
                                             </div>
                                             {renderProductCart()}
-                                
-
-
                                         </div>
                                         :
                                         <div className="cart-kosong-list-cart">
@@ -595,11 +660,8 @@ export default function Header(data){
                                             <p>Daripada dianggurin, isi saja dengan barang-barang menarik. Lihat-lihat dulu, siapa tahu ada yang kamu suka!</p>
                                         </div> 
                                     }
-                                    {/* <DropdownItem>Submenu 1.1</DropdownItem> */}
                                 </DropdownMenu>
-                                {/* &nbsp;&nbsp;&nbsp; */}
                             </Dropdown>
-                           
                         </div>
                         <div className="item-menu-1">
                             {
