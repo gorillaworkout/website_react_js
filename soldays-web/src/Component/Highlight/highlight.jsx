@@ -4,7 +4,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImgEffect from '../Effect/img_effect'
     export default function Highlight(data){
     console.log(data.data.allSubCategory)
-    console.log(data.data.allSubCategory[0][0].Category)
+    // console.log(data.data.allSubCategory[0][0].Category)
 
     const [allSubCategoryFromHome,setAllSubCategpryFromHome]=useState(data.data.allSubCategory)
     const [open_Category,setOpen_Category] = useState(false)
@@ -19,13 +19,32 @@ import ImgEffect from '../Effect/img_effect'
         data.parentCallback(data_to_home)
     }
     const render_subcategory_highlight=()=>{
-        return allSubCategoryFromHome.map((val,index)=>{
-            console.log(val)
-            if(val[0].allSubcategory.length > 0 ){
-                return val[0].allSubcategory.map((val,index)=>{
-                    console.log(val.Subcategory)
-                    return (
-                        <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
+        if(allSubCategoryFromHome.length > 1){
+            return allSubCategoryFromHome.map((val,index)=>{
+                console.log(val)
+                if(val[0].allSubcategory.length >1 ){
+                    return val[0].allSubcategory.map((val,index)=>{
+                        console.log(val.Subcategory)
+                        return (
+                            <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
+                                <div className="card-highlight-img">
+                                    <ImgEffect
+                                        data={{
+                                            img:val.Picture_1,
+                                            background:'#ccc'
+                                        }}
+                                    />
+                                </div>
+                                <div className="card-detail-name">
+                                    <p>{val.Subcategory}</p>
+                                </div>
+                            </div>
+                        )
+                    })
+                }else {
+                    return(
+                        <>
+                         <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
                             <div className="card-highlight-img">
                                 <ImgEffect
                                     data={{
@@ -38,29 +57,30 @@ import ImgEffect from '../Effect/img_effect'
                                 <p>{val.Subcategory}</p>
                             </div>
                         </div>
+                        </>
                     )
-                })
-            }else {
-                return(
-                    <>
-                     <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
-                        <div className="card-highlight-img">
-                            <ImgEffect
-                                data={{
-                                    img:val.Picture_1,
-                                    background:'#ccc'
-                                }}
-                            />
-                        </div>
-                        <div className="card-detail-name">
-                            <p>{val.Subcategory}</p>
-                        </div>
+    
+                }
+            })
+        }else {
+            return(
+                <>
+                 <div key={1} className="card-highlight-product" onClick={()=>open_highlight(`${allSubCategoryFromHome.Subcategory}`)}>
+                    <div className="card-highlight-img">
+                        <ImgEffect
+                            data={{
+                                img:allSubCategoryFromHome.Picture_1,
+                                background:'#ccc'
+                            }}
+                        />
                     </div>
-                    </>
-                )
-
-            }
-        })
+                    <div className="card-detail-name">
+                        <p>{allSubCategoryFromHome.Subcategory}</p>
+                    </div>
+                </div>
+                </>
+            )
+        }
     }
     return (
         <>

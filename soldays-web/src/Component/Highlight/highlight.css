@@ -9,6 +9,7 @@
     /* overflow-x:scroll; */
     /* overflow:auto; */
     padding:5px;
+    
 }
 .inside-highlight{
     width:100%;
@@ -43,9 +44,6 @@
     flex-wrap: wrap;
     overflow:auto;
     justify-content: center;
-
-    /* border:1px solid red; */
-    /* padding:10px; */
 }
 .box-for-product-item-highlight::-webkit-scrollbar{
     display: none;

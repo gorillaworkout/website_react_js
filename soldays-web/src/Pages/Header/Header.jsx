@@ -53,7 +53,10 @@ export default function Header(data){
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
-    const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(false)
+    const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(true)
+
+    const [category_Active,setCategory_Active] = useState(allSubcategoryFromHome[0][0].Category)
+    const [subCategory_Active,setSubCategory_Active]=useState(allSubcategoryFromHome[0][0].allSubcategory[0].Subcategory)
 
 
     const [typeHoverCategory,setTypeHoverCategory] = useState(0)
@@ -460,14 +463,14 @@ export default function Header(data){
         }
     }
     const onMouseLeave=()=>{
-        setToggleCart(false)
-        setToggleLogin(false)
-        setToggleAllCategory(false)
+        // setToggleCart(false)
+        // setToggleLogin(false)
+        // setToggleAllCategory(false)
 
-        setIsMenuHoverCart(false)
-        setIsMenuHoverBulkOrder(false)
-        setIsMenuHoverOrderList(false)
-        setIsMenuHoverLogin(false)
+        // setIsMenuHoverCart(false)
+        // setIsMenuHoverBulkOrder(false)
+        // setIsMenuHoverOrderList(false)
+        // setIsMenuHoverLogin(false)
     }
 
     const toggleCartFunc=()=>{
@@ -532,47 +535,127 @@ export default function Header(data){
         const render_isi_allCategory=()=>{
             console.log(allSubcategoryFromHome)
 
-            const renderListSubCategory=(subcategory)=>{
-                if(subcategory.length > 0 ){
-                    return subcategory.map((val,index)=>{
+            const renderListSubCategory=(subcategory,index)=>{
+
+                if(index === 0){ // nyari index ke 0 buat dibikin active pas baru dibuka
+                    console.log(subcategory)
+                    if(subcategory.length > 0 ){
+                        return subcategory.map((val,index)=>{
+                            if(index === 0){
+                                return (
+                                    <>
+                                        <li className="active-subcategory">
+                                            {val.Subcategory}
+                                        </li>
+                                    </>
+                                )
+                            }else {
+                                return (
+                                    <>
+                                        <li>
+                                            {val.Subcategory}
+                                        </li>
+                                    </>
+                                )
+                            }             
+                        })
+                    }else {
                         return (
                             <>
-                                <li>
-                                    {val.Subcategory}
+                                <li className="active-subcategory">
+                                    {subcategory[0].allSubcategory}
                                 </li>
                             </>
                         )
+                    } 
+                }else { // render sisanya 
+                    if(subcategory.length > 0 ){ // cari index ke 0 biar pas pindah udh ada yg active
+                        return subcategory.map((val,index)=>{
+                            if(index === 0){
+                                return (
+                                    <>
+                                        <li className="active-subcategory">
+                                            {val.Subcategory}
+                                        </li>
+                                    </>
+                                )
+                            }else {
+                                return (
+                                    <>
+                                        <li>
+                                            {val.Subcategory}
+                                        </li>
+                                    </>
+                                )
+                            }  
+                        })
+                    }else {
+                        return (
+                            <>
+                                <li>
+                                    {subcategory[0].allSubcategory}
+                                </li>
+                            </>
+                        )
+                    } 
+                }
+            }
 
-                    })
+
+            const renderListProduct=()=>{
+                var filter_for_render = []
+                var filter_product = allProductFromHome.filter((val)=>{
+                    if(val.Subcategory === subCategory_Active){
+                        filter_for_render.push(val)
+                        return val
+                    }
+                })
+                console.log(filter_for_render.length)
+                if(filter_product.length > 1){
+                    return(
+                        <>
+                            <Highlight data={{
+                                allSubCategory:filter_for_render
+                            }}/>
+                        </>
+                    )
                 }else {
                     return (
                         <>
-                        <li>
-                            {subcategory[0].allSubcategory}
-                        </li>
+                            <Highlight data={{
+                                allSubCategory:filter_for_render[0]
+                            }}/>
                         </>
                     )
                 }
                 
             }
+
+
+            
+
             
               return allSubcategoryFromHome.map((val,index)=>{ 
-                  console.log(val[0])
-                  console.log(val[0].Category)
-                  console.log(val[0].allSubcategory)
+                //   console.log(allSubcategoryFromHome)
+                //   console.log(val[0].Category)
+                //   console.log(val[0].allSubcategory)
+
                     return (
                         <Tab.Pane eventKey={index+1} title={val.Category}>
                             <div className="box-category-hover">
                                 <div className="box-subcategory-hover">
                                     <ul>
-                                        {renderListSubCategory(val[0].allSubcategory)}
+                                        {renderListSubCategory(val[0].allSubcategory,index)}
                                     </ul>
                                 </div>
                                 <div className="box-product-category-hover">
-                                    {/* <Highlight data={{
-                                        allSubCategory:Product.allProduct
-                                    }}/> */}
-                                    
+                                    {/* {renderListProduct()} */}
+                                    <div className="box-title-category">
+
+                                    </div>
+                                    <div className="box-detail-product">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </Tab.Pane>
@@ -639,15 +722,6 @@ export default function Header(data){
 
                                     <Tab.Content>
                                         {render_isi_allCategory()}
-                                        {/* <Tab.Pane eventKey={1} title="Tab 1">
-                                            1
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey={2} title="Tab 2">
-                                            2
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey={3} title="Tab 3">
-                                            3
-                                        </Tab.Pane> */}
                                     </Tab.Content>
                                 </Tab.Container>
                             </DropdownMenu>
