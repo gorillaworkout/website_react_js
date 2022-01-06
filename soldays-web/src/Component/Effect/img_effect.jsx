@@ -13,7 +13,9 @@ export default function ImgEffect(data){
     return (
         <>
             <div className={`${pulsing ? "pulse" : ""} loadable`}
-                style={{ width: "100%", background:data.data.background }}>
+                style={{ width: "100%", background:data.data.background }}
+                alt={data.data.img}
+                >
                 <motion.img
                 initial={{ height: "100%", opacity: 0 }}
                 // style={{ height: imageLoading ? "6rem" : "auto" }}
@@ -28,6 +30,7 @@ export default function ImgEffect(data){
                 onLoad={imageLoaded}
                 width="100%"
                 height="100%"
+                alt={data.data.img}
                 src={data.data.img}
                 />
             </div>

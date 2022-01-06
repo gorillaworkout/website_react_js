@@ -34,7 +34,7 @@ export default function Header(data){
 
     const Product = useSelector(state=>state.Product)
     console.log(Product)
-    console.log(Product.allSubCategory)
+    // console.log(Product.allSubCategory)
     const Cart = useSelector(state=>state.Cart)
     const Auth = useSelector(state=>state.Auth)
 
@@ -53,7 +53,7 @@ export default function Header(data){
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
-    const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(true)
+    const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(false)
 
     const [category_Active,setCategory_Active] = useState(allSubcategoryFromHome[0][0].Category)
     const [subCategory_Active,setSubCategory_Active]=useState(allSubcategoryFromHome[0][0].allSubcategory[0].Subcategory)
@@ -463,14 +463,14 @@ export default function Header(data){
         }
     }
     const onMouseLeave=()=>{
-        // setToggleCart(false)
-        // setToggleLogin(false)
-        // setToggleAllCategory(false)
+        setToggleCart(false)
+        setToggleLogin(false)
+        setToggleAllCategory(false)
 
-        // setIsMenuHoverCart(false)
-        // setIsMenuHoverBulkOrder(false)
-        // setIsMenuHoverOrderList(false)
-        // setIsMenuHoverLogin(false)
+        setIsMenuHoverCart(false)
+        setIsMenuHoverBulkOrder(false)
+        setIsMenuHoverOrderList(false)
+        setIsMenuHoverLogin(false)
     }
 
     const toggleCartFunc=()=>{
@@ -516,14 +516,35 @@ export default function Header(data){
     }
 
 
+    const onSubcategoryClick=(subCategory)=>{
+        console.log(subCategory)
+        setSubCategory_Active(subCategory)
+    }
+    const onCategoryClick=(Category,subcategory)=>{
+        console.log(Category)
+        console.log(subcategory)
+        var all_findsubcategory = []
+        var find_subcategory = allProductFromHome.filter((val)=>{
+            if(val.Category === Category){
+                all_findsubcategory.push(val)
+                return val.Subcategory
+            }
+        })
+        console.log(all_findsubcategory)
+       
+
+        setCategory_Active(Category)
+        setSubCategory_Active(subcategory)
+    }
+
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
         const render_product_allCategory=()=>{
-            return Product.allCategory.map((val,index)=>{
-                // console.log(val.Category)
+            return Product.allSubCategory.map((val,index)=>{
+                console.log(val)
                 return (
                     <>
                         <Nav.Item>
-                            <Nav.Link eventKey={index+1}>{val.Category}</Nav.Link>
+                            <Nav.Link eventKey={index+1} onClick={()=>onCategoryClick(val[0].Category,val[0].allSubcategory[0].Subcategory)}>{val[0].Category}</Nav.Link>
                         </Nav.Item>
                                            
                     </>
@@ -533,18 +554,14 @@ export default function Header(data){
         }
 
         const render_isi_allCategory=()=>{
-            console.log(allSubcategoryFromHome)
-
             const renderListSubCategory=(subcategory,index)=>{
-
                 if(index === 0){ // nyari index ke 0 buat dibikin active pas baru dibuka
-                    console.log(subcategory)
                     if(subcategory.length > 0 ){
                         return subcategory.map((val,index)=>{
                             if(index === 0){
                                 return (
                                     <>
-                                        <li className="active-subcategory">
+                                        <li className="active-subcategory" onClick={()=>onSubcategoryClick(val.Subcategory)}>
                                             {val.Subcategory}
                                         </li>
                                     </>
@@ -552,8 +569,8 @@ export default function Header(data){
                             }else {
                                 return (
                                     <>
-                                        <li>
-                                            {val.Subcategory}
+                                        <li onClick={()=>onSubcategoryClick(val.Subcategory)}>
+                                            {val.Subcategory} 
                                         </li>
                                     </>
                                 )
@@ -562,7 +579,7 @@ export default function Header(data){
                     }else {
                         return (
                             <>
-                                <li className="active-subcategory">
+                                <li className="active-subcategory" onClick={()=>onSubcategoryClick(subcategory[0].allSubcategory)}> 
                                     {subcategory[0].allSubcategory}
                                 </li>
                             </>
@@ -574,15 +591,15 @@ export default function Header(data){
                             if(index === 0){
                                 return (
                                     <>
-                                        <li className="active-subcategory">
+                                        <li className="active-subcategory" onClick={()=>onSubcategoryClick(val.Subcategory)}>
                                             {val.Subcategory}
                                         </li>
-                                    </>
+                                    </> 
                                 )
                             }else {
                                 return (
                                     <>
-                                        <li>
+                                        <li onClick={()=>onSubcategoryClick(val.Subcategory)}>
                                             {val.Subcategory}
                                         </li>
                                     </>
@@ -592,7 +609,7 @@ export default function Header(data){
                     }else {
                         return (
                             <>
-                                <li>
+                                <li onClick={()=>onSubcategoryClick(subcategory[0].allSubcategory)}>
                                     {subcategory[0].allSubcategory}
                                 </li>
                             </>
@@ -603,6 +620,7 @@ export default function Header(data){
 
 
             const renderListProduct=()=>{
+                console.log(subCategory_Active,'sub category active')
                 var filter_for_render = []
                 var filter_product = allProductFromHome.filter((val)=>{
                     if(val.Subcategory === subCategory_Active){
@@ -610,56 +628,70 @@ export default function Header(data){
                         return val
                     }
                 })
-                console.log(filter_for_render.length)
+                
                 if(filter_product.length > 1){
-                    return(
-                        <>
-                            <Highlight data={{
-                                allSubCategory:filter_for_render
-                            }}/>
-                        </>
-                    )
+                    return filter_product.map((val,index)=>{
+                        return(
+                            <>
+                                <div className="card-product-allcategory">
+                                    <div className="box-img-product">
+                                        <ImgEffect data={{
+                                            img:val.Picture_1,
+                                            background:'transparent'
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="box-detail-name">
+                                        <p>{val.Name}</p>
+                                    </div>
+                                </div>
+                            </>
+                        )
+
+                    })
                 }else {
                     return (
                         <>
-                            <Highlight data={{
-                                allSubCategory:filter_for_render[0]
-                            }}/>
+                           <div className="card-product-allcategory">
+                                <div className="box-img-product">
+                                    <ImgEffect data={{
+                                        img:filter_product[0].Picture_1,
+                                        background:'transparent'
+                                        }}
+                                    />
+                                </div>
+                                <div className="box-detail-name">
+                                    <p>{filter_product[0].Name}</p>
+                                </div>
+                            </div>
+                
                         </>
                     )
                 }
                 
             }
 
-
-            
-
-            
-              return allSubcategoryFromHome.map((val,index)=>{ 
-                //   console.log(allSubcategoryFromHome)
-                //   console.log(val[0].Category)
-                //   console.log(val[0].allSubcategory)
-
-                    return (
-                        <Tab.Pane eventKey={index+1} title={val.Category}>
-                            <div className="box-category-hover">
-                                <div className="box-subcategory-hover">
-                                    <ul>
-                                        {renderListSubCategory(val[0].allSubcategory,index)}
-                                    </ul>
-                                </div>
-                                <div className="box-product-category-hover">
-                                    {/* {renderListProduct()} */}
-                                    <div className="box-title-category">
-
-                                    </div>
-                                    <div className="box-detail-product">
-                                        
-                                    </div>
-                                </div>
+            return allSubcategoryFromHome.map((val,index)=>{ 
+                return (
+                    <Tab.Pane eventKey={index+1} title={val.Category}>
+                        <div className="box-category-hover">
+                            <div className="box-subcategory-hover">
+                                <ul>
+                                    {renderListSubCategory(val[0].allSubcategory,index)}
+                                </ul>
                             </div>
-                        </Tab.Pane>
-                    )
+                            <div className="box-product-category-hover">
+                                <div className="box-title-category">
+                                    <p>{subCategory_Active}</p>
+                                </div>
+                                <div className="box-detail-product">
+                                    {renderListProduct()}
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </Tab.Pane>
+                )
             })
         }
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
