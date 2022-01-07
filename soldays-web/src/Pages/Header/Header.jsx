@@ -31,6 +31,7 @@ import { Tabs, Tab, Row, Nav } from "react-bootstrap";
 import axios from 'axios'
 export default function Header(data){
     const dispatch=useDispatch()
+    console.log(React.version);
 
     const Product = useSelector(state=>state.Product)
     console.log(Product)
