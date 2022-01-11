@@ -9,6 +9,7 @@ import BuyNow from '../src/Pages/BuyNow/BuyNow.jsx'
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register.jsx'
 import ProductPage from './Pages/Product/Product';
+import Orderlist from './Pages/OrderList/Orderlist';
 import PigeonMap from '../src/Pages/MapsTesting/PigeonMap.jsx'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {FullPageLoading} from './Component/Loading/Loading'
@@ -17,6 +18,8 @@ import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from './redux/Actions/AuthActions'
 import Testing from './Pages/Product/testing'
 import { useNavigate } from 'react-router-dom';
+
+
 
 
 
@@ -125,6 +128,7 @@ function App(props) {
         <Route exact path ='/login' element={<Login new_params={"testing"}/>}/>
         <Route exact path ='/register' element={<Register new_params={"testing"}/>}/>
         <Route exact path ='/Product/:subCategory' element={<ProductPage new_params={"testing"}/>}/>
+        <Route exact path ='/Orderlist' element={<Orderlist new_params={"testing"}/>}/>
         <Route exact path ='/testing' element={<Testing new_params={"testing"}/>}/>
       </Routes>
     </>

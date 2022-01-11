@@ -1,0 +1,10 @@
+.testing{
+    width:80%;
+    height:80% !important;
+}
+.box-cube-animation{
+    width:85% !important;
+    height:300px !important;
+    position: relative;
+    top:10%;
+}

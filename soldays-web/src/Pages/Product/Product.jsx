@@ -10,7 +10,9 @@ export default function Product(){
     return (
         <>
             <div className="box-container-product">
-                <Header/>
+                <div className="box-header">
+                    <Header/>
+                </div>
                 <div className="box-render-card-product">
                     <SliderImg/>
                 </div>
