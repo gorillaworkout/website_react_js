@@ -810,6 +810,7 @@
     min-width:200px;
     border:1px solid #dedede;
     border-radius:2px;
+    text-decoration: none;
 }
 .box-detail-name{
     width:100%;

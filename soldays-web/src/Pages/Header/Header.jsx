@@ -22,8 +22,6 @@ import {
 import {FcMoneyTransfer} from 'react-icons/fc'
 import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
 import {LogoutRedux} from '../../redux/Actions/AuthActions'
-// import Tabs from 'react-bootstrap/Tabs'
-// import Tab from 'react-bootstrap/Tab'
 import ProductCard from '../../Component/ProductCard/ProductCard'
 import Highlight from '../../Component/Highlight/highlight'
 import TabPane from 'react-bootstrap/TabPane'
@@ -531,8 +529,6 @@ export default function Header(data){
                 return val.Subcategory
             }
         })
-        console.log(all_findsubcategory)
-       
 
         setCategory_Active(Category)
         setSubCategory_Active(subcategory)
@@ -562,7 +558,7 @@ export default function Header(data){
                             if(index === 0){
                                 return (
                                     <>
-                                        <li className="active-subcategory" onClick={()=>onSubcategoryClick(val.Subcategory)}>
+                                        <li  onClick={()=>onSubcategoryClick(val.Subcategory)}>
                                             {val.Subcategory}
                                         </li>
                                     </>
@@ -592,7 +588,7 @@ export default function Header(data){
                             if(index === 0){
                                 return (
                                     <>
-                                        <li className="active-subcategory" onClick={()=>onSubcategoryClick(val.Subcategory)}>
+                                        <li  onClick={()=>onSubcategoryClick(val.Subcategory)}>
                                             {val.Subcategory}
                                         </li>
                                     </> 
@@ -634,7 +630,7 @@ export default function Header(data){
                     return filter_product.map((val,index)=>{
                         return(
                             <>
-                                <div className="card-product-allcategory">
+                                <Link to={`/ProductDetail/${val.Product_Code}`} className="card-product-allcategory" >
                                     <div className="box-img-product">
                                         <ImgEffect data={{
                                             img:val.Picture_1,
@@ -645,7 +641,7 @@ export default function Header(data){
                                     <div className="box-detail-name">
                                         <p>{val.Name}</p>
                                     </div>
-                                </div>
+                                </Link>
                             </>
                         )
 
@@ -653,7 +649,7 @@ export default function Header(data){
                 }else {
                     return (
                         <>
-                           <div className="card-product-allcategory">
+                           <Link to={`/ProductDetail/${filter_product[0].Product_Code}`}  className="card-product-allcategory">
                                 <div className="box-img-product">
                                     <ImgEffect data={{
                                         img:filter_product[0].Picture_1,
@@ -664,7 +660,7 @@ export default function Header(data){
                                 <div className="box-detail-name">
                                     <p>{filter_product[0].Name}</p>
                                 </div>
-                            </div>
+                            </Link>
                 
                         </>
                     )
@@ -685,7 +681,7 @@ export default function Header(data){
                                 <div className="box-title-category">
                                     <p>{subCategory_Active}</p>
                                 </div>
-                                <div className="box-detail-product">
+                                <div className="box-detail-product"> 
                                     {renderListProduct()}
                                 </div>
                                 
@@ -745,7 +741,7 @@ export default function Header(data){
                                 {/* <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example" className="mb-3">
                                 
                                 </Tabs> */}
-                          
+                            
                                 <Tab.Container defaultActiveKey={1}>
                                     <Nav variant="pills" className="flex-column">
                                         <Row>        

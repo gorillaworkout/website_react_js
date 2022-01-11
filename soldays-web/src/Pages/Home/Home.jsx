@@ -93,7 +93,6 @@ export default function Home({parentCallback}){
                     // console.log(Product.allSubCategory)
                     setDataToHighlight({...dataToHighlight,allSubCategory:Product.allSubCategory})
                     isDataToHighlight = true
-                    // setLoadingFetchingData(false)
                 }else {
                     console.log('data to highlight kosong')
                 }
@@ -156,6 +155,8 @@ export default function Home({parentCallback}){
 
         }
 
+
+        
 
         useEffect(()=>{
             check_all_data()
