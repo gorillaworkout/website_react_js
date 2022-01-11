@@ -5,12 +5,23 @@
     border:1px solid black;
     display: flex;
     flex-direction: column;
+    background-color: blue;
+    justify-content: center;
+    align-items: center;
+}
+.box-header{
+    width: 100%;
+    height:13%;
     background-color: red;
 }
 
 .box-render-card-product{
     width:100%;
-    height:100vh;
+    height:87%;
     border:1px solid black;
     background-color: pink;
+    display: flex;
+    justify-content: center;
+    
+    /* align-items: center; */
 }
