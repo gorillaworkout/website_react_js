@@ -14,6 +14,7 @@ import Reducers from './redux/Reducers'
 import Thunk from 'redux-thunk'
 import 'react-toastify/dist/ReactToastify.css';
 
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={createStore(Reducers,{},applyMiddleware(Thunk))}>
