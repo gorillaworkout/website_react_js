@@ -124,7 +124,7 @@ function App(props) {
         <Route exact path ='/map' element={<PigeonMap new_params={"testing"}/>}/>
         <Route exact path ='/login' element={<Login new_params={"testing"}/>}/>
         <Route exact path ='/register' element={<Register new_params={"testing"}/>}/>
-        <Route exact path ='/Product/:subCategory' element={<ProductPage new_params={"testing"}/>}/>
+        <Route exact path ='/Product/:Subcategory' element={<ProductPage new_params={"testing"}/>}/>
         <Route exact path ='/testing' element={<Testing new_params={"testing"}/>}/>
       </Routes>
     </>

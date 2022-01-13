@@ -100,25 +100,18 @@ export default function ProductDetail(){
         if(isLoading){
             Axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
             .then((res)=>{
-                // console.log(res.data)
                 setProductRender(res.data)
                 setImgActive(res.data.Picture_1)
                 var find_city = res.data.PIC_company_address.split(',')
-                // console.log(find_city)
                 var CityCompany = find_city[4]
                 setCityCompany(CityCompany)   
-                // console.log(res.data.User_Comments)
                 var comment_stringify = JSON.parse(res.data.User_Comments)
-                // console.log(comment_stringify)
-
-
                 if(comment_stringify !== null &&  comment_stringify !== undefined ){
 
                     var total_comment = comment_stringify.length
                     if(total_comment === null || total_comment === undefined){
                         total_comment = 0
                     }
-                    // console.log(total_comment)
                     setTotalComment(total_comment)
                     setAllComment(comment_stringify)
                     setTimeout(()=>{
@@ -131,9 +124,6 @@ export default function ProductDetail(){
                     },500)
                     // console.log('comment stringify masih null / undefined')
                 }
-                
-                // var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
-                // console.log(cartFromRedux)
             }).catch((err)=>{
                 console.log(err)
             })
@@ -148,10 +138,6 @@ export default function ProductDetail(){
             let elHeight = document.querySelector('.ulasan-product-detail').clientHeight
             // let elHeight = document.querySelector('.box-detail-product-description').clientHeight
             var finalHeight = elHeight - 100
-            // console.log(elHeight)
-            // console.log(finalHeight)
-            // console.log(scrollY)
-    
             if(totalComment === 0 ){
                 finalHeight = 250
             }
@@ -160,15 +146,6 @@ export default function ProductDetail(){
             }else {
                 setScrollNone(true)
             }
-
-          
-            // console.log(dimensions.height)
-            // if(scrollY > 600){
-            //     setScrollProductPrice(false)
-            // }else {
-            //     setScrollProductPrice(true)
-            // }
-            
         }
 
         
