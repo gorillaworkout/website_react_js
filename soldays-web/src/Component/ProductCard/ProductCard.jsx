@@ -6,7 +6,7 @@ import ImgEffect from '../../Component/Effect/img_effect'
 import { Link} from "react-router-dom";
 
 export default function ProductCard(data){
-    // console.log(data)
+    console.log(data)
     const [isTokpedAds,setIsTokpedAds]=useState(data.data.isTokpedAds) // ini dibikin kalo misal card mau pake iklan berarti true, kasih class tokped_ads_iklan
     const [allDataFromHome,setAllDataFromHome]=useState(data.data.allProductItem)
     function commafy( num ) {

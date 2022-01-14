@@ -16,9 +16,8 @@ import {
     DropdownItem,
     
   } from "reactstrap";
-//   import Nav from 'react-bootstrap/Nav'
-  import ImgEffect from '../../Component/Effect/img_effect'
-  import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
+import ImgEffect from '../../Component/Effect/img_effect'
+import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
 import {FcMoneyTransfer} from 'react-icons/fc'
 import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
 import {LogoutRedux} from '../../redux/Actions/AuthActions'
@@ -29,11 +28,10 @@ import { Tabs, Tab, Row, Nav } from "react-bootstrap";
 import axios from 'axios'
 export default function Header(data){
     const dispatch=useDispatch()
-    console.log(React.version);
+    // console.log(React.version);
 
     const Product = useSelector(state=>state.Product)
-    console.log(Product)
-    // console.log(Product.allSubCategory)
+    // console.log(Product)
     const Cart = useSelector(state=>state.Cart)
     const Auth = useSelector(state=>state.Auth)
 
@@ -92,9 +90,6 @@ export default function Header(data){
 
     
     useEffect(()=>{
-     
-        console.log(Auth)
-        console.log(Auth.isLogin)
         // IF UNTUK RENDER SEARCHING PRODUCT
         if(allProductFromHome !==null || allProductFromHome.length > 0){
             allProductFromHome.forEach((val,index)=>{
@@ -131,7 +126,7 @@ export default function Header(data){
         }
         
         setIsLoginHeader(Auth.isLogin)
-        console.log('Auth is Login skrng ' , Auth.isLogin)
+        // console.log('Auth is Login skrng ' , Auth.isLogin)
         
     },[Auth.isLogin, Cart.Cart])
     function commafy( num ) {
@@ -537,7 +532,6 @@ export default function Header(data){
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
         const render_product_allCategory=()=>{
             return Product.allSubCategory.map((val,index)=>{
-                console.log(val)
                 return (
                     <>
                         <Nav.Item>
@@ -617,7 +611,6 @@ export default function Header(data){
 
 
             const renderListProduct=()=>{
-                console.log(subCategory_Active,'sub category active')
                 var filter_for_render = []
                 var filter_product = allProductFromHome.filter((val)=>{
                     if(val.Subcategory === subCategory_Active){

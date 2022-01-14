@@ -98,6 +98,7 @@ export default function ProductDetail(){
     useEffect(()=>{
 
         if(isLoading){
+            // console.log('101 isloading true')
             Axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
             .then((res)=>{
                 setProductRender(res.data)
@@ -107,7 +108,7 @@ export default function ProductDetail(){
                 setCityCompany(CityCompany)   
                 var comment_stringify = JSON.parse(res.data.User_Comments)
                 if(comment_stringify !== null &&  comment_stringify !== undefined ){
-
+                    
                     var total_comment = comment_stringify.length
                     if(total_comment === null || total_comment === undefined){
                         total_comment = 0

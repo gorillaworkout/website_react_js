@@ -236,6 +236,7 @@ export default function Home({parentCallback}){
                 <CardAds data={dataToCardAds1}/>
             </LazyLoad>
 
+            
             <LazyLoad>
                 <ProductCard data={dataToCardPromo} parentCallback={handleCallbackFromCardPromo}/>
             </LazyLoad>
