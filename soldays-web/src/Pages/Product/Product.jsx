@@ -12,7 +12,7 @@ import CardItem from '../../Component/card/CardItem'
 import Select from 'react-select'
 import { css,  } from '@emotion/react'
 import Form from 'react-bootstrap/Form'
-
+import Footer from '../../Component/Footer/Footer'
 
 
 export default function Product(){
@@ -226,14 +226,14 @@ export default function Product(){
                     <div className="product-breadcrumb">
                         <div className="breadcrumb-box">
                             <Breadcrumb>
-                                <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                                <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
                                 <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
                                     Kategori Utama
                                 </Breadcrumb.Item>
                                 <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
                                     SubKategori
                                 </Breadcrumb.Item>
-                                <Breadcrumb.Item active>Sealant</Breadcrumb.Item>
+                                <Breadcrumb.Item active>{Subcategory}</Breadcrumb.Item>
                             </Breadcrumb>
                         </div>
                     </div>
@@ -264,6 +264,7 @@ export default function Product(){
                     </div>
                 </div>
             </div>
+                <Footer/>
         </>
         
     )
