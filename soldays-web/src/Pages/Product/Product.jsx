@@ -262,9 +262,12 @@ export default function Product(){
                             </div>       
                         </div>
                     </div>
+                    <div className="box-footer">
+                        <Footer/>
+                    </div>
                 </div>
+                
             </div>
-                <Footer/>
         </>
         
     )

@@ -1,5 +1,6 @@
 import React, { useState,useEffect, } from 'react'
-import './Header.css'
+// import './Header.css'
+import '../../Styles/Header.scss'
 import { css,  } from '@emotion/react'
 
 import {BsPhone,BsSearch} from 'react-icons/bs'
@@ -719,13 +720,14 @@ export default function Header(data){
                     <Link to='/' className="box-logo-header">
                         <img src={logo_soldays} alt="" />
                     </Link>
-                    <div className="all-category-header-box">
-                        
+                    <div className="all-category-header-box"    
+                        onMouseOver={()=>onMouseEnter('allCategory')}  
+                        onMouseLeave={onMouseLeave} 
+                    >         
                         <Dropdown
-                            onMouseOver={()=>onMouseEnter('allCategory')}
-                            onMouseLeave={onMouseLeave}
+                        
                             isOpen={toggleAllCategory}
-                            onClick={open_cart}
+                            // onClick={open_cart}
                             >
                             <DropdownToggle caret>
                                 <p onClick={open_semua_kategori}>Semua  Kategori</p>
@@ -817,12 +819,9 @@ export default function Header(data){
                             {
                             isLoginHeader?
                                 <Dropdown
-                                    // className="d-inline-block"
                                     onMouseOver={()=>onMouseEnter('Login')}
                                     onMouseLeave={onMouseLeave}
                                     isOpen={toggleLogin}
-                                    // onClick={open_cart}
-                                    // toggle={toggleCartFunc}
                                     >
                                     <DropdownToggle caret>   
                                         <div className={isMenuHoverLogin? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_logout}>
