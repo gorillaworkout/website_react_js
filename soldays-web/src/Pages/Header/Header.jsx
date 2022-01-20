@@ -409,7 +409,7 @@ export default function Header(data){
                 if(index<5){
                     return (
                         <>
-                             <div key={index} className="category-random-item" onClick={()=>open_random_category(`${val.Category}`)}>
+                            <div key={index} className="category-random-item" onClick={()=>open_random_category(`${val.Category}`)}>
                                 <p>{val.Category}</p>
                             </div>
                         </>

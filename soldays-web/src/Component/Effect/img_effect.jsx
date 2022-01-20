@@ -20,7 +20,7 @@ export default function ImgEffect(data){
                 initial={{ height: "100%", opacity: 0 }}
                 // style={{ height: imageLoading ? "6rem" : "auto" }}
                 animate={{
-                    height: imageLoading ? "100%" : "auto",
+                    height: imageLoading ? "100%" : "100%",
                     opacity: imageLoading ? 0 : 1
                 }}
                 transition={

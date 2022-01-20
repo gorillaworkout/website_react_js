@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import './highlight.css'
+// import './highlight.css'
+import '../../Styles/Highlight.scss'
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImgEffect from '../Effect/img_effect'
+import {Link} from 'react-router-dom'
+
     export default function Highlight(data){
     // console.log(data.data.allSubCategory)
     // console.log(data.data.allSubCategory[0][0].Category)
@@ -26,7 +29,7 @@ import ImgEffect from '../Effect/img_effect'
                     return val[0].allSubcategory.map((val,index)=>{
                         // console.log(val.Subcategory)
                         return (
-                            <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
+                            <Link to={`/Product/${val.Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
                                 <div className="card-highlight-img">
                                     <ImgEffect
                                         data={{
@@ -38,25 +41,26 @@ import ImgEffect from '../Effect/img_effect'
                                 <div className="card-detail-name">
                                     <p>{val.Subcategory}</p>
                                 </div>
-                            </div>
+                            </Link>
                         )
                     })
                 }else {
+                    console.log(val[0].allSubcategory[0].Picture_1)
                     return(
                         <>
-                         <div key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
+                         <Link to={`/Product/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
                             <div className="card-highlight-img">
                                 <ImgEffect
                                     data={{
-                                        img:val.Picture_1,
+                                        img:val[0].allSubcategory[0].Picture_1,
                                         background:'#ccc'
                                     }}
                                 />
                             </div>
                             <div className="card-detail-name">
-                                <p>{val.Subcategory}</p>
+                                <p>{val[0].allSubcategory[0].Subcategory}</p>
                             </div>
-                        </div>
+                        </Link>
                         </>
                     )
     
@@ -65,7 +69,7 @@ import ImgEffect from '../Effect/img_effect'
         }else {
             return(
                 <>
-                 <div key={1} className="card-highlight-product" onClick={()=>open_highlight(`${allSubCategoryFromHome.Subcategory}`)}>
+                 <Link to={`/Product/${allSubCategoryFromHome.Subcategory}`} style={{textDecoration:'none'}} key={1} className="card-highlight-product" onClick={()=>open_highlight(`${allSubCategoryFromHome.Subcategory}`)}>
                     <div className="card-highlight-img">
                         <ImgEffect
                             data={{
@@ -77,7 +81,7 @@ import ImgEffect from '../Effect/img_effect'
                     <div className="card-detail-name">
                         <p>{allSubCategoryFromHome.Subcategory}</p>
                     </div>
-                </div>
+                </Link>
                 </>
             )
         }

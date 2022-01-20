@@ -9,7 +9,7 @@ import Slider2 from '../../Assets/slider/new_ads2.png'
 import Slider3 from '../../Assets/slider/promo1.png'
 import Slider4 from '../../Assets/slider/promo2.png'
 import Slider5 from '../../Assets/slider/promo3.png'
-
+import ImgEffect from '../Effect/img_effect'
 export default function SliderImg(){
 
 
@@ -19,28 +19,31 @@ export default function SliderImg(){
            <Carousel className="carousel-slider-box">
             <Carousel.Item interval={10000}>
                 <div className="box-slider-img">
-                    <img
-                    className="d-block w-100"
-                    src={Slider}
-                    alt="First slide"
+                     <ImgEffect
+                        data={{
+                            img:Slider,
+                            background:'#ccc'
+                        }}
                     />
                 </div>   
             </Carousel.Item>
                 <Carousel.Item interval={10000}>
                     <div className="box-slider-img">
-                        <img
-                        className="d-block"
-                        src={Slider2}
-                        alt="First slide"
+                        <ImgEffect
+                            data={{
+                                img:Slider2,
+                                background:'#ccc'
+                            }}
                         />
                     </div>
                 </Carousel.Item>
                 <Carousel.Item interval={10000}>
                     <div className="box-slider-img">
-                        <img
-                        className="d-block w-100"
-                        src={Slider3}
-                        alt="First slide"
+                        <ImgEffect
+                            data={{
+                                img:Slider3,
+                                background:'#ccc'
+                            }}
                         />
                     </div>
                 </Carousel.Item>
