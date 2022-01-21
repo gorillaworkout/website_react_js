@@ -133,6 +133,11 @@ export default function Product(){
             }
         })
 
+
+        var new_array_for_render = []
+         listSubcategoryActive.forEach((val,index)=>{
+             
+         })
        
         console.log(array_for_render,' array for render')
         return array_for_render.map((val,index)=>{
