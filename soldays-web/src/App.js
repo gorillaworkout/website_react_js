@@ -8,13 +8,14 @@ import ProductDetail from '../src/Pages/Product/ProductDetail'
 import BuyNow from '../src/Pages/BuyNow/BuyNow.jsx'
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register.jsx'
-import ProductPage from './Pages/Product/Product';
+import ProductPage from './Pages/Subcategory/Subcategory';
 import PigeonMap from '../src/Pages/MapsTesting/PigeonMap.jsx'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {FullPageLoading} from './Component/Loading/Loading'
-import {GetAllProduct,getAllSubCategory} from './redux/Actions/ProductActions'
+import {GetAllProduct} from './redux/Actions/ProductActions'
 import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from './redux/Actions/AuthActions'
+import Category from './Pages/Category/Category';
 import Testing from './Pages/Product/testing'
 import { useNavigate } from 'react-router-dom';
 
@@ -32,12 +33,6 @@ function App(props) {
 
   useEffect(()=>{
     var token = JSON.parse(localStorage.getItem('token'))
-    // var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
-    // console.log(token)
-    // dispatch({type:'GETALLCARTSTORAGE',Cart})
-
-    
-
     if(token) {
       console.log('masuk ke if token ada')
       dispatch(LoginRedux(token))
@@ -118,13 +113,14 @@ function App(props) {
   return (
     <>
       <Routes>
-        <Route exact path = '/' element={<Home new_params={"testing"}/>}/>
-        <Route exact path = '/ProductDetail/:Product_Code' element={<ProductDetail new_params={"testing"}/>}/>
+        <Route exact path ='/' element={<Home new_params={"testing"}/>}/>
+        <Route exact path ='/ProductDetail/:Product_Code' element={<ProductDetail new_params={"testing"}/>}/>
         <Route exact path ='/beli-langsung/:Product_Code' element={<BuyNow new_params={"testing"}/>}/>
         <Route exact path ='/map' element={<PigeonMap new_params={"testing"}/>}/>
         <Route exact path ='/login' element={<Login new_params={"testing"}/>}/>
         <Route exact path ='/register' element={<Register new_params={"testing"}/>}/>
-        <Route exact path ='/Product/:Subcategory' element={<ProductPage new_params={"testing"}/>}/>
+        <Route exact path ='/Subcategory/:Subcategory' element={<ProductPage new_params={"testing"}/>}/>
+        <Route exact path ='/allCategory' element={<Category new_params={"testing"}/>}/>
         <Route exact path ='/testing' element={<Testing new_params={"testing"}/>}/>
       </Routes>
     </>

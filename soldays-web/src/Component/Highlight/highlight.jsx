@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 // import './highlight.css'
 import '../../Styles/Highlight.scss'
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -10,16 +10,22 @@ import {Link} from 'react-router-dom'
     // console.log(data.data.allSubCategory[0][0].Category)
 
     const [allSubCategoryFromHome,setAllSubCategpryFromHome]=useState(data.data.allSubCategory)
-    const [open_Category,setOpen_Category] = useState(false)
+    // const [open_Category,setOpen_Category] = useState(false)
+
+    useEffect(()=>{
+        if(allSubCategoryFromHome !== undefined) {
+            setAllSubCategpryFromHome(data.data.allSubCategory)
+        }
+    },[allSubCategoryFromHome, data.data.allSubCategory])
     const open_highlight=(subcategory)=>{
     
-        var data_to_home = [
-            {"open_subcategory":!open_Category},
-            {"subcategory_from_highlight":subcategory}
-        ]
+        // var data_to_home = [
+        //     {"open_subcategory":!open_Category},
+        //     {"subcategory_from_highlight":subcategory}
+        // ]
             
         
-        data.parentCallback(data_to_home)
+        // data.parentCallback(data_to_home)
     }
     const render_subcategory_highlight=()=>{
         if(allSubCategoryFromHome.length > 1){
@@ -89,14 +95,12 @@ import {Link} from 'react-router-dom'
     return (
         <>
             <div key={12} className="highlight-container">
-                {/* <div className="inside-highlight"> */}
-                    <div className="highlight-judul">
-                        <h1>HIGHLIGHT</h1>
-                    </div>
-                    <div className="box-for-product-item-highlight" key={1}>
-                       {render_subcategory_highlight()}       
-                    </div>
-                {/* </div> */}
+                <div className="highlight-judul">
+                    <h1>HIGHLIGHT</h1>
+                </div>
+                <div className="box-for-product-item-highlight" key={1}>
+                    {render_subcategory_highlight()}       
+                </div>
             </div>
 
         </>

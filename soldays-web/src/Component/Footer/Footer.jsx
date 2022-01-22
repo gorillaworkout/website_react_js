@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './Footer.css'
 import {GrFacebookOption,GrInstagram,GrTwitter,GrYoutube} from 'react-icons/gr'
 import SmallCardSocialMedia from '../card/small_card_social_media'
