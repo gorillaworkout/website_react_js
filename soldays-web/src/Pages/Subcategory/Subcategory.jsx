@@ -91,7 +91,6 @@ export default function Product(){
         setOptionSearching(options_product_searching)
     }
 
-
     const RenderCard=()=>{
        if(arrayForRender.length > 1 ){
            return arrayForRender.map((val,index)=>{      
@@ -266,7 +265,6 @@ export default function Product(){
         })
     }
 
-    
 
     if(isLoading){
         return (
