@@ -42,7 +42,7 @@ export default function Header(data){
     // const [category_random,setCategory_random]=useState('')
     const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
-    const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allCategory)
+    const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allSubCategory)
     const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory)
     const [headerHome,setHeaderHome]=useState(true)
     const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
@@ -405,13 +405,13 @@ export default function Header(data){
     const render_random_category=()=>{
         // console.log(allCategoryFromHome)
         if(allCategoryFromHome !== undefined){
-            return allCategoryFromHome.map((val,index)=>{
+            return allCategoryFromHome.map((val,index)=>{ 
                 if(index<5){
                     return (
                         <>
-                            <div key={index} className="category-random-item" onClick={()=>open_random_category(`${val.Category}`)}>
-                                <p>{val.Category}</p>
-                            </div>
+                            <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index} className="category-random-item" onClick={()=>open_random_category(`${val[0].Category}`)}>
+                                <p>{val[0].Category}</p>
+                            </Link>
                         </>
                     )
                 }else {

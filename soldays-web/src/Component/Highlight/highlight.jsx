@@ -35,7 +35,7 @@ import {Link} from 'react-router-dom'
                     return val[0].allSubcategory.map((val,index)=>{
                         // console.log(val.Subcategory)
                         return (
-                            <Link to={`/Product/${val.Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
+                            <Link to={`/Subcategory/${val.Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val.Subcategory}`)}>
                                 <div className="card-highlight-img">
                                     <ImgEffect
                                         data={{
@@ -54,7 +54,7 @@ import {Link} from 'react-router-dom'
                     console.log(val[0].allSubcategory[0].Picture_1)
                     return(
                         <>
-                         <Link to={`/Product/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
+                         <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
                             <div className="card-highlight-img">
                                 <ImgEffect
                                     data={{
@@ -75,7 +75,7 @@ import {Link} from 'react-router-dom'
         }else {
             return(
                 <>
-                 <Link to={`/Product/${allSubCategoryFromHome.Subcategory}`} style={{textDecoration:'none'}} key={1} className="card-highlight-product" onClick={()=>open_highlight(`${allSubCategoryFromHome.Subcategory}`)}>
+                 <Link to={`/Subcategory/${allSubCategoryFromHome.Subcategory}`} style={{textDecoration:'none'}} key={1} className="card-highlight-product" onClick={()=>open_highlight(`${allSubCategoryFromHome.Subcategory}`)}>
                     <div className="card-highlight-img">
                         <ImgEffect
                             data={{
