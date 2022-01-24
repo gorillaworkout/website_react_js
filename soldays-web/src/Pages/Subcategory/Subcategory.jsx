@@ -314,9 +314,6 @@ export default function Product(){
                                 <Breadcrumb.Item href="/allcategory">
                                     Category
                                 </Breadcrumb.Item>
-                                <Breadcrumb.Item href="#">
-                                    SubCategory
-                                </Breadcrumb.Item>
                                 <Breadcrumb.Item active>{Subcategory}</Breadcrumb.Item>
                             </Breadcrumb>
                         </div>

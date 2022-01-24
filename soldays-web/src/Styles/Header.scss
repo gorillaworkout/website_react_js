@@ -290,9 +290,7 @@
                                 }
                             }
                         }
-                    }
-
-                    
+                    }       
                 }
             }
         }
@@ -696,6 +694,11 @@
                         margin:0px !important;
                         color:#535353;
                     }
+                    .icon-login-logout {
+                        width: 40%;
+                        height:40%;
+                        color:#27aae1;
+                    }
                     .box-cart-counter{
                         width:100%;
                         height:50%;
@@ -1093,8 +1096,6 @@
                             }
                         }
                     }
-
-                    
                 }
             }
         }
@@ -1189,6 +1190,11 @@
                             margin:0px !important;
                             color:#535353;
                         }
+                        .icon-login-logout {
+                            width: 40%;
+                            height:40%;
+                            color:#27aae1;
+                        }
                         .box-cart-counter{
                             width:100%;
                             height:50%;
@@ -1219,6 +1225,11 @@
                         cursor: pointer;
                         background-color: #caf0f8;
                        box-shadow: 0 14px 20px rgba(0,0,0,0.15), 0 5px 5px rgba(0,0,0,0.12);
+                        .icon-login-logout {
+                            width: 40%;
+                            height:40%;
+                            color:#27aae1;
+                    }
                     }
                     .btn-secondary{
                         background-color:transparent !important;

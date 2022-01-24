@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {badge_new,badge_groupbuy,icon_cart,new_iklan_left} from '../../Assets/Assets'
 import ImgEffect from '../Effect/img_effect'
 import {Link} from 'react-router-dom'
+import '../../Styles/CardItem.scss'
 function commafy( num ) {
     if(num !==undefined){
         var str = num.toString().split('.');
@@ -25,8 +26,6 @@ export default function CardItem({arr}){
         <Link to={`${arr.Link}`}  key={arr.index} className="card-product-box  hvr-float-shadow" onClick={arr.onFunc}>
             <div className="box-badge-product-card">
                 <img src={badge_new} alt="" id="badge_new"/>
-                {/* <img src={badge_seller} alt="" id="badge_seller"/> */}
-                {/* <img src={badge_groupbuy} alt="" id="badge_groupbuy"/> */}
             </div>
             <div className="box-img-product-card">
                 <ImgEffect data={{

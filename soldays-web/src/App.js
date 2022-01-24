@@ -37,7 +37,7 @@ function App(props) {
       console.log('masuk ke if token ada')
       dispatch(LoginRedux(token))
       checking_data_product()
-      navigate('/')
+      // navigate('/')
       
     }else {
       console.log('masuk ke if token  gaada ')

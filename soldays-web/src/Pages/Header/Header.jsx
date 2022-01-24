@@ -151,13 +151,13 @@ export default function Header(data){
 
         }else {
             setDataSearching(e.value)
-            data.parentCallback({"searching_header":e.value})
+            // data.parentCallback({"searching_header":e.value})
         }
     }
     // function searching header
 
     const open_download_app=()=>{
-        data.parentCallback({"download_app":!allIsData.isDownloadApp})
+        // data.parentCallback({"download_app":!allIsData.isDownloadApp})
         setAllIsData({...allIsData,
         isDownloadApp:!allIsData.isDownloadApp,
         isSemuaKategori:false,
@@ -175,7 +175,7 @@ export default function Header(data){
     })
     }
     const open_order_list=()=>{
-        data.parentCallback({"order_list":!allIsData.isOrderList})
+        // data.parentCallback({"order_list":!allIsData.isOrderList})
         setAllIsData({...allIsData,
         isOrderList:!allIsData.isOrderList,
         isDownloadApp:false,
@@ -194,7 +194,7 @@ export default function Header(data){
 
     }
     const open_bulk_order=()=>{
-        data.parentCallback({"bulk_order":!allIsData.isBulkOrder})
+        // data.parentCallback({"bulk_order":!allIsData.isBulkOrder})
         setAllIsData({...allIsData,
         isBulkOrder:!allIsData.isBulkOrder,
         isDownloadApp:false,
@@ -211,7 +211,7 @@ export default function Header(data){
     })
     }
     const open_semua_kategori=()=>{
-        data.parentCallback({"semua_kategori":!allIsData.isSemuaKategori})
+        // data.parentCallback({"semua_kategori":!allIsData.isSemuaKategori})
         setAllIsData({...allIsData,
         isSemuaKategori:!allIsData.isSemuaKategori,
         isDownloadApp:false,
@@ -229,7 +229,7 @@ export default function Header(data){
     }
     
     const open_cart=()=>{
-        data.parentCallback({"cart":!allIsData.isCart})
+        // data.parentCallback({"cart":!allIsData.isCart})
         setAllIsData({...allIsData,
         isCart:!allIsData.isCart,
         isDownloadApp:false,
@@ -247,14 +247,14 @@ export default function Header(data){
     }
 
     const open_login=()=>{
-        data.parentCallback({"login":!allIsData.isLogin})
+        // data.parentCallback({"login":!allIsData.isLogin})
         setAllIsData({...allIsData,
         isLogin:!allIsData.isLogin
     })
     }
 
     const open_logout=()=>{
-        data.parentCallback({"login":!allIsData.isLogin})
+        // data.parentCallback({"login":!allIsData.isLogin})
         setAllIsData({...allIsData,isLogin:!allIsData.isLogin})
     }
 
@@ -264,7 +264,7 @@ export default function Header(data){
             {"random_kategori":!allIsData.isRandomCategory},
             {"category_random_item":category}
         ] 
-        data.parentCallback(data_from_cart)
+        // data.parentCallback(data_from_cart)
         setAllIsData({
             ...allIsData,
         category_random:category,
@@ -283,7 +283,7 @@ export default function Header(data){
 
     }
     const open_aboutus=()=>{
-        data.parentCallback({"about_us":!allIsData.isAboutUs})
+        // data.parentCallback({"about_us":!allIsData.isAboutUs})
         setAllIsData({...allIsData,
         isAboutUs:!allIsData.isAboutUs,
         isDownloadApp:false,
@@ -300,7 +300,7 @@ export default function Header(data){
     })
     }
     const open_kebijakan=()=>{
-        data.parentCallback({"kebijakan":!allIsData.isKebijakan})
+        // data.parentCallback({"kebijakan":!allIsData.isKebijakan})
         setAllIsData({...allIsData,
         isKebijakan:!allIsData.isKebijakan,
         isDownloadApp:false,
@@ -318,7 +318,7 @@ export default function Header(data){
     })
     }
     const open_panduan_customer=()=>{
-        data.parentCallback({"panduan_customer":!allIsData.isPanduanCustomer})
+        // data.parentCallback({"panduan_customer":!allIsData.isPanduanCustomer})
         setAllIsData({...allIsData,
         isPanduanCustomer:!allIsData.isPanduanCustomer,
         isDownloadApp:false,
@@ -335,7 +335,7 @@ export default function Header(data){
     })
     }
     const open_panduan_seller=()=>{
-        data.parentCallback({"panduan_seller":!allIsData.isPanduanSeller})
+        // data.parentCallback({"panduan_seller":!allIsData.isPanduanSeller})
         setAllIsData({...allIsData,
         isPanduanSeller:!allIsData.isPanduanSeller,
         isDownloadApp:false,
@@ -352,7 +352,7 @@ export default function Header(data){
     })
     }
     const open_social_media=()=>{
-        data.parentCallback({"social_media":!allIsData.isSocialMedia})
+        // data.parentCallback({"social_media":!allIsData.isSocialMedia})
         setAllIsData({...allIsData,
         isSocialMedia:!allIsData.isSocialMedia,
         isDownloadApp:false,
@@ -369,7 +369,7 @@ export default function Header(data){
     })
     }
     const open_catalog=()=>{
-        data.parentCallback({"catalog":!allIsData.isCatalog})
+        // data.parentCallback({"catalog":!allIsData.isCatalog})
         setAllIsData({...allIsData,
         isCatalog:!allIsData.isCatalog,
         isDownloadApp:false,
@@ -395,7 +395,7 @@ export default function Header(data){
                     isClearable={true}
                     // value={currentValueProduct}
                     backspaceRemovesValue={true}
-                    onChange={open_product}
+                    // onChange={open_product}
                     options={options_product_searching}
                     placeholder="Cari Barangmu disini"
                 />
