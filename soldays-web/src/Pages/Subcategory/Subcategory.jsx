@@ -62,10 +62,11 @@ export default function Product(){
         if(allProduct === undefined){
             allProduct = Product.allProduct
         }
+
         var new_array_for_render = []
         if(array.length > 1 ){
-            array.forEach((val,index)=>{
-               allProductRender.forEach((value,index)=>{
+            array.forEach((val,id,arr)=>{
+               allProductRender.forEach((value,index,array)=>{
                     if(value.Subcategory.toUpperCase() === val.toUpperCase()){
                         new_array_for_render.push(value)
                         options_product_searching.push({
@@ -74,11 +75,17 @@ export default function Product(){
                         })
                     }
                 })
+                if(id === arr.length - 1){
+                    if(checkedMurah){
+                         new_array_for_render = filterByLower(new_array_for_render)
+                    }else if (checkedMahal){
+                        new_array_for_render = filterByBigger(new_array_for_render)
+                    }
+                }
             })
         }else {
             allProduct.forEach((val,index)=>{
                 if(val.Subcategory.toUpperCase() === array[0].toUpperCase()){
-                    console.log(val)
                     new_array_for_render.push(val)
                     options_product_searching.push({
                         value:val,
@@ -155,42 +162,63 @@ export default function Product(){
         }
     }
 
-    const filterByLower=()=>{
-        var asc = arrayForRender.sort((a,b)=>{
-            var harga_a = parseInt(a.Sell_Price)
-            var harga_b = parseInt(b.Sell_Price)
-            if(harga_a === harga_b ){
-                console.log('msk ke if')
-                return harga_a - harga_b
-            }else {
-                console.log('msk ke else')
-                return harga_a - harga_b
-            }
-        })
-        console.log(asc,'asc')
-        // setAllProductRender(asc)
-        setArrayForRender(asc)
+    const filterByLower=(array)=>{
+
+        if(array === undefined ){
+            var asc = arrayForRender.sort((a,b)=>{
+                var harga_a = parseInt(a.Sell_Price)
+                var harga_b = parseInt(b.Sell_Price)
+                if(harga_a === harga_b ){
+                    return harga_a - harga_b
+                }else {
+                    return harga_a - harga_b
+                }
+            })
+            setArrayForRender(asc)
+        }else {
+            var asc = array.sort((a,b)=>{
+                var harga_a = parseInt(a.Sell_Price)
+                var harga_b = parseInt(b.Sell_Price)
+                if(harga_a === harga_b ){
+                    return harga_a - harga_b
+                }else {
+                    return harga_a - harga_b
+                }
+            })
+            setArrayForRender(asc)
+        }
         return asc
     }
 
-    const filterByBigger=()=>{
-        var desc = arrayForRender.sort((a,b)=>{
-        var harga_a = parseInt(a.Sell_Price)
-        var harga_b = parseInt(b.Sell_Price)
-            if(harga_a === harga_b ){
-                return harga_b - harga_a
-            }else {
-                return harga_b - harga_a
-            }
-        })
-        // setAllProductRender(desc)
-        setArrayForRender(desc)
-        console.log(desc,'desc')
+    const filterByBigger=(array)=>{
+
+        if(array === undefined ){
+            var desc = arrayForRender.sort((a,b)=>{
+            var harga_a = parseInt(a.Sell_Price)
+            var harga_b = parseInt(b.Sell_Price)
+                if(harga_a === harga_b ){
+                    return harga_b - harga_a
+                }else {
+                    return harga_b - harga_a
+                }
+            }) 
+            setArrayForRender(desc)
+        }else {
+            var desc = array.sort((a,b)=>{
+                var harga_a = parseInt(a.Sell_Price)
+                var harga_b = parseInt(b.Sell_Price)
+                    if(harga_a === harga_b ){
+                        return harga_b - harga_a
+                    }else {
+                        return harga_b - harga_a
+                    }
+                })
+                setArrayForRender(desc) 
+        }
         return desc
     }
 
     const handleClickCheckBox=(params)=>{
-        console.log(params)
         if(params === 'murah'){
             filterByLower()
             if(checkedMurah){
@@ -210,25 +238,19 @@ export default function Product(){
                 setCheckedMahal(true)
                 setCheckedMurah(false)
             }
-            // setCheckedMahal(!checkedMahal)
-
         }
     }
     const handleCheckBoxSubcategory=(params)=>{
         var allListItem = listSubcategoryActive
         var findIndex = allListItem.findIndex((val)=>{
-            console.log(val.toUpperCase(),params.toUpperCase(), val.toUpperCase() === params.toUpperCase())
             return val.toUpperCase() === params.toUpperCase()
         })
-        console.log(findIndex)
         if(findIndex === -1){
             allListItem.push(params)
             fetchingProductForRender(allListItem)
-            console.log(allListItem,'add 1 product')
         }else {
             allListItem.splice(findIndex,1)
-            fetchingProductForRender(allListItem)
-            console.log(allListItem,'delete 1 product')
+            fetchingProductForRender(allListItem) 
         }
     }
 
@@ -289,7 +311,7 @@ export default function Product(){
                         <div className="breadcrumb-box">
                             <Breadcrumb>
                                 <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-                                <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
+                                <Breadcrumb.Item href="/allcategory">
                                     Category
                                 </Breadcrumb.Item>
                                 <Breadcrumb.Item href="#">
