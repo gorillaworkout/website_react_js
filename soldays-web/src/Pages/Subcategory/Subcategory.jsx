@@ -318,6 +318,7 @@ export default function Product(){
                             </Breadcrumb>
                         </div>
                     </div>
+
                     <div className="body-product-box">
                         <div className="product-left-box">
                             <div className="box-filter-product">

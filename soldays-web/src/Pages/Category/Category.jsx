@@ -74,6 +74,7 @@ export default function Category(){
                       {renderAllCategory()}
                     </div>
                 </div>
+                
                 <div className="box-main-footer">
                     <Footer/>
                 </div>

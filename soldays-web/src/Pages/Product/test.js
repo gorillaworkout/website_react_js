@@ -114,22 +114,103 @@ const staircase=()=>{
 const minMax=(arr)=>{
     console.log(arr)
     var arrResult  = []
-    var hitung = 0
     arr.forEach((val,index,array)=>{
-        // console.log(val,index,array)
-        array.forEach((value,id)=>{
+        var hitung = 0
+        console.log(val,index,array)
+        array.forEach((value,id,arr)=>{
             console.log(value,'value')
             if(index === id){
                 console.log(value,'ni gak di itung',id,index)
             }else {
                 hitung += value
-                console.log(hitung,id)
+                // console.log(hitung,id)
+            }
+            if(id === arr.length -1){
+                arrResult.push(hitung)
+                console.log(arrResult)
             }
         })
     })
 
+    var smallest = arrResult[0]
+    var biggest = arrResult[0]
+    arrResult.forEach((val)=>{
+        if(val>biggest){
+            biggest = val
+        }else if (val < smallest ){
+            smallest = val
+        }
+    })
+    console.log('smallest : ',smallest)
+    console.log('biggest : ',biggest)
+
+    console.log(smallest, ' ', biggest)
+
 }
 
-var array = [1,2,3,4,5]
+var array = [7,69,2,221,8974]
 
-minMax(array)
+// minMax(array)
+
+
+
+const canddleTallest=(arr)=>{
+
+   var mathMax = Math.max(...arr)
+       console.log(mathMax,'math max')
+       var total_item = 0
+       arr.forEach((val)=>{
+           // console.log(val)
+           if(val === mathMax){
+               total_item +=1
+           }
+       })
+       console.log(total_item)
+       return total_item
+
+}
+
+var arrnew = [3,3,2,2,5,5,5,5,5,5]
+// canddleTallest(arrnew)
+
+
+const likes=(names)=>{
+    console.log(names)
+    if(names.length > 1){
+        console.log('masuk ke if ')
+    }else {
+        console.log('masuk ke else')
+    }
+}
+var arr2 = []
+// likes(arr2)
+
+
+const noone=(names)=>{
+    var result = ''
+  if(names.length > 3){
+    var peopleLeft = names.length-2
+    result = `${names[0]}, ${names[1]} and  ${peopleLeft} others like this`
+  }else if(names.length > 0){
+    result = `${names}, like this`
+  }else {
+    result = 'No one like this'
+  }
+  console.log(result)
+  return result
+}
+
+noone(['peter'])
+noone(['peter','james'])
+noone(['peter','james','bordat'])
+noone(['peter','samue','sanaan','dong'])
+noone(['peter'])
+
+
+for (var i = 0; i < 5; i++) {
+    setTimeout(function () {
+      console.log(i);
+    }, 0)
+  }
+
+  

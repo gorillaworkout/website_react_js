@@ -15,6 +15,7 @@ import {FullPageLoading} from './Component/Loading/Loading'
 import {GetAllProduct} from './redux/Actions/ProductActions'
 import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from './redux/Actions/AuthActions'
+import Cart from './Pages/Cart/Cart';
 import Category from './Pages/Category/Category';
 import Testing from './Pages/Product/testing'
 import { useNavigate } from 'react-router-dom';
@@ -116,12 +117,16 @@ function App(props) {
         <Route exact path ='/' element={<Home new_params={"testing"}/>}/>
         <Route exact path ='/ProductDetail/:Product_Code' element={<ProductDetail new_params={"testing"}/>}/>
         <Route exact path ='/beli-langsung/:Product_Code' element={<BuyNow new_params={"testing"}/>}/>
-        <Route exact path ='/map' element={<PigeonMap new_params={"testing"}/>}/>
         <Route exact path ='/login' element={<Login new_params={"testing"}/>}/>
         <Route exact path ='/register' element={<Register new_params={"testing"}/>}/>
         <Route exact path ='/Subcategory/:Subcategory' element={<ProductPage new_params={"testing"}/>}/>
         <Route exact path ='/allCategory' element={<Category new_params={"testing"}/>}/>
+        <Route exact path ='/cart' element={<Cart new_params={"testing"}/>}/>
+
+        {/* testing page */}
         <Route exact path ='/testing' element={<Testing new_params={"testing"}/>}/>
+        <Route exact path ='/map' element={<PigeonMap new_params={"testing"}/>}/>
+        {/* testing page */}
       </Routes>
     </>
   );
