@@ -17,6 +17,17 @@
 .height-new{
     height:1000px;
 }
+* {
+    box-sizing:border-box;
+}
+h1 {
+    width:300px;
+    height:100px;
+    padding:10px;
+    border:10px solid red;
+    margin:10px;
+    display: inline-block;
+}
 .tc-left{
     width:50%;
     height:100%;

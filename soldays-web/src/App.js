@@ -64,7 +64,7 @@ function App(props) {
         setTimeout(()=>{
           console.log(Auth)
           setLoading(false)
-        },1000)
+        },300)
     }else {
       console.log('masuk ke else line 63 app js')
       dispatch({type:'LOADINGPRODUCT'})
@@ -85,7 +85,7 @@ function App(props) {
               setTimeout(()=>{
                 dispatch({type:'ALLPRODUCTLOAD'})
                 setLoading(Product.isLoadingProduct)
-              },1000)
+              },300)
           }
       })
     }
