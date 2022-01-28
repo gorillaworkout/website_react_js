@@ -134,7 +134,7 @@ export const getAllSubCategory=(Category)=>{
 }
 
 // FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
-export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,Product_Img,Normal_Price,Groupbuy_Price)=>{
+export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,Product_Img,Normal_Price,Groupbuy_Price,quantity_product)=>{
     return (dispatch)=>{
         
         var cart = [
@@ -146,7 +146,8 @@ export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weig
                 product_name:Product_Name,
                 img:Product_Img,
                 normal_price:Normal_Price,
-                groupbuy_price:Groupbuy_Price
+                groupbuy_price:Groupbuy_Price,
+                Stock_Quantity:quantity_product
             }
         ]
         var pushToStorage2 = JSON.stringify(cart)

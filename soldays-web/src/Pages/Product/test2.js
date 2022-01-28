@@ -93,7 +93,7 @@ const test=(lo,hi,k)=>{
   var max = Math.max(...hi)
   console.log(low)
   
-  // console.log(Math.max(...array1))
+  
 
 }
 

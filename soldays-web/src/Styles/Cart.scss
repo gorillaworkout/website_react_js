@@ -86,6 +86,11 @@ $orange-soldays:#f6941c;
                     align-items: center;
                     color:#888;
                     font-weight:700;
+                    .hapus_product {
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
         }
@@ -156,7 +161,7 @@ $orange-soldays:#f6941c;
                             color:#888;
                             font-weight:700;
                             .box-plus-minus-qty{
-                                width:100px;
+                                width:auto;
                                 height:30px;
                                 border:1px solid $border-color;
                                 border-radius:3px;
@@ -171,6 +176,11 @@ $orange-soldays:#f6941c;
                                     align-items: center;
                                     .icon-plus-minus{
                                         font-size:20px;
+                                    }
+                                    .icon-plus-minus-nonactive {
+                                        font-size:20px;
+                                        color:#dedede;
+                                        transition:1s;
                                     }
                                 }
                                 .box-qty{
@@ -195,6 +205,11 @@ $orange-soldays:#f6941c;
                                     align-items: center;
                                     .icon-plus-minus{
                                         font-size:20px;
+                                    }
+                                    .icon-plus-minus-nonactive {
+                                        font-size:20px;
+                                        color:#dedede;
+                                        transition:1s;
                                     }
                                 }
                             }

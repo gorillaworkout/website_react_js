@@ -795,7 +795,7 @@ export default function Header(data){
                                         <div className="dropdown-item-list-cart">
                                             <div className="dropdown-item-keranjang-list-cart">
                                                 <p>Keranjang ({totalCartRedux})</p>
-                                                <p>Lihat Sekarang</p>
+                                                <Link to={'/cart'} style={{textDecoration:'none',color:'#27aae1'}}>Lihat Sekarang</Link>
                                             </div>
                                             {renderProductCart()}
                                         </div>

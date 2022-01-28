@@ -5,14 +5,20 @@ import gambarTest from '../../Assets/tokped_gambar/gopay-icon.png'
 
 import Form from 'react-bootstrap/Form'
 import {AiOutlinePlus,AiOutlineMinus} from 'react-icons/ai'
-import {RiCoupon2Line} from 'react-icons/ri'
+import {RiContactsBookLine, RiCoupon2Line} from 'react-icons/ri'
 import Iframe from 'react-iframe';
 import ImgEffect from '../../Component/Effect/img_effect';
+import {useDispatch,useSelector} from 'react-redux'
 
 export default function Cart(){
 
+    // const Product = useSelector(state=>state.Product)
+    // console.log(Product)
     const [isLoading,setIsLoading]=useState(true)
     const [allCart,setAllCart]=useState(undefined)
+    const [isMinusActive,setIsMinusActive]=useState(false)
+    const [isPositifActive,setIsPositifActive]=useState(false)
+    // const [allProduct,setAllProduct]=useState(Product.allProduct)
 
 
     useEffect(()=>{
@@ -32,6 +38,7 @@ export default function Cart(){
         console.log(allCart)
     },[])
 
+
     function commafy( num ) {
         if(num !==undefined){
             var str = num.toString().split('.');
@@ -47,51 +54,159 @@ export default function Cart(){
         }
     }
 
+    const onDeleteProduct=(index,product_name)=>{
+        console.log(index,product_name)
+    }
+
+    const minusProduct=(productNo,index)=>{
+        let findIndex = allCart.findIndex((val)=>{
+            return val.productNo === productNo
+        })
+        
+        let total_current_qty = allCart[findIndex].quantity // total qty sekarang
+        let total_qty_left = allCart[findIndex].Stock_Quantity // total qty sisa
+
+
+        if(total_current_qty < total_qty_left && total_current_qty > 0 ){
+            console.log('masuk ke if 71')
+            allCart[findIndex].quantity = (allCart[findIndex].quantity - 1)
+            var stringify = JSON.stringify(allCart)
+            localStorage.setItem('itemsInCart',stringify)
+            console.log(allCart)
+            setAllCart([...allCart])
+            setIsMinusActive(false)
+
+        }else if (total_current_qty > 0){
+            console.log('masuk ke else if 80')
+            allCart[findIndex].quantity = (allCart[findIndex].quantity - 1)
+            var stringify = JSON.stringify(allCart)
+            localStorage.setItem('itemsInCart',stringify)
+            console.log(allCart)
+            setAllCart([...allCart])
+            setIsMinusActive(false)
+        }else if(total_current_qty === 0 || total_current_qty < 0) {
+            console.log('masuk ke else if 88')
+            console.log('gaada yg berkurang')
+            setIsMinusActive(true)
+
+        }
+    
+    }
+    const plusProduct=(productNo,index)=>{
+        // console.log(productNo,index)
+        // console.log(allCart)
+        let findIndex = allCart.findIndex((val)=>{
+            return val.productNo === productNo
+        })
+        
+        let total_current_qty = allCart[findIndex].quantity
+        let total_qty_left = allCart[findIndex].Stock_Quantity
+
+        if( total_current_qty > total_qty_left || total_current_qty === total_qty_left){
+            // gabisa add item item qty melebihi
+            setIsPositifActive(true)
+        }else {
+            allCart[findIndex].quantity = (allCart[findIndex].quantity + 1)
+            var stringify = JSON.stringify(allCart)
+            localStorage.setItem('itemsInCart',stringify)
+            console.log(allCart)
+            setAllCart([...allCart])
+            setIsPositifActive(false)
+        }
+
+    }
+    const inputQty=(value)=>{
+        console.log(value)
+    }
     const renderCart=()=>{
         console.log('function jalan render Cart')
         console.log(allCart)
-        if(allCart.length > 1){
+        
 
-        }else {
+        return allCart.map((val,index)=>{
+            let total_harga_barang = val.quantity * parseInt(val.normal_price)
+            let total_qty = val.quantity
+            console.log(total_qty,'auto update jalan')
             return (
                 <>
-                    <div className="cart-item-detail">
-                        <Form.Check  key={1} type="checkbox" label={`Sealant Hitam 300ml`}  className="checkbox-allproduct" />
+                    <div  key={index+1}className="cart-item-detail">
+                        <Form.Check  key={index+1} type="checkbox" label={`${val.product_name}`}  className="checkbox-allproduct" />
                         <div className="detail-item">
                             <div className="img-box-detail">
                                 <ImgEffect
                                     data={{
-                                        img:allCart[0].img,
+                                        img:val.img,
                                         background:'transparent'
                                     }}
                                 />
                             </div>
-                            <p>{allCart[0].product_name}</p>
+                            <p>{val.product_name}</p>
                             <div className="box-list">
                                 <ul>
-                                    <li>Rp{commafy(allCart[0].normal_price)}</li>
+                                    <li>Rp{commafy(val.normal_price)}</li>
                                     <li>
                                         <div className="box-plus-minus-qty">
-                                            <div className="box-minus">
-                                                <AiOutlineMinus className="icon-plus-minus"/>
+                                            <div className="box-minus" onClick={()=>minusProduct(val.productNo,index)}>
+                                                <AiOutlineMinus className={isMinusActive ? 'icon-plus-minus-nonactive':'icon-plus-minus'}/>
                                             </div>
-                                            <input type="number" className="box-qty" defaultValue={allCart[0].quantity}/>
-                                            <div className="box-plus">  
-                                                <AiOutlinePlus className="icon-plus-minus"/>
+                                            <input type="number" className="box-qty" value={total_qty} onChange={(e)=>inputQty(e.target.value)}/>
+                                            <div className="box-plus" onClick={()=>plusProduct(val.productNo,index)}>  
+                                                <AiOutlinePlus className={isPositifActive ? 'icon-plus-minus-nonactive':'icon-plus-minus'}/>
                                             </div>
                                         </div>
                                     </li>
-                                    <li>Rp{commafy(allCart[0].normal_price)}</li>
-                                    <li>Aksi</li>
+                                    <li>Rp{commafy(total_harga_barang)}</li>
+                                    <li>
+                                        <p onClick={()=>onDeleteProduct(index,val.product_name)} className="hapus_product">Hapus</p>
+                                    </li>
                                 </ul>
                             </div> 
                         </div>
                     </div>
                 </>
             )
-        }
+        })
+      
     }
 
+
+    const renderTotalHarga=()=>{
+        let total_harga = 0
+        let total_product = 0
+        console.log(allCart)
+            allCart.forEach((val)=>{
+                total_harga += parseInt(val.normal_price) * val.quantity
+                total_product +=1
+            })
+            console.log(total_harga)
+            console.log('masuk ke 101')
+            return (
+                <>
+                    <div key={1} className="voucher-box">
+                        <div className="voucher-part">
+                            <p>
+                                <RiCoupon2Line className="icon-coupon"/>
+                                <span>Voucher Soldays</span>
+                            </p>
+                            <p>Gunakan/Masukkan Kode</p>
+                        </div>
+                    </div>
+                    <div key={2} className="price-box">
+                        <Form.Check  key={1} type="checkbox" label={`Pilih Semua(${total_product})`}  className="checkbox-allproduct" />
+                        <div className="checkout-box-container">
+                            <p>Total({total_product} Product) :
+                                    <span> Rp.{commafy(total_harga)}</span>
+                            </p>
+                            <div className="btn-checkout">
+                                Checkout
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )
+        
+
+    }
 
     if(isLoading){
         return (
@@ -127,26 +242,7 @@ export default function Cart(){
                         {renderCart()}
                     </div>
                     <div className="total-price-cart" >
-                        <div className="voucher-box">
-                            <div className="voucher-part">
-                                <p>
-                                    <RiCoupon2Line className="icon-coupon"/>
-                                    <span>Voucher Soldays</span>
-                                </p>
-                                <p>Gunakan/Masukkan Kode</p>
-                            </div>
-                        </div>
-                        <div className="price-box">
-                            <Form.Check  key={1} type="checkbox" label={`Pilih Semua(13)`}  className="checkbox-allproduct" />
-                            <div className="checkout-box-container">
-                                <p>Total(1 Product) :
-                                     <span> Rp.30.000.000</span>
-                                </p>
-                                <div className="btn-checkout">
-                                    Checkout
-                                </div>
-                            </div>
-                        </div>
+                        {renderTotalHarga()}
                     </div>
                 </div>
             </div>  

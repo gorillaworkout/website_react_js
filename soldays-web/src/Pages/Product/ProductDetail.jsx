@@ -365,8 +365,9 @@ export default function ProductDetail(){
     }
 
     const addToCart=(Product_Code)=>{
-        
+        console.log(ProductRender)
         var quantity_product = parseInt(ProductRender.Stock_Quantity)
+        
         if(
             quantity_product === 0  ||
             quantity_product === "0" ||
@@ -389,13 +390,13 @@ export default function ProductDetail(){
             var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
             console.log(dataParse)
             if(dataParse){
-                dispatch(updateToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,dataParse,ProductRender.Picture_1,ProductRender.Sell_Price,ProductRender.GroupBuy_SellPrice))
+                dispatch(updateToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,dataParse,ProductRender.Picture_1,ProductRender.Sell_Price,ProductRender.GroupBuy_SellPrice,quantity_product))
                 setShowModalSuccessCart(true)
             }else {
                 /**
                  *     ! Items in Cart Kosong, berarti langsung push bikin object di local storage
                  */
-                 dispatch(addToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,ProductRender.Picture_1,ProductRender.Sell_Price,ProductRender.GroupBuy_SellPrice))
+                 dispatch(addToCartRedux(Product_Code,totalInputQty,ProductRender.PIC_company_address,ProductRender.Weight_KG,ProductRender.Name,ProductRender.Picture_1,ProductRender.Sell_Price,ProductRender.GroupBuy_SellPrice,quantity_product))
                 setShowModalSuccessCart(true)
             }
         }
