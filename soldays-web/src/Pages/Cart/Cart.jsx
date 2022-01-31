@@ -9,7 +9,8 @@ import {RiContactsBookLine, RiCoupon2Line} from 'react-icons/ri'
 import Iframe from 'react-iframe';
 import ImgEffect from '../../Component/Effect/img_effect';
 import {useDispatch,useSelector} from 'react-redux'
-
+import Cart_Kosong from '../../Assets/tokped_gambar/cart-kosong.jpeg'
+import {Link} from 'react-router-dom'
 export default function Cart(){
 
     // const Product = useSelector(state=>state.Product)
@@ -59,6 +60,7 @@ export default function Cart(){
     }
 
     const minusProduct=(productNo,index)=>{
+        console.log('minus product jalan')
         let findIndex = allCart.findIndex((val)=>{
             return val.productNo === productNo
         })
@@ -67,7 +69,7 @@ export default function Cart(){
         let total_qty_left = allCart[findIndex].Stock_Quantity // total qty sisa
 
 
-        if(total_current_qty < total_qty_left && total_current_qty > 0 ){
+        if(total_current_qty < total_qty_left && total_current_qty > 1 ){
             console.log('masuk ke if 71')
             allCart[findIndex].quantity = (allCart[findIndex].quantity - 1)
             var stringify = JSON.stringify(allCart)
@@ -76,7 +78,7 @@ export default function Cart(){
             setAllCart([...allCart])
             setIsMinusActive(false)
 
-        }else if (total_current_qty > 0){
+        }else if (total_current_qty > 1){
             console.log('masuk ke else if 80')
             allCart[findIndex].quantity = (allCart[findIndex].quantity - 1)
             var stringify = JSON.stringify(allCart)
@@ -84,13 +86,15 @@ export default function Cart(){
             console.log(allCart)
             setAllCart([...allCart])
             setIsMinusActive(false)
-        }else if(total_current_qty === 0 || total_current_qty < 0) {
+        }else if(total_current_qty === 1 || total_current_qty < 1) {
             console.log('masuk ke else if 88')
-            console.log('gaada yg berkurang')
             allCart.splice(findIndex,1)
+            var stringify = JSON.stringify(allCart)
             setAllCart([...allCart])
+            localStorage.setItem('itemsInCart',stringify)
             setIsMinusActive(true)
-
+        }else {
+            console.log('masuk ke else minus product') 
         }
     
     }
@@ -123,8 +127,6 @@ export default function Cart(){
     const renderCart=()=>{
         console.log('function jalan render Cart')
         console.log(allCart)
-        
-
         return allCart.map((val,index)=>{
             let total_harga_barang = val.quantity * parseInt(val.normal_price)
             let total_qty = val.quantity
@@ -180,8 +182,6 @@ export default function Cart(){
                 total_harga += parseInt(val.normal_price) * val.quantity
                 total_product +=1
             })
-            console.log(total_harga)
-            console.log('masuk ke 101')
             return (
                 <>
                     <div key={1} className="voucher-box">
@@ -224,30 +224,45 @@ export default function Cart(){
                 <div className="box-header">
                     <Header/>
                 </div>
-                <div className="box-main-container">
-                    <div className="box-iklan-container">
-                        <p>Semakin banyak anda berbelanja, Semoga Gaji saya ditambah</p>
-                    </div>
-                    <div className="box-btn-all">
-                        <Form.Check  key={1} type="checkbox" label={`Product`}  className="checkbox-allproduct" />
+                    {
+                        allCart.length > 0?
+                        <>
+                        <div className="box-main-container">     
+                            <div className="box-iklan-container">
+                                <p>Semakin banyak anda berbelanja, Semoga Gaji saya ditambah</p>
+                            </div>
+                            <div className="box-btn-all">
+                                <Form.Check  key={1} type="checkbox" label={`Product`}  className="checkbox-allproduct" />
 
-                        <div className="box-list">
-                            <ul>
-                                <li>Harga Satuan</li>
-                                <li>Kuantitas</li>
-                                <li>Total Harga</li>
-                                <li>Aksi</li>
-                            </ul>
-                        </div> 
-                    </div>
-                    <div className="box-list-cart">
-                        {renderCart()}
-                    </div>
-                    <div className="total-price-cart" >
-                        {renderTotalHarga()}
-                    </div>
+                                <div className="box-list">
+                                    <ul>
+                                        <li>Harga Satuan</li>
+                                        <li>Kuantitas</li>
+                                        <li>Total Harga</li>
+                                        <li>Aksi</li>
+                                    </ul>
+                                </div> 
+                            </div>
+                            <div className="box-list-cart">
+                                {renderCart()}
+                            </div>
+                            <div className="total-price-cart" >
+                                {renderTotalHarga()}
+                            </div>
+                        </div>  
+                        </>
+                        :
+                        <>
+                            <div className="cart-kosong">
+                                <img src={Cart_Kosong} alt="" />
+                                <p>Keranjang belanja Anda kosong</p>
+                                <Link to={'/'} className="btn-backtohome">
+                                    Belanja Sekarang
+                                </Link>
+                            </div>
+                        </>
+                    }
                 </div>
-            </div>  
         
         </>
     )

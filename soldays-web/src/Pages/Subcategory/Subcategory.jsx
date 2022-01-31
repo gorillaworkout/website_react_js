@@ -118,21 +118,48 @@ export default function Product(){
                )
            })
        }else {
-            var hargaAwal = parseInt(arrayForRender[0].Sell_Price)
-            var discount = parseInt(arrayForRender[0].Sell_Price * 0.1)
-            var hargaTotal = hargaAwal - discount
-            return (
-                <>
-                    <CardItem key={1} arr={{
-                        Link:`/ProductDetail/${arrayForRender[0].Product_Code}`,
-                        Img:arrayForRender[0].Picture_1,
-                        Name:arrayForRender[0].Name,
-                        HargaAwal:hargaAwal,
-                        HargaTotal:hargaTotal,
-                        funcBuyNow:()=>addToCartProduct(arrayForRender[0].Product_Code,1,arrayForRender[0].PIC_company_address,arrayForRender[0].Weight_KG,arrayForRender[0].Name)
-                    }}/>
-                </>
-            )
+           console.log(Array.isArray(arrayForRender),' array apa bukan')
+
+            var isArray = Array.isArray(arrayForRender)
+
+        
+
+            
+
+            if(isArray){
+                var hargaAwal = parseInt(arrayForRender[0].Sell_Price)
+                var discount = parseInt(arrayForRender[0].Sell_Price * 0.1)
+                var hargaTotal = hargaAwal - discount
+                return (
+                    <>
+                        <CardItem key={1} arr={{
+                            Link:`/ProductDetail/${arrayForRender[0].Product_Code}`,
+                            Img:arrayForRender[0].Picture_1,
+                            Name:arrayForRender[0].Name,
+                            HargaAwal:hargaAwal,
+                            HargaTotal:hargaTotal,
+                            funcBuyNow:()=>addToCartProduct(arrayForRender[0].Product_Code,1,arrayForRender[0].PIC_company_address,arrayForRender[0].Weight_KG,arrayForRender[0].Name)
+                        }}/>
+                    </>
+                )
+            }else{
+                var hargaAwal = parseInt(arrayForRender.Sell_Price)
+                var discount = parseInt(arrayForRender.Sell_Price * 0.1)
+                var hargaTotal = hargaAwal - discount
+                return (
+                    <>
+                        <CardItem key={1} arr={{
+                            Link:`/ProductDetail/${arrayForRender.Product_Code}`,
+                            Img:arrayForRender.Picture_1,
+                            Name:arrayForRender.Name,
+                            HargaAwal:hargaAwal,
+                            HargaTotal:hargaTotal,
+                            funcBuyNow:()=>addToCartProduct(arrayForRender.Product_Code,1,arrayForRender.PIC_company_address,arrayForRender.Weight_KG,arrayForRender.Name)
+                        }}/>
+                    </>
+                )
+
+            }
        }
     }
 

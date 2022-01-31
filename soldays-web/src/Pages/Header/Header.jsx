@@ -46,6 +46,7 @@ export default function Header(data){
     const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory)
     const [headerHome,setHeaderHome]=useState(true)
     const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
+    
     const [totalCartRedux,setTotalCartRedux]=useState(0)
     const [isMenuHoverCart,setIsMenuHoverCart]=useState(false) 
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
@@ -120,10 +121,10 @@ export default function Header(data){
     useEffect(()=>{
         if(Cart.Cart){
             setTotalCartRedux(Cart.Cart.length)
-            // console.log('Cart Reducer ada isinya',Cart.Cart)
+            console.log('Cart Reducer ada isinya',Cart.Cart)
         }else {
             setTotalCartRedux(0)
-            // console.log('Cart Reducer kosong',Cart.Cart)
+            console.log('Cart Reducer kosong',Cart.Cart)
         }
         
         setIsLoginHeader(Auth.isLogin)
@@ -790,7 +791,7 @@ export default function Header(data){
                                 </DropdownToggle>
                                 <DropdownMenu className="dropdown-menu-toggle-cart">
                                     {
-                                    cartFromRedux ? 
+                                    totalCartRedux > 0 ? 
                                         <div className="dropdown-item-list-cart">
                                             <div className="dropdown-item-keranjang-list-cart">
                                                 <p>Keranjang ({totalCartRedux})</p>
