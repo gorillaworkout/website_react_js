@@ -87,6 +87,8 @@ export default function Cart(){
         }else if(total_current_qty === 0 || total_current_qty < 0) {
             console.log('masuk ke else if 88')
             console.log('gaada yg berkurang')
+            allCart.splice(findIndex,1)
+            setAllCart([...allCart])
             setIsMinusActive(true)
 
         }
