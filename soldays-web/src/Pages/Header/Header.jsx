@@ -725,7 +725,6 @@ export default function Header(data){
                         onMouseLeave={onMouseLeave} 
                     >         
                         <Dropdown
-                        
                             isOpen={toggleAllCategory}
                             // onClick={open_cart}
                             >
