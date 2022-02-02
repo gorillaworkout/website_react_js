@@ -481,7 +481,7 @@ export default function Header(data){
                 var total_weight = (item_weight * parseInt(val.quantity)).toFixed(2)
                 var total_price = parseInt(val.quantity) * (parseInt(val.normal_price))
                 return (
-                    <div  key={index+1} className="render-item-list-cart">
+                    <Link to={'/cart'}  key={index+1} className="render-item-list-cart">
                         <div className="render-img-list-cart">
                             <ImgEffect data={{
                                 img:val.img,
@@ -496,7 +496,7 @@ export default function Header(data){
                         <div className="render-price-list-cart">
                             <p className="p-price-limited">RP.{commafy(total_price)}</p>
                         </div>
-                    </div>
+                    </Link>
                 )
             })
         }else {

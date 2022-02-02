@@ -1008,6 +1008,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration:none;
 }
 .box-btn-lihat-keranjang-success-cart-product:hover{
     cursor: pointer;

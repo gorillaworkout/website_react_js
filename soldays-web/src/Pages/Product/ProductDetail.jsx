@@ -443,9 +443,9 @@ export default function ProductDetail(){
                             <div className="box-name-success-cart-product">
                                 <span>{ProductRender.Name}</span>
                             </div>
-                            <div className="box-btn-lihat-keranjang-success-cart-product">
+                            <Link to={'/cart'} className="box-btn-lihat-keranjang-success-cart-product">
                                 <span>Lihat Keranjang</span>
-                            </div>
+                            </Link>
                         </div>
                         <div className="lengkapi-kebutuhan-success-cart">
                             <span>Lengkapi Kebutuhan</span>
