@@ -20,10 +20,7 @@ export default function Cart(){
     const [isMinusActive,setIsMinusActive]=useState(false)
     const [isPositifActive,setIsPositifActive]=useState(false)
     const [allProductChecked,setAllProductChecked]=useState(false)
-    // const [allProduct,setAllProduct]=useState(Product.allProduct)
-    const [testAllCart,setTestAllCart]=useState([])
-
-    const [newAllCart,setNewAllCart]=useState([])
+ 
 
 
     useEffect(()=>{
@@ -129,68 +126,66 @@ export default function Cart(){
         console.log(value)
     }
     const onHandleCheckItem=(value,index)=>{
-        console.log(allCart)
-        var normal_price  = parseInt(allCart[index].normal_price)
-        var total_qty = allCart[index].quantity
-
-        var arrToState = newAllCart
-
-        var findIndex = arrToState.findIndex((val)=>{
-            return val.productNo === allCart[index].productNo
-        })
-
-        if(findIndex !== -1){
-            arrToState.splice(findIndex,1)
-
+        console.log('on change cheeck item jalan')
+        if(value){
+            allCart[index].isChecked = true
+            setAllCart([...allCart])
         }else {
-            arrToState.push(allCart[index])
+            allCart[index].isChecked = false
+            setAllCart([...allCart])
+            
+            setAllProductChecked(false)
         }
-        console.log(arrToState)
-        setNewAllCart([...arrToState])
-        
 
-    
-        
+        //checking all item is true
+        let result = allCart.every(function (e) {
+            return e.isChecked === true
+        });
+        console.log(result)
+        if(result){
+            setAllProductChecked(true)
+        }else {
+            setAllProductChecked(false)
+        }
+       
 
-        // var allNewCart = allCart
-        // allNewCart[index].isChecked = true
-
-        // var setToAllCart = [...allNewCart]
-        // setTestAllCart(setToAllCart)
-        
     }
     const handleAllCheckbox=(value)=>{
-        var arrToState = newAllCart
-        if(value){
-          
 
-            allCart.forEach((val,index,arr)=>{
-                console.log(val,index,arr)
+        if(value){
+            allCart.forEach((val,index,array)=>{
+                val.isChecked = true
+                if(index === array.length - 1){
+                    console.log(allCart,'146')
+                    setAllCart([...allCart])
+                    setAllProductChecked(!allProductChecked)
+                    console.log(allProductChecked,'allproductchecked')
+                }
             })
-     
-            // console.log(arrToState)
-            // console.log(newArr,' ini new Arr')
-            var stringify = JSON.stringify(allCart)
-            localStorage.setItem('testing',stringify)
-            // setAllCart([...allCart])
-            // setNewAllCart(allCart)
         }else {
-            setNewAllCart([])
+            allCart.forEach((val,index,array)=>{
+                val.isChecked = false
+                if(index === array.length - 1){
+                    console.log(allCart,'146')
+                    setAllCart([...allCart])
+                    setAllProductChecked(!allProductChecked)
+                    console.log(allProductChecked,'allproductchecked')
+                }
+            })
         }
 
-        setAllProductChecked(!allProductChecked)
+
+
     }
     const renderCart=()=>{
-        console.log('function jalan render Cart')
-        console.log(allCart)
         return allCart.map((val,index)=>{
-            val.isChecked = false
+            // val.isChecked = false
             let total_harga_barang = val.quantity * parseInt(val.normal_price)
-            let total_qty = val.quantity         
+            let total_qty = val.quantity     
                 return (
                     <>
                         <div  key={index+1}className="cart-item-detail">
-                            <Form.Check  key={index+1} type="checkbox" label={`${val.product_name}`} defaultChecked={val.isChecked} onChange={(e)=>onHandleCheckItem(e.target.checked,index)}  className="checkbox-allproduct" />
+                            <Form.Check  key={index+1} type="checkbox" label={`${val.product_name}`} checked={val.isChecked} onChange={(e)=>onHandleCheckItem(e.target.checked,index)}  className="checkbox-allproduct" />
                             <div className="detail-item">
                                 <div className="img-box-detail">
                                     <ImgEffect
@@ -232,14 +227,14 @@ export default function Cart(){
 
 
     const renderTotalHarga=()=>{
-        console.log(newAllCart)
         let total_harga = 0
         let total_product = 0
-        console.log('render total harga jalan')
         
-        newAllCart.forEach((val)=>{
+        allCart.forEach((val)=>{
+            if(val.isChecked){
                 total_harga += parseInt(val.normal_price) * val.quantity
                 total_product +=1
+            }
             })
                 return (
                     <>
@@ -293,7 +288,7 @@ export default function Cart(){
                                 <p>Semakin banyak anda berbelanja, Semoga Gaji saya ditambah</p>
                             </div>
                             <div className="box-btn-all">
-                                <Form.Check  key={1} type="checkbox" label={`Product`}  className="checkbox-allproduct" defaultChecked={allProductChecked} onChange={(e)=>handleAllCheckbox(e.target.checked)} />
+                                <Form.Check  key={1} type="checkbox" label={`Product`}  className="checkbox-allproduct" checked={allProductChecked} onChange={(e)=>handleAllCheckbox(e.target.checked)} />
 
                                 <div className="box-list">
                                     <ul>
