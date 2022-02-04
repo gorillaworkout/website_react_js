@@ -769,41 +769,41 @@ export default function Header(data){
                     <div className="menu-from-header">
                         <div className="item-menu-1">
                             <Dropdown
-                                    onMouseOver={()=>onMouseEnter('pesanan')}
-                                    onMouseLeave={onMouseLeave}
-                                    isOpen={togglePesanan}
-                                    >
-                                    <DropdownToggle caret>   
-                                        <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} onClick={open_order_list}>
-                                            <img src={logo_unpaid_list} alt="" />
-                                            <p>Pesanan Saya</p>
-                                        </div>
-                                    </DropdownToggle>
-                                    <DropdownMenu className="dropdown-menu-toggle-cart">
-                                        <div className="dropdown-menu-auth-header">
-                                            <h1>order list</h1>
-                                        </div>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                onMouseOver={()=>onMouseEnter('pesanan')}
+                                onMouseLeave={onMouseLeave}
+                                isOpen={togglePesanan}
+                                >
+                                <DropdownToggle caret>   
+                                    <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} onClick={open_order_list}>
+                                        <img src={logo_unpaid_list} alt="" />
+                                        <p>Pesanan Saya</p>
+                                    </div>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-menu-toggle-cart">
+                                    <div className="dropdown-menu-auth-header">
+                                        <h1>order list</h1>
+                                    </div>
+                                </DropdownMenu>
+                            </Dropdown>
                         </div>
                         <div className="item-menu-1">
-                                <Dropdown
-                                    onMouseOver={()=>onMouseEnter('BulkOrder')}
-                                    onMouseLeave={onMouseLeave}
-                                    isOpen={toggleBulkOrder}
-                                    >
-                                    <DropdownToggle caret>   
-                                        <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_bulk_order}>
-                                            <img src={logo_qr_scan} alt="" />
-                                            <p>Bulk Order</p>
-                                        </div>
-                                    </DropdownToggle>
-                                    <DropdownMenu className="dropdown-menu-toggle-cart">
-                                        <div className="dropdown-menu-auth-header">
-                                            <h1>testing</h1>
-                                        </div>
-                                    </DropdownMenu>
-                                </Dropdown>
+                            <Dropdown
+                                onMouseOver={()=>onMouseEnter('BulkOrder')}
+                                onMouseLeave={onMouseLeave}
+                                isOpen={toggleBulkOrder}
+                                >
+                                <DropdownToggle caret>   
+                                    <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_bulk_order}>
+                                        <img src={logo_qr_scan} alt="" />
+                                        <p>Bulk Order</p>
+                                    </div>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-menu-toggle-cart">
+                                    <div className="dropdown-menu-auth-header">
+                                        <h1>testing</h1>
+                                    </div>
+                                </DropdownMenu>
+                            </Dropdown>
                         </div>
                         <div className="item-menu-1">
                             <Dropdown

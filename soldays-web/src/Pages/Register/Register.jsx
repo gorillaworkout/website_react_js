@@ -290,7 +290,7 @@ export default function Register(){
                     });
                 }
             }).catch((err)=>{
-                
+                console.log(err)
             })
                
             }).catch((err)=>{
@@ -495,6 +495,8 @@ export default function Register(){
                                             onFailure={onLoginFailure}
                                             cookiePolicy={'single_host_origin'}
                                             className="btn-google-real"
+                                            disabled={false}
+                                            
                                         /> : null
 
                                     }

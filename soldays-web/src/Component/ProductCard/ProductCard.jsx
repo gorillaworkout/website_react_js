@@ -30,7 +30,7 @@ export default function ProductCard(data){
   
     const onClickChoosingItem=(product)=>{
         console.log(product)
-        data.parentCallback({"onclick_card":product})
+        data.parentCallback({"onClick_card":product})
     }
 
     const renderCard=()=>{

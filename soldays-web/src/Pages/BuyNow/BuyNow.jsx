@@ -160,7 +160,7 @@ export default function BuyNow(){
             var hargaAwal = parseInt(res.data.Sell_Price)
             var discount = parseInt(res.data.Sell_Price * 0.1)
             var hargaTotal = hargaAwal-discount
-           
+            
             setHargaNormal(hargaAwal)
             setHargaDiscount(hargaTotal)
             setDikirimDari(dikirim_dari)
@@ -357,6 +357,11 @@ export default function BuyNow(){
 
     const tambah_qty_product=()=>{
 
+
+        var qtyNow = totalProduct
+        console.log(parseInt(totalProduct))
+        console.log(qtyNow)
+        setTotalProduct((qtyNow + 1))
     }
 
     const kurang_qty_product=()=>{
@@ -501,8 +506,8 @@ export default function BuyNow(){
                                         <p>Tulis Catatan</p>     
                                         <div className="box-tambah-product-dibeli">
                                             <div className="plus-minus-box-dibeli">
-                                                <FiMinus className='icon-minus-dibeli' onclick={kurang_qty_product}/>
-                                                <input type="number"  default={totalProduct} placeholder="1" className="input-product-dibeli"/>
+                                                <FiMinus className='icon-minus-dibeli' onClick={kurang_qty_product}/>
+                                                <input type="number"  value={totalProduct} placeholder="1" className="input-product-dibeli"/>
                                                 <BsPlus className='icon-plus-dibeli' onClick={tambah_qty_product}/>
                                             </div>
                                         </div>
@@ -576,7 +581,7 @@ export default function BuyNow(){
                                             </p>
                                             <p className="price-tagihan">
                                                 RP.18.679.000
-                                                </p>
+                                             </p>
                                         </li>
                                        
                                     </ul>
