@@ -200,11 +200,11 @@ const noone=(names)=>{
   return result
 }
 
-noone(['peter'])
-noone(['peter','james'])
-noone(['peter','james','bordat'])
-noone(['peter','samue','sanaan','dong'])
-noone(['peter'])
+// noone(['peter'])
+// noone(['peter','james'])
+// noone(['peter','james','bordat'])
+// noone(['peter','samue','sanaan','dong'])
+// noone(['peter'])
 
 
 for (var i = 0; i < 5; i++) {
@@ -213,4 +213,31 @@ for (var i = 0; i < 5; i++) {
     }, 0)
   }
 
+  
+
+
+
+  function foo(){
+      return 5
+  }
+
+  let myVar = foo;
+
+  function primeFactorsTo(max)
+  {
+      var store  = [], i, j, primes = [];
+      for (i = 2; i <= max; ++i) 
+      {
+          if (!store [i]) 
+            {
+              primes.push(i);
+              for (j = i << 1; j <= max; j += i) 
+              {
+                  store[j] = true;
+              }
+          }
+      }
+      return primes;
+  }
+  console.log(primeFactorsTo(10));
   

@@ -248,7 +248,7 @@ export default function Cart(){
                             </div>
                         </div>
                         <div key={2} className="price-box">
-                            {/* <Form.Check  key={1} type="checkbox" label={`Product`}  defaultChecked={allProductChecked} className="checkbox-allproduct" onChange={(e)=>handleAllCheckbox(e.target.checked)} /> */}
+                            <Form.Check  key={1} type="checkbox" label={`Product`}  checked={allProductChecked} className="checkbox-allproduct" onChange={(e)=>handleAllCheckbox(e.target.checked)} />
                             <div className="checkout-box-container">
                                 <p>Total({total_product} Product) :
                                         <span> Rp.{commafy(total_harga)}</span>

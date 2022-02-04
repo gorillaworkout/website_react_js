@@ -65,10 +65,7 @@ export default function Testing(){
     return (
         <>
             <div className="container">
-                <p>AUTOCORRECT</p>
-                <div className="text-center">
-                    <textarea data-testid="textarea" rows={10} cols={80} value={finalAnswer} className="card" onChange={(e)=>checking_correct(e.target.value)} />
-                </div>
+               <p>Learning css3 is fun</p>
             </div>
         </>
     )

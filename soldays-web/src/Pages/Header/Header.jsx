@@ -64,6 +64,8 @@ export default function Header(data){
 
     const [toggleCart,setToggleCart]=useState(false)
     const [toggleLogin,setToggleLogin]=useState(false)
+    const [toggleBulkOrder,setToggleBulkOrder]=useState(false)
+    const [togglePesanan,setTogglePesanan]=useState(false)
     const [toggleAllCategory,setToggleAllCategory]=useState(false)
     const [allIsData,setAllIsData]=useState(
         {
@@ -433,8 +435,10 @@ export default function Header(data){
             setToggleCart(true)
         }else if (params === 'BulkOrder'){
             setIsMenuHoverBulkOrder(true)
-        }else if(params === 'OrderList'){
+            setToggleBulkOrder(true)
+        }else if(params === 'pesanan'){
             setIsMenuHoverOrderList(true)
+            setTogglePesanan(true)
         }else if (params === 'Login'){
             setIsMenuHoverLogin(true)
             setToggleLogin(true)
@@ -462,7 +466,9 @@ export default function Header(data){
         setToggleCart(false)
         setToggleLogin(false)
         setToggleAllCategory(false)
-
+        setToggleBulkOrder(false)
+        setTogglePesanan(false)
+        
         setIsMenuHoverCart(false)
         setIsMenuHoverBulkOrder(false)
         setIsMenuHoverOrderList(false)
@@ -762,16 +768,42 @@ export default function Header(data){
                     </div>
                     <div className="menu-from-header">
                         <div className="item-menu-1">
-                            <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} onClick={open_order_list}>
-                                <img src={logo_unpaid_list} alt="" />
-                                <p>Order List</p>
-                            </div>
+                            <Dropdown
+                                    onMouseOver={()=>onMouseEnter('pesanan')}
+                                    onMouseLeave={onMouseLeave}
+                                    isOpen={togglePesanan}
+                                    >
+                                    <DropdownToggle caret>   
+                                        <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} onClick={open_order_list}>
+                                            <img src={logo_unpaid_list} alt="" />
+                                            <p>Pesanan Saya</p>
+                                        </div>
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-toggle-cart">
+                                        <div className="dropdown-menu-auth-header">
+                                            <h1>order list</h1>
+                                        </div>
+                                    </DropdownMenu>
+                                </Dropdown>
                         </div>
                         <div className="item-menu-1">
-                            <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_bulk_order}>
-                                <img src={logo_qr_scan} alt="" />
-                                <p>Bulk Order</p>
-                            </div>
+                                <Dropdown
+                                    onMouseOver={()=>onMouseEnter('BulkOrder')}
+                                    onMouseLeave={onMouseLeave}
+                                    isOpen={toggleBulkOrder}
+                                    >
+                                    <DropdownToggle caret>   
+                                        <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_bulk_order}>
+                                            <img src={logo_qr_scan} alt="" />
+                                            <p>Bulk Order</p>
+                                        </div>
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-toggle-cart">
+                                        <div className="dropdown-menu-auth-header">
+                                            <h1>testing</h1>
+                                        </div>
+                                    </DropdownMenu>
+                                </Dropdown>
                         </div>
                         <div className="item-menu-1">
                             <Dropdown
