@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import './BuyNow.css'
+import '../../Styles/BuyNow.scss'
 import Header from '../Header/Header'
 import Footer from '../../Component/Footer/Footer'
 import LastPageIcon from '../../Assets/tokped_gambar/last-page.png'
@@ -408,7 +409,6 @@ export default function BuyNow(){
                         <div className="box-tambah-alamat-baru" onClick={tambahAlamatFunc}>
                             <p>Tambah Alamat Baru</p>
                         </div>
-                        
                        {renderAlamatCustomer()}
                     </div>
 

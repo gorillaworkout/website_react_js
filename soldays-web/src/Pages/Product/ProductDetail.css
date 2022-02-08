@@ -932,21 +932,17 @@
     color:white;
 }
 
-.modal-header-success {
+/* .modal-header-success {
     border:none !important;
-}
+} */
 
-.modal-header-success-cart {
+/* .modal-header-success-cart {
     width:100%;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-}
-.modal-header-success-cart p {
-    color:#393D42;
-    font-size:1.71429rem;
-}
-
+} */
+/* .modal-header-success-cart  */
 .modal-body-success-cart {
     display: flex;
     flex-direction: column;
