@@ -16,7 +16,8 @@ import Geocode from "react-geocode";
 import Modal from 'react-bootstrap/Modal'
 import {BsSearch} from 'react-icons/bs'
 import { FullPageLoading } from '../../Component/Loading/Loading'
-
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 export default function BuyNow(){
 
     const {Product_Code} = useParams()
@@ -29,7 +30,8 @@ export default function BuyNow(){
     const [hargaDiscount,setHargaDiscount]=useState(undefined)
     const [totalProduct,setTotalProduct]=useState(1)
     const [tooltipOpen, setTooltipOpen] = useState(false);
-  
+    const [key, setKey] = useState('Province');
+
     const [defaultAlamatCustomer,setDefaultAlamatCustomer]=useState([
         {
             "nama_customer":"BAYU DARMAWAN",
@@ -126,8 +128,8 @@ export default function BuyNow(){
             navigator.geolocation.getCurrentPosition(function(position) {
                 setLongitude(position.coords.longitude)
                 setLatitude(position.coords.latitude)
-                // console.log("Latitude is :", position.coords.latitude);
-                // console.log("Longitude is :", position.coords.longitude);
+                console.log("Latitude is :", position.coords.latitude);
+                console.log("Longitude is :", position.coords.longitude);
                 });
           }
     })
@@ -427,43 +429,63 @@ export default function BuyNow(){
                 >
                 <Modal.Header closeButton className="modal-header-success">
                 <Modal.Title className="modal-header-buynow" id="example-custom-modal-styling-title">
-                    <p>Pilih Alamat Pengiriman</p>
+                    <p>Tambah Alamat Pengiriman</p>
                 </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="modal-body-alamat-buynow">
                     <div className="box-modal-tambah-alamat">
-                        <div className="box-top-alamat-status">
-                            <div className="box-top-number-status">
-                                <div className="box-bulat-status active-status-bulat">
-                                    <p>1</p>
-                                </div>
-                                <div className="box-garis-status">
+                        <div className="box-input-card">
+                            <input type="text"  className="input-tambah-alamat" placeholder='Nama Lengkap'/>
+                            <input type="text"  className="input-tambah-alamat" placeholder='Nama Lengkap'/>
+                        </div>
+                        <div className="box-province-card">
+                            <Tabs
+                                id="controlled-tab-example"
+                                activeKey={key}
+                                onSelect={(k) => setKey(k)}
+                                className="mb-3 list-judul"
+                                >
+                                <Tab eventKey="Province" title="Province" className="tab-item" >
+                                    <div className="list-item-box">
 
+                                    </div>
+                                </Tab>
+                                <Tab eventKey="City" title="City" className="tab-item">
+                                    <div className="list-item-box">
+                                        
+                                    </div>
+                                </Tab>
+                                <Tab eventKey="District" title="District"className="tab-item" >
+                                    <div className="list-item-box">
+                                        
+                                    </div>
+                                </Tab>
+                                <Tab eventKey="Subdistrict" title="Subdistrict" className="tab-item">
+                                    <div className="list-item-box">
+                                        
+                                    </div>
+                                </Tab>
+                                <Tab eventKey="Kodepos" title="Kodepos" className="tab-item">
+                                    <div className="list-item-box">
+                                        
+                                    </div>
+                                </Tab>
+                            </Tabs>
+                        </div>
+                        <div className="box-btn-card">
+                            <div className="save-as-card">
+                                <div className="utama-btn">
+                                    Utama
                                 </div>
-                                <div className="box-bulat-status ">
-                                    <p>2</p>
-                                </div>
-                                <div className="box-garis-status">
-                                    
-                                </div>
-                                <div className="box-bulat-status ">
-                                    <p>3</p>
+                                <div className="another-btn active-pilihan">
+                                    Rumah
                                 </div>
                             </div>
-                            <div className="box-top-detail-status">
-                                <div className="detail-box-item-status">
-                                    <p>Cari Lokasi Pengirimanmu</p>
-                                </div>
-                                <div className="detail-box-item-status">
-                                    <p>Cari Lokasi Pengirimanmu</p>
-                                </div>
-                                <div className="detail-box-item-status">
-                                    <p>Cari Lokasi Pengirimanmu</p>
-                                </div>
+                            <div className="btn-save">
+                                Simpan
                             </div>
                         </div>
                     </div>
-
                 </Modal.Body>
             </Modal>
             {/* MODAL TAMBAH ALAMAT */}

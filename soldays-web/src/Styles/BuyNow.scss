@@ -727,67 +727,120 @@
                 .box-modal-tambah-alamat{
                     width:100%;
                     height:400px;
-                    border:1px solid black;
+                    border:1px solid #dedede;
                     border-radius:8px;
-                    .box-top-alamat-status{
+                    display: flex;
+                    flex-direction: column;
+                    .box-input-card{
                         width:100%;
-                        height:100px;
+                        height:20%;
                         display: flex;
-                        flex-direction: column;
-                        justify-content: center;
+                        flex-direction: row;
                         align-items: center;
-                        border:1px solid black;
-                        border-radius:8px;
-                        .box-top-number-status{
-                            width:100%;
-                            height:50%;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            .box-bulat-status{
-                                width:25px;
-                                height:25px;
-                                border-radius:50%;
-                                border:1px solid #27aae1;;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
+                        justify-content: space-evenly;
+                        .input-tambah-alamat{
+                            width:45%;
+                            height:70%;
+                            border:1px solid #dedede;
+                            border-radius:5px;
+                            &:active{
+                                border:1px solid red;
+                                border-color:red;
                             }
-                            .active-status-bulat{
-                                background-color: #27aae1;
-                                p {
-                                    color:white;
-                                }
-                            }
-                            .box-garis-status{
-                                height:1px;
-                                width:100px;
-                                border:1px solid black;
-                                margin:5px;
-                                p {
-                                    color:#27aae1;
-                                }
-                                
-                            }
-                        }
-                        .box-top-detail-status{
-                            width:100%;
-                            height:50%;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            .detail-box-item-status{
-                                width:20%;
-                                height:100%;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                p {
-                                    font-size:0.7em;
-                                }
+                            &:focus{
+                                // border:1px solid red;
+                                outline: none !important;
+                                border-color: #27aae1;
+                                // box-shadow: 0 0 10px #719ECE;
                             }
                         }
                     }
+                    .box-province-card{
+                        width:100%;
+                        height: 80%;
+                        border-top:1px solid #dedede;
+                        .list-judul{
+                            width: 100%;
+                            // height:100%;
+                            display: flex;
+                            justify-content: center;
+                            // border:1px solid #27aae1;
+                        }
+                        .tab-content{
+                            .tab-item {
+                                .list-item-box{
+                                    width:100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: center;
+                                    background-color: red;
+                                }
+                            }
+                        }
+                        // border:1px solid red;
+                    }    
+                    .box-btn-card{
+                        width:100%;
+                        height:20%;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding-left:10px;
+                        padding-right:10px;
+                        .save-as-card{
+                            width:30%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: row;
+                            display: flex;
+                            align-items: center;
+                            .utama-btn{
+                                width:150px;
+                                height:60%;
+                                border:1px solid #27aae1;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin:5px;
+                                border-radius:5px;
+                                color:#27aae1;
+                                &:hover{
+                                    cursor: pointer;
+                                }
+                            }
+                            .another-btn{
+                                width:150px;
+                                height:60%;
+                                border:1px solid #27aae1;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin:5px;
+                                border-radius:5px;
+                                &:hover{
+                                    cursor: pointer;
+                                }
+                            }
+                            .active-pilihan{
+                                background-color:#27aae1 ;
+                                color:white ;
+                            }
+
+                        }
+                        .btn-save{
+                            width:200px;
+                            height:60%;
+                            border:1px solid #27aae1;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            border-radius:8px;
+                            background-color: #27aae1;
+                            color:white;
+                        }
+                    }
+                    
                 }
             }
         }
