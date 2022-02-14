@@ -526,6 +526,7 @@
 .modal {
     .modal-dialog{
         .modal-content{
+            overflow: hidden !important;
             .modal-header-success {
                 border:none !important;
                 .modal-header-success-cart {
@@ -552,7 +553,7 @@
             }
             .modal-body-alamat-buynow{
                 height:auto;
-                max-height:500px;
+                max-height:550px;
                 display: flex;
                 flex-direction: column;
                 padding:16px;
@@ -755,9 +756,22 @@
                             }
                         }
                     }
+                    .box-result-address{
+                        width:100%;
+                        height:15%;
+                        // border:1px solid red;
+                        .final-address-buynow{
+                            width:100%;
+                            height:100%;
+                            padding-left:10px;
+                            // border:1px solid transparent;
+                            background-color: white;
+                            border-top:1px solid #dedede;
+                        }
+                    }
                     .box-province-card{
                         width:100%;
-                        height: 80%;
+                        height: 75%;
                         border-top:1px solid #dedede;
                         .list-judul{
                             width: 100%;
@@ -770,14 +784,33 @@
                             .tab-item {
                                 .list-item-box{
                                     width:100%;
-                                    height: 100%;
+                                    height: 220px;
                                     display: flex;
-                                    justify-content: center;
-                                    background-color: red;
+                                    flex-direction: column;
+                                    overflow: scroll !important;
+                                    .active_province{
+                                        color:#27aae1 !important;
+                                        background-color: transparent !important;
+                                    }
+                                    .box-error-empty{
+                                        width:100%;
+                                        height:100%;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        flex-direction: column;
+                                        img{
+                                            width:50%;
+                                            height:50%;
+                                        }
+                                        p{
+                                            font-size:1.3em;
+                                            color:darkgray;
+                                        }
+                                    }
                                 }
                             }
                         }
-                        // border:1px solid red;
                     }    
                     .box-btn-card{
                         width:100%;
@@ -830,7 +863,7 @@
                         }
                         .btn-save{
                             width:200px;
-                            height:60%;
+                            height:70%;
                             border:1px solid #27aae1;
                             display: flex;
                             justify-content: center;
@@ -838,6 +871,9 @@
                             border-radius:8px;
                             background-color: #27aae1;
                             color:white;
+                            &:hover{
+                                cursor: pointer;
+                            }
                         }
                     }
                     

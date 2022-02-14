@@ -98,3 +98,9 @@ const test=(lo,hi,k)=>{
 }
 
 test([1,2,3,43,],[3,2,1,23,2,1],[23,32,2,1,3])
+
+
+let array2 = ['DKI JAKARTA','JAKARTA BARAT','KELAPA DUA','KEBON JERUK','11550']
+
+array2.splice(1,3)
+console.log(array2)

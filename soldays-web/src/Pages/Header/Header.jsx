@@ -123,10 +123,10 @@ export default function Header(data){
     useEffect(()=>{
         if(Cart.Cart){
             setTotalCartRedux(Cart.Cart.length)
-            console.log('Cart Reducer ada isinya',Cart.Cart)
+            // console.log('Cart Reducer ada isinya',Cart.Cart)
         }else {
             setTotalCartRedux(0)
-            console.log('Cart Reducer kosong',Cart.Cart)
+            // console.log('Cart Reducer kosong',Cart.Cart)
         }
         
         setIsLoginHeader(Auth.isLogin)

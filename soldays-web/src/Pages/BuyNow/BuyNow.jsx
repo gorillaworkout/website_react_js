@@ -18,6 +18,11 @@ import {BsSearch} from 'react-icons/bs'
 import { FullPageLoading } from '../../Component/Loading/Loading'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Dropdown from 'react-bootstrap/Dropdown'
+import getTiki from '../../Services/getTiki'
+import errorTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
+import { CardLink } from 'reactstrap'
+
 export default function BuyNow(){
 
     const {Product_Code} = useParams()
@@ -98,7 +103,27 @@ export default function BuyNow(){
         }
 
         ])
-        
+    const [finalAddress,setFinalAddress]=useState([])
+    const [allCourier,setAllCourier]=useState(undefined)
+    const [allProvince,setAllProvince]=useState([])   
+    const [allCity,setAllCity]=useState([])
+    const [allDistrict,setAllDistrict]=useState([])
+    const [allSubdistrict,setAllSubdistrict]=useState([])
+
+    // state tambah alamat
+    const [addressType,setAddressType]=useState('') // address type pas di tambah address modals
+    const [customerName,setCustomerName]=useState('')
+    const [customerNumber,setCustomerNumber]=useState('')
+    // state tambah alamat end
+
+
+    // STATE PROVINCE CITY DISTRICT
+    const [provincePilihan,setProvincePilihan]=useState('')
+    const [cityPilihan,setCityPilihan]=useState('')
+    const [districtPilihan,setDistrictPilihan]=useState('')
+    const [subdistrictPilihan,setSubdistrictPilihan]=useState('')
+
+    // END OF STATE PROVINCE CITY DISTRICT
     // GOOGLE
 
     const [longitude,setLongitude]=useState('')
@@ -128,11 +153,37 @@ export default function BuyNow(){
             navigator.geolocation.getCurrentPosition(function(position) {
                 setLongitude(position.coords.longitude)
                 setLatitude(position.coords.latitude)
-                console.log("Latitude is :", position.coords.latitude);
-                console.log("Longitude is :", position.coords.longitude);
+                // console.log("Latitude is :", position.coords.latitude);
+                // console.log("Longitude is :", position.coords.longitude);
                 });
           }
     })
+
+    // useEffect(()=>{
+        
+    //     if(finalAddress){
+    //         console.log(finalAddress)
+         
+    //         if(finalAddress[0] !== undefined){
+    //             console.log('masuk ke if use effect disabled')
+    //             setIsCityDisabled(false)
+    //             if(finalAddress[1] !== undefined){
+    //                 setIsDistrctDisabled(false) 
+    //                 console.log('masuk ke  if use effect disabled')
+    //             }else if (finalAddress[1] !== undefined && finalAddress[2] !== undefined){
+    //                 setIsDistrctDisabled(false)
+    //                 setIsSubdistrctDisabled(false)
+    //                 console.log('masuk ke else if')
+    //             }
+    //         }else {
+    //             console.log('masuk ke else')
+    //             setIsCityDisabled(true)
+    //             setIsDistrctDisabled(true)
+    //             setIsSubdistrctDisabled(true)   
+    //         }            
+    //     }
+
+    // },[finalAddress])
     // GOOGLE END
 
     
@@ -155,21 +206,29 @@ export default function BuyNow(){
 
     const product_detail_func=()=>{
         axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
-        .then((res)=>{
-            console.log(res.data)
+        .then(async(res)=>{
+
+            // getTiki.getAllCourier().then(alert)
+            let findAllCourier =  await getTiki.getAllCourier()
+            let getAllProvince =  await getTiki.getAllProvince(findAllCourier.Courier,findAllCourier.Courier_Code)
+            setAllCourier(findAllCourier)
+            setAllProvince(getAllProvince)
+
             var alamat = res.data.PIC_company_address
             var split_alamat = alamat.split(',')
             var dikirim_dari = split_alamat[4]
             var hargaAwal = parseInt(res.data.Sell_Price)
             var discount = parseInt(res.data.Sell_Price * 0.1)
             var hargaTotal = hargaAwal-discount
-            
             setHargaNormal(hargaAwal)
             setHargaDiscount(hargaTotal)
             setDikirimDari(dikirim_dari)
             console.log(dikirim_dari)
             setProductDetail(res.data)
             setIsLoading(false)
+            
+      
+
         }).catch((err)=>{
             console.log(err)
         })
@@ -188,6 +247,204 @@ export default function BuyNow(){
 
     const toggle = () => setTooltipOpen(!tooltipOpen);
     const options_product_searching = []
+
+
+    const renderProvince=()=>{
+        return allProvince.map((val,index)=>{
+            return (
+                <>
+                    <Dropdown.Item href="#/action-1" className="province_class" value={val.Province} id={`province_${index+1}`} onClick={()=>onHandleProvince(val.Province,index+1)}>{val.Province}</Dropdown.Item>
+                </>
+            )
+        })
+    }
+    const onHandleProvince=(value,id)=>{
+        let allElementProvince = document.querySelectorAll('.province_class')
+        allElementProvince.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+        let allElementCity = document.querySelectorAll('.city_class')
+        allElementCity.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+        let allElementDistrict = document.querySelectorAll('.district_class')
+        console.log(allElementDistrict)
+        allElementDistrict.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+        let allElementSubdistrict = document.querySelectorAll('.subdistrict_class')
+        console.log(allElementSubdistrict)
+        allElementSubdistrict.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+
+        let element = document.getElementById(`province_${id}`)
+        element.classList.add('active_province')
+        setKey('City')
+        let finalAddressResult = []
+        
+        finalAddressResult[0] = value
+        setFinalAddress(finalAddressResult)
+        setProvincePilihan(value)
+        fetchingCity(value)
+
+        let districtTab = document.querySelector('.district_tab')
+
+        let subdistrictTab = document.querySelector('.subdistrict_tab')
+        districtTab.disabled = true
+        subdistrictTab.disabled =true
+
+    
+
+    }
+
+ 
+
+    const fetchingCity=async(Province)=>{
+
+        let allCity = await getTiki.getAllCity(allCourier.Courier, allCourier.Courier_Code,Province)
+        setAllCity(allCity)
+    }
+
+    const renderCity=()=>{
+
+        if(allCity !== undefined){
+            if(allCity.length > 0 ){
+                    return allCity.map((val,index)=>{
+                        return (
+                            <Dropdown.Item href="#/action-1" className="city_class" value={val.City} id={`city_${index+1}`} onClick={()=>onHandleCity(val.City,index+1)}>{val.City}</Dropdown.Item>
+                        )
+                    })
+            }else {
+                return (
+                    <>
+                        <div className="box-error-empty">
+                            <img src={errorTokped} alt="" className="img-error-empty" />
+                            <p>PILIH PROVINCE TERLEBIH DAHULU</p>
+                        </div>
+                    </>
+                )
+            }
+        }else {
+            return (
+                <>
+                <p>INI ELSE LUAR</p>
+                </>
+            )
+        }
+    }
+    const onHandleCity=(value,id)=>{
+        let allElement = document.querySelectorAll('.city_class')
+        allElement.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+        let element = document.getElementById(`city_${id}`)
+        element.classList.add('active_province')
+        setKey('District')
+        let finalAddressResult = finalAddress
+        finalAddressResult.splice(1,3)
+        finalAddressResult.push(value)
+        console.log(finalAddressResult)
+        setFinalAddress(finalAddressResult)
+        setCityPilihan(value)
+        fetchingDistrict(value)
+
+    }
+
+
+
+    const fetchingDistrict=async(City)=>{
+        let allDistrict = await getTiki.getAllDistrict(allCourier.Courier,allCourier.Courier_Code,City)
+        setAllDistrict(allDistrict)
+    }
+
+    const renderDistrict=()=>{
+        if(finalAddress[1] !== undefined){
+            return allDistrict.map((val,index)=>{
+                return (
+                    <>
+                        <Dropdown.Item href="#/action-1" className="district_class" value={val.District} id={`district_${index+1}`} onClick={()=>onHandleDistrict(val.District,index+1)}>{val.District}</Dropdown.Item>
+                    </>
+                )
+            })
+        }else {
+            return (
+                <>
+                     <div className="box-error-empty">
+                        <img src={errorTokped} alt="" className="img-error-empty" />
+                        <p>PILIH CITY TERLEBIH DAHULU</p>
+                    </div>
+                </>
+            )
+        }
+    }
+    const onHandleDistrict=(value,id)=>{
+        let allElement = document.querySelectorAll('.district_class')
+        allElement.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+
+        let element = document.getElementById(`district_${id}`)
+        element.classList.add('active_province')
+        setKey('Subdistrict')
+        let finalAddressResult = finalAddress
+        finalAddressResult.splice(2,2)
+        finalAddressResult.push(value)
+        setFinalAddress(finalAddressResult)
+        setDistrictPilihan(value)
+        fetchingSubdistrict(value)
+
+        
+        let districtTab = document.querySelector('.district_tab')
+        console.log(districtTab,'346')
+        
+
+
+
+    }
+    const fetchingSubdistrict=async(district)=>{
+        let allSubdistrict  = await getTiki.getAllSubdistrict(allCourier.Courier, allCourier.Courier_Code,district)
+        setAllSubdistrict(allSubdistrict)
+    }
+    const renderSubDistrict=()=>{
+        if(finalAddress[2] !== undefined){
+            return allSubdistrict.map((val,index)=>{
+                return (
+                    <>
+                        <Dropdown.Item href="#/action-1" className="subdistrict_class" value={val.Sub_District} id={`subdistrict_${index+1}`} onClick={()=>onHandleSubDistrict(val.Sub_District,val.Zipcode,index+1)}>{val.Sub_District} - {val.Zipcode}</Dropdown.Item>
+                    </>
+                )
+            })
+        }else {
+            return (
+                <>
+                    <div className="box-error-empty">
+                        <img src={errorTokped} alt="" className="img-error-empty" />
+                        <p>PILIH DISTRICT TERLEBIH DAHULU</p>
+                    </div>
+                </>
+            )
+        }
+    }
+    const onHandleSubDistrict=(value,zipcode,id)=>{
+        let allElement = document.querySelectorAll('.subdistrict_class')
+        console.log(allElement)
+        allElement.forEach((val)=>{
+            val.classList.remove('active_province')
+        })
+        
+        let element = document.getElementById(`subdistrict_${id}`)
+        element.classList.add('active_province')
+        // setKey('Kodepos')
+        let finalAddressResult = finalAddress
+        finalAddressResult.splice(3,2)
+        finalAddressResult.push(value)
+        finalAddressResult.push(zipcode)
+        // finalAddressResult[3] = value
+        // finalAddressResult[4] = zipcode
+        setFinalAddress(finalAddressResult)
+        setSubdistrictPilihan(value)
+    }
 
 
     const renderPengiriman=()=>{
@@ -372,8 +629,39 @@ export default function BuyNow(){
     }
 
     const tambahAlamatFunc=()=>{
+        setFinalAddress([])
+        setKey('Province')
         setShowModalTambahAlamat(true)
     }
+
+    const onHandleAddressType=(params,type)=>{
+
+        let element = document.querySelector(`#${params}`)
+        let allElement = document.querySelectorAll(`.utama-btn`)
+        allElement.forEach((val,index)=>{
+            val.classList.remove('active-pilihan')
+        })
+        element.classList.add('active-pilihan')
+        setAddressType(type)
+
+    }
+
+    const onChangeCustName=(value)=>{
+        setCustomerName(value)
+    }
+
+    const onChangeCustNumber=(value)=>{
+        setCustomerNumber(value)
+    }
+
+    const onSaveTambahAlamat=()=>{
+        console.log(customerName)
+        console.log(customerNumber)
+        console.log(addressType)
+        console.log(finalAddress)
+    }
+
+
     if(isLoading){
         return (
             <>
@@ -435,8 +723,11 @@ export default function BuyNow(){
                 <Modal.Body className="modal-body-alamat-buynow">
                     <div className="box-modal-tambah-alamat">
                         <div className="box-input-card">
-                            <input type="text"  className="input-tambah-alamat" placeholder='Nama Lengkap'/>
-                            <input type="text"  className="input-tambah-alamat" placeholder='Nama Lengkap'/>
+                            <input type="text"  className="input-tambah-alamat" placeholder='Nama Lengkap' onChange={(e)=>onChangeCustName(e.target.value)}/>
+                            <input type="number"  className="input-tambah-alamat" placeholder='Nomor Handphone' onChange={(e)=>onChangeCustNumber(e.target.value)}/>
+                        </div>
+                        <div className="box-result-address">
+                            <input type="text" className="final-address-buynow" value={finalAddress} disabled />
                         </div>
                         <div className="box-province-card">
                             <Tabs
@@ -445,43 +736,39 @@ export default function BuyNow(){
                                 onSelect={(k) => setKey(k)}
                                 className="mb-3 list-judul"
                                 >
-                                <Tab eventKey="Province" title="Province" className="tab-item" >
+                                <Tab eventKey="Province" title="Province" className="tab-item province_tab" >
                                     <div className="list-item-box">
-
+                                        {renderProvince()}
                                     </div>
                                 </Tab>
-                                <Tab eventKey="City" title="City" className="tab-item">
+                                <Tab eventKey="City" title="City" className="tab-item city_tab">
                                     <div className="list-item-box">
-                                        
+                                        {renderCity()}
                                     </div>
                                 </Tab>
-                                <Tab eventKey="District" title="District"className="tab-item" >
+                                <Tab eventKey="District" title="District" className="tab-item district_tab" >
                                     <div className="list-item-box">
-                                        
+                                        {renderDistrict()}
                                     </div>
                                 </Tab>
-                                <Tab eventKey="Subdistrict" title="Subdistrict" className="tab-item">
+                                <Tab eventKey="Subdistrict" title="Subdistrict" className="tab-item subdistrict_tab"  >
                                     <div className="list-item-box">
-                                        
+                                        {renderSubDistrict()}
                                     </div>
                                 </Tab>
-                                <Tab eventKey="Kodepos" title="Kodepos" className="tab-item">
-                                    <div className="list-item-box">
-                                        
-                                    </div>
-                                </Tab>
+                             
                             </Tabs>
                         </div>
                         <div className="box-btn-card">
                             <div className="save-as-card">
-                                <div className="utama-btn">
+                                <div className="utama-btn" id="btn-utama" onClick={()=>onHandleAddressType('btn-utama','utama')}>
                                     Utama
                                 </div>
-                                <div className="another-btn active-pilihan">
+                                <div className="utama-btn active-pilihan" id="btn-rumah" onClick={()=>onHandleAddressType('btn-rumah','rumah')}>
                                     Rumah
                                 </div>
                             </div>
-                            <div className="btn-save">
+                            <div className="btn-save" onClick={onSaveTambahAlamat}>
                                 Simpan
                             </div>
                         </div>
