@@ -133,7 +133,7 @@
                                 font-size:1em;
                                 margin:0px !important;
                                 &:hover{
-                                cursor: pointer;
+                                cursor: not-allowed;
                                 }
                             }
                             .box-tambah-product-dibeli{
@@ -159,8 +159,16 @@
                                         width:40%;
                                         border:none !important;
                                         font-size:1em;
+                                        text-align: center;
                                         ::placeholder{
                                             text-align: center;
+                                        }
+                                        &:active{
+                                            border:1px solid #dedede !important;
+                                        }
+                                        &:focus{
+                                            outline: none;
+                                            border:1px solid transparent !important;
                                         }
                                     }
                                     .icon-minus-dibeli {
@@ -801,7 +809,7 @@
                                         flex-direction: column;
                                         img{
                                             width:50%;
-                                            height:50%;
+                                            height:90%;
                                         }
                                         p{
                                             font-size:1.3em;

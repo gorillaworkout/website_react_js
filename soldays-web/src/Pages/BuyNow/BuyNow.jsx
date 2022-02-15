@@ -20,19 +20,31 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Dropdown from 'react-bootstrap/Dropdown'
 import getTiki from '../../Services/getTiki'
-import errorTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
-import { CardLink } from 'reactstrap'
+import Error from '../../Assets/error_icon/Error.png'
+import Error_1 from '../../Assets/error_icon/error-1.png'
+import Error_2 from '../../Assets/error_icon/error-2.png'
+import Error_3 from '../../Assets/error_icon/Error-3.png'
+import {useDispatch,useSelector} from 'react-redux'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function BuyNow(){
 
+    toast.configure()
+    const Auth = useSelector(state=>state.Auth)
+    const [dataCustomerRedux,setDataCustomerRedux]=useState(undefined)
+    const [alamatUtama,setAlamatUtama]=useState('')
     const {Product_Code} = useParams()
     const [showModalAlamat,setShowModalAlamat] = useState(false)
     const [showModalTambahAlamat,setShowModalTambahAlamat] = useState(false)
     const [ProductDetail,setProductDetail]=useState(undefined)
     const [isLoading,setIsLoading]=useState(true)
     const [dikirimDari,setDikirimDari]=useState(undefined)
+    const [hargaAwalBarang,setHargaAwalBarang]=useState(undefined)
+    const [hargaAwalDiscount,setHargaAwalDiscount]=useState(undefined)
     const [hargaNormal,setHargaNormal]=useState(undefined)
     const [hargaDiscount,setHargaDiscount]=useState(undefined)
+    const [limitProduct,setLimitProduct]=useState(undefined)
     const [totalProduct,setTotalProduct]=useState(1)
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [key, setKey] = useState('Province');
@@ -103,22 +115,34 @@ export default function BuyNow(){
         }
 
         ])
-    const [finalAddress,setFinalAddress]=useState([])
+
+    const [newAlamatCustomer,setNewAlamatCustomer]=useState([
+
+    ])
+    const [optionsCourier,setOptionsCourier]=useState([])
+        const option_courier =[{
+            value:
+            {"nama_product":'TIKI'
+            },
+            label:'TIKI'
+        }]
+    
+        
+        // state tambah alamat
     const [allCourier,setAllCourier]=useState(undefined)
     const [allProvince,setAllProvince]=useState([])   
     const [allCity,setAllCity]=useState([])
     const [allDistrict,setAllDistrict]=useState([])
     const [allSubdistrict,setAllSubdistrict]=useState([])
-
-    // state tambah alamat
+    const [finalAddress,setFinalAddress]=useState([])
     const [addressType,setAddressType]=useState('') // address type pas di tambah address modals
-    const [customerName,setCustomerName]=useState('')
-    const [customerNumber,setCustomerNumber]=useState('')
+    const [customerName,setCustomerName]=useState('') // customer name for add new address modals
+    const [customerNumber,setCustomerNumber]=useState('') // customer number for add new address modals
     // state tambah alamat end
 
 
     // STATE PROVINCE CITY DISTRICT
-    const [provincePilihan,setProvincePilihan]=useState('')
+    const [provincePilihan,setProvincePilihan]=useState('') 
     const [cityPilihan,setCityPilihan]=useState('')
     const [districtPilihan,setDistrictPilihan]=useState('')
     const [subdistrictPilihan,setSubdistrictPilihan]=useState('')
@@ -159,31 +183,6 @@ export default function BuyNow(){
           }
     })
 
-    // useEffect(()=>{
-        
-    //     if(finalAddress){
-    //         console.log(finalAddress)
-         
-    //         if(finalAddress[0] !== undefined){
-    //             console.log('masuk ke if use effect disabled')
-    //             setIsCityDisabled(false)
-    //             if(finalAddress[1] !== undefined){
-    //                 setIsDistrctDisabled(false) 
-    //                 console.log('masuk ke  if use effect disabled')
-    //             }else if (finalAddress[1] !== undefined && finalAddress[2] !== undefined){
-    //                 setIsDistrctDisabled(false)
-    //                 setIsSubdistrctDisabled(false)
-    //                 console.log('masuk ke else if')
-    //             }
-    //         }else {
-    //             console.log('masuk ke else')
-    //             setIsCityDisabled(true)
-    //             setIsDistrctDisabled(true)
-    //             setIsSubdistrctDisabled(true)   
-    //         }            
-    //     }
-
-    // },[finalAddress])
     // GOOGLE END
 
     
@@ -207,28 +206,44 @@ export default function BuyNow(){
     const product_detail_func=()=>{
         axios.post(`https://products.sold.co.id/get-product-details?product_code=${Product_Code}`)
         .then(async(res)=>{
-
+            console.log(res.data)
             // getTiki.getAllCourier().then(alert)
             let findAllCourier =  await getTiki.getAllCourier()
             let getAllProvince =  await getTiki.getAllProvince(findAllCourier.Courier,findAllCourier.Courier_Code)
-            setAllCourier(findAllCourier)
-            setAllProvince(getAllProvince)
-
             var alamat = res.data.PIC_company_address
             var split_alamat = alamat.split(',')
             var dikirim_dari = split_alamat[4]
             var hargaAwal = parseInt(res.data.Sell_Price)
             var discount = parseInt(res.data.Sell_Price * 0.1)
             var hargaTotal = hargaAwal-discount
+            let allAddressCustomer = []
+            allAddressCustomer.push(Auth.dataCustomer.Address_1)
+            allAddressCustomer.push(Auth.dataCustomer.Address_2)
+            allAddressCustomer.push(Auth.dataCustomer.Address_3)
+            allAddressCustomer.push(Auth.dataCustomer.Address_4)
+            allAddressCustomer.push(Auth.dataCustomer.Address_5)
+            setNewAlamatCustomer(allAddressCustomer)
+            setOptionsCourier({
+                value:
+                {"nama_product":findAllCourier.Courier,
+                "courier_code":findAllCourier.Courier_Code
+                },
+                label:findAllCourier.Courier
+            })
+            setAlamatUtama(Auth.dataCustomer.Address_1)
+            setDataCustomerRedux(Auth.dataCustomer)
+            setAllCourier(findAllCourier)
+            setAllProvince(getAllProvince)
+
+            setHargaAwalBarang(hargaAwal)
             setHargaNormal(hargaAwal)
+            setHargaAwalDiscount(hargaTotal)
             setHargaDiscount(hargaTotal)
             setDikirimDari(dikirim_dari)
-            console.log(dikirim_dari)
             setProductDetail(res.data)
+            setLimitProduct(res.data.Stock_Quantity)
             setIsLoading(false)
-            
-      
-
+            console.log(Auth.dataCustomer)
         }).catch((err)=>{
             console.log(err)
         })
@@ -246,7 +261,6 @@ export default function BuyNow(){
   
 
     const toggle = () => setTooltipOpen(!tooltipOpen);
-    const options_product_searching = []
 
 
     const renderProvince=()=>{
@@ -319,7 +333,7 @@ export default function BuyNow(){
                 return (
                     <>
                         <div className="box-error-empty">
-                            <img src={errorTokped} alt="" className="img-error-empty" />
+                            <img src={Error_2} alt="" className="img-error-empty" />
                             <p>PILIH PROVINCE TERLEBIH DAHULU</p>
                         </div>
                     </>
@@ -371,7 +385,7 @@ export default function BuyNow(){
             return (
                 <>
                      <div className="box-error-empty">
-                        <img src={errorTokped} alt="" className="img-error-empty" />
+                        <img src={Error_2} alt="" className="img-error-empty" />
                         <p>PILIH CITY TERLEBIH DAHULU</p>
                     </div>
                 </>
@@ -419,7 +433,7 @@ export default function BuyNow(){
             return (
                 <>
                     <div className="box-error-empty">
-                        <img src={errorTokped} alt="" className="img-error-empty" />
+                        <img src={Error_2} alt="" className="img-error-empty" />
                         <p>PILIH DISTRICT TERLEBIH DAHULU</p>
                     </div>
                 </>
@@ -458,7 +472,7 @@ export default function BuyNow(){
                     // value={currentValueProduct}
                     backspaceRemovesValue={true}
                     onChange={open_product}
-                    options={options_product_searching}
+                    options={option_courier}
                     placeholder="Pilih Pengiriman yang kamu mau"
                 />
             </>
@@ -479,7 +493,7 @@ export default function BuyNow(){
                     // value={currentValueProduct}
                     backspaceRemovesValue={true}
                     onChange={open_product}
-                    options={options_product_searching}
+                    options={option_courier}
                     placeholder="Pilih Kurir yang kamu mau"
                 />
             </>
@@ -497,7 +511,7 @@ export default function BuyNow(){
                     // value={currentValueProduct}
                     backspaceRemovesValue={true}
                     onChange={open_product}
-                    options={options_product_searching}
+                    options={option_courier}
                     placeholder="Pilih Asuransi yang kamu mau"
                 />
             </>
@@ -518,79 +532,59 @@ export default function BuyNow(){
         setShowModalAlamat(false)
     }
     const renderAlamatCustomer=()=>{
-        return alamatCustomer.map((val,index)=>{
+        return newAlamatCustomer.map((val,index)=>{
             // console.log(val)
-            if(val.status === 'Utama' ){
+            if(val !== '' ){
                 return (
                     <div key={index + 1} className='box-alamat-card active-alamat-card-utama'>
                         <div className="alamat-nama-customer">
-                            <p>{val.nama_customer} <span>({val.status})</span></p>
+                            <p>Bayu Darmawan <span>Utama</span></p>
                             <div className="utama-alamat-box">
-                                <p>{val.status}</p>
+                                <p>Utama</p>
                             </div>
                         </div>
-                        <p className="nomor-hp-customer">{val.no_hp}</p>
+                        <p className="nomor-hp-customer">087785192296</p>
                         <div className="box-detail-alamat-customer">
-                            <p>{val.alamat}</p>
+                            <p>{val}</p>
                         </div>
                         <div className="box-btn-alamat">
                             <div className="btn-ganti-alamat">
                                 <p>Ubah Alamat</p>
-                            </div>         
-                        </div>
-                    </div>
-                )
-            }else {
-                return (
-                    <div  key={ index + 1} className="box-alamat-card" >
-                        <div className="alamat-nama-customer">
-                            <p>BAYU <span>({val.status})</span></p>
-                            <div className="utama-alamat-box">
-                                <p>{val.status}</p>
-                            </div>
-                        </div>
-                        <p className="nomor-hp-customer">{val.no_hp}</p>
-                        <div className="box-detail-alamat-customer">
-                            <p>{val.alamat}</p>
-                        </div>
-                        <div className="box-btn-alamat">
-                            <div className="btn-ganti-alamat">
-                                <p>Ubah Alamat</p>
-                            </div>
+                            </div>  
                             <div className="btn-jadikan-utama" onClick={()=>changeAddressToThis(index)}>
                                 <p>Jadikan Alamat Utama</p>
                             </div>          
                         </div>
                     </div>
                 )
+            }else {
+                return (
+                    <>
+                    </>
+                )
             }
         })
     }
 
     const renderAlamatUtama=()=>{
-        // console.log(alamatCustomer)
-        return alamatCustomer.map((val,index)=>{
-            if(val.status === 'Utama'){
-                return (
-                    <>
-                        <div  key={index+1} className="checking-alamat-left">
-                            <div className="alamat-name-belilangsung">
-                                <div className="status-alamat-box">
-                                    <p>{val.status}</p>
-                                </div>
-                                <p>{val.status} - <span>{val.nama_customer}({val.no_hp})</span></p>
-                            </div>
-                            <div className="alamat-detail-belilangsung">
-                                <p>{val.alamat}</p>
-                            </div>
+        return (
+            <>
+                <div  key={1} className="checking-alamat-left">
+                    <div className="alamat-name-belilangsung">
+                        <div className="status-alamat-box">
+                            <p>Utama</p>
                         </div>
-                        <div className="checking-alamat-right">
-                            <BsChevronRight className="icon-right"/>
-                        </div>
-                    </>
-                )
-            }
-        })
+                        <p>{dataCustomerRedux.First_Name} - <span>({dataCustomerRedux.Contact_Number_1})</span></p>
+                    </div>
+                    <div className="alamat-detail-belilangsung">
+                        <p>{alamatUtama}</p>
+                    </div>
+                </div>
+                <div className="checking-alamat-right">
+                    <BsChevronRight className="icon-right"/>
+                </div>
+            </>
+        )
     }
 
     const open_change_address=()=>{
@@ -602,30 +596,62 @@ export default function BuyNow(){
         if(params.length > 2 ){
             console.log(params)
             var data_searching = []
-            var searching = alamatCustomer.filter((filter)=>{
+            var searching = newAlamatCustomer.filter((filter)=>{
                 if(filter.alamat.toUpperCase().includes(params.toUpperCase())){
                     console.log(filter)
                     data_searching.push(filter)
                     return filter
                 }
             })
-            setAlamatCustomer(data_searching)
+            setNewAlamatCustomer(data_searching)
         }else if(params.length === 0) {
-            setAlamatCustomer(defaultAlamatCustomer)
+            setNewAlamatCustomer(defaultAlamatCustomer)
         }
     }
 
     const tambah_qty_product=()=>{
 
-
-        var qtyNow = totalProduct
-        console.log(parseInt(totalProduct))
-        console.log(qtyNow)
-        setTotalProduct((qtyNow + 1))
+        var qtyNow = parseInt(totalProduct)
+        if(qtyNow >= limitProduct){
+            toast.error(`Product tersisa hanya ${limitProduct}`, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }else {
+            let total_qty = qtyNow + 1
+            let final_price_discount = hargaAwalDiscount * total_qty
+            let final_price_normal = hargaAwalBarang * total_qty
+            setHargaNormal(final_price_normal)
+            setHargaDiscount(final_price_discount)
+            setTotalProduct((total_qty))
+        }
     }
 
     const kurang_qty_product=()=>{
-        
+        var qtyNow = parseInt(totalProduct)
+        if(qtyNow >1 && qtyNow <= limitProduct){
+            let total_qty = qtyNow - 1
+            let final_price_discount = hargaAwalDiscount * total_qty
+            let final_price_normal = hargaAwalBarang * total_qty
+            setHargaNormal(final_price_normal)
+            setHargaDiscount(final_price_discount)
+            setTotalProduct((total_qty))
+        }else {
+            toast.error(`Minimum Pembelian 1`, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
 
     const tambahAlamatFunc=()=>{
@@ -647,11 +673,17 @@ export default function BuyNow(){
     }
 
     const onChangeCustName=(value)=>{
-        setCustomerName(value)
+        if(value.length > 3){
+            setCustomerName(value)
+        }
     }
 
     const onChangeCustNumber=(value)=>{
-        setCustomerNumber(value)
+        if(value.length > 10){
+            setCustomerNumber(value)
+        }else {
+
+        }
     }
 
     const onSaveTambahAlamat=()=>{
@@ -850,7 +882,7 @@ export default function BuyNow(){
                             {renderAsuransi()}
                         </div>
                         <div className="box-price-asuransi">
-                            <p>RP 200.000</p>
+                            <p>RP 0</p>
                             <BsFillCheckSquareFill className="icon-checklist"/>
                         </div>
                     </div>
@@ -862,7 +894,7 @@ export default function BuyNow(){
                                     <ul>
                                         <li>
                                             <p>
-                                                Total Harga (1 Barang)
+                                                Total Harga ({totalProduct} Barang)
                                             </p>
                                             <p>RP.{commafy(hargaDiscount)}</p>
                                         </li>
@@ -889,7 +921,7 @@ export default function BuyNow(){
                                                 Total Tagihan
                                             </p>
                                             <p className="price-tagihan">
-                                                RP.18.679.000
+                                                RP.{commafy(hargaDiscount)}
                                              </p>
                                         </li>
                                        

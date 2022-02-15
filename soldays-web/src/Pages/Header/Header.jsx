@@ -48,6 +48,7 @@ export default function Header(data){
     const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
     
     const [totalCartRedux,setTotalCartRedux]=useState(0)
+    const [totalOrderList,setTotalOrderList]=useState(0)
     const [isMenuHoverCart,setIsMenuHoverCart]=useState(false) 
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
@@ -57,9 +58,7 @@ export default function Header(data){
     const [category_Active,setCategory_Active] = useState(allSubcategoryFromHome[0][0].Category)
     const [subCategory_Active,setSubCategory_Active]=useState(allSubcategoryFromHome[0][0].allSubcategory[0].Subcategory)
 
-
-    const [typeHoverCategory,setTypeHoverCategory] = useState(0)
-    const [typeActiveCategory,setTypeActiveCategory]=useState(0)
+    const [allOrderList,setAllOrderList]=useState(undefined)
     // console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
@@ -128,11 +127,25 @@ export default function Header(data){
             setTotalCartRedux(0)
             // console.log('Cart Reducer kosong',Cart.Cart)
         }
+        if(allOrderList === undefined){
+            console.log('131 jalan allorderlist')
+            axios.post(`https://sales.sold.co.id/get-sales-order-data-per-customer?Customer_Code=${Auth.token}`)
+            .then((res)=>{
+                if(res.data){
+                    setTotalOrderList(res.data.length)
+                    setAllOrderList(res.data)
+                }else {
+                    setTotalOrderList(0)
+                }
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
         
         setIsLoginHeader(Auth.isLogin)
         // console.log('Auth is Login skrng ' , Auth.isLogin)
         
-    },[Auth.isLogin, Cart.Cart])
+    },[Auth.isLogin, Auth.token, Cart.Cart, allOrderList])
     function commafy( num ) {
         if(num !==undefined){
             var str = num.toString().split('.');
@@ -433,12 +446,38 @@ export default function Header(data){
         if(params === 'Cart'){
             setIsMenuHoverCart(true)
             setToggleCart(true)
+            var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
+            // console.log(Cart.Cart !== cartLocalStorage,'cart.cart!== cart local storage')
+            if(cartLocalStorage){
+                if(Cart.Cart === cartLocalStorage){
+                    setCartFromRedux(cartLocalStorage)
+                    setTotalCartRedux(cartLocalStorage.length)
+                }else {
+                    dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
+                    setCartFromRedux(cartLocalStorage)
+                    setTotalCartRedux(cartLocalStorage.length)
+                }
+            }else {
+                setTotalCartRedux(0)
+            }
         }else if (params === 'BulkOrder'){
             setIsMenuHoverBulkOrder(true)
             setToggleBulkOrder(true)
         }else if(params === 'pesanan'){
             setIsMenuHoverOrderList(true)
             setTogglePesanan(true)
+            axios.post(`https://sales.sold.co.id/get-sales-order-data-per-customer?Customer_Code=${Auth.token}`)
+            .then((res)=>{
+                if(res.data){
+                    setTotalOrderList(res.data.length)
+                    setAllOrderList(res.data)
+                }else {
+                    setTotalOrderList(0)
+                }
+            }).catch((err)=>{
+                console.log(err)
+            })
+          
         }else if (params === 'Login'){
             setIsMenuHoverLogin(true)
             setToggleLogin(true)
@@ -447,20 +486,7 @@ export default function Header(data){
             setToggleAllCategory(true)
         }
 
-        var cartLocalStorage = JSON.parse(localStorage.getItem('itemsInCart'))
-        // console.log(Cart.Cart !== cartLocalStorage,'cart.cart!== cart local storage')
-        if(cartLocalStorage){
-            if(Cart.Cart === cartLocalStorage){
-                setCartFromRedux(cartLocalStorage)
-                setTotalCartRedux(cartLocalStorage.length)
-            }else {
-                dispatch({type:'GETALLCARTSTORAGE',cartLocalStorage})
-                setCartFromRedux(cartLocalStorage)
-                setTotalCartRedux(cartLocalStorage.length)
-            }
-        }else {
-            setTotalCartRedux(0)
-        }
+
     }
     const onMouseLeave=()=>{
         setToggleCart(false)
@@ -477,6 +503,39 @@ export default function Header(data){
 
     const toggleCartFunc=()=>{
         setToggleCart(!toggleCart)
+    }
+
+
+    const renderOrderList=()=>{
+        if(allOrderList){
+            return allOrderList.map((val,index)=>{
+                return (
+                <>
+                    <Link to={'/cart'}  key={1} className="render-item-list-cart">
+                        <div className="render-img-list-cart">
+                            <ImgEffect data={{
+                                img:Gopay_icon,
+                                background:'#ccc'
+                                }}
+                            />
+                        </div>
+                        <div className="render-name-list-cart">
+                            <p className='p-limited-text'>{val.Primary_Recipient_Name}</p>
+                            <p>{val.Total_Quantity} Barang (1kg)</p>
+                        </div>
+                        <div className="render-price-list-cart">
+                            <p className="p-price-limited">RP.{commafy(10000)}</p>
+                        </div>
+                    </Link>
+                </>
+                )
+                
+            })
+        }else {
+            return (
+                null
+            )
+        }
     }
     const renderProductCart=()=>{
 
@@ -780,9 +839,29 @@ export default function Header(data){
                                     </div>
                                 </DropdownToggle>
                                 <DropdownMenu className="dropdown-menu-toggle-cart">
-                                    <div className="dropdown-menu-auth-header">
-                                        <h1>order list</h1>
-                                    </div>
+                                {
+                                    
+                                    totalOrderList > 0 ? 
+                                        <div className="dropdown-item-list-cart">
+                                            <div className="dropdown-item-keranjang-list-cart">
+                                                <p>Pesanan ({totalOrderList})</p>
+                                                <Link to={'/cart'} style={{textDecoration:'none',color:'#27aae1'}}>Lihat Sekarang</Link>
+                                            </div>
+                                            {renderOrderList()}
+                                        </div>
+                                        :
+                                        <div className="cart-kosong-list-cart">
+                                            <div className="box-img-cart-kosong">
+                                                <ImgEffect data={{
+                                                    img:CartKosongTokped,
+                                                    background:'transparent'
+                                                    }}
+                                                />
+                                            </div>
+                                            <p>Wah Pesanan Belanjaaanmu Kosong!</p>
+                                            <p>Daripada dianggurin, isi saja dengan barang-barang menarik. Lihat-lihat dulu, siapa tahu ada yang kamu suka!</p>
+                                        </div> 
+                                    }
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
@@ -823,12 +902,13 @@ export default function Header(data){
                                 </DropdownToggle>
                                 <DropdownMenu className="dropdown-menu-toggle-cart">
                                     {
-                                    totalCartRedux > 0 ? 
+                                        totalCartRedux > 0 ? 
                                         <div className="dropdown-item-list-cart">
                                             <div className="dropdown-item-keranjang-list-cart">
                                                 <p>Keranjang ({totalCartRedux})</p>
                                                 <Link to={'/cart'} style={{textDecoration:'none',color:'#27aae1'}}>Lihat Sekarang</Link>
                                             </div>
+                                            
                                             {renderProductCart()}
                                         </div>
                                         :
