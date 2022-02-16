@@ -17,11 +17,13 @@ import {
     DropdownItem,
     
   } from "reactstrap";
+  import Modal from 'react-bootstrap/Modal'
 import ImgEffect from '../../Component/Effect/img_effect'
 import CartKosongTokped from '../../Assets/tokped_gambar/cart-kosong.jpeg'
 import {FcMoneyTransfer} from 'react-icons/fc'
 import Gopay_icon from '../../Assets/tokped_gambar/gopay-icon.png'
 import {LogoutRedux} from '../../redux/Actions/AuthActions'
+import TikiLogo from '../../Assets/all_icon/logoTiki.png'
 import ProductCard from '../../Component/ProductCard/ProductCard'
 import Highlight from '../../Component/Highlight/highlight'
 import TabPane from 'react-bootstrap/TabPane'
@@ -35,20 +37,26 @@ export default function Header(data){
     // console.log(Product)
     const Cart = useSelector(state=>state.Cart)
     const Auth = useSelector(state=>state.Auth)
+    const Order = useSelector(state=>state.Order)
+    console.log(Order.totalOrder)
+    console.log(Order.allOrder)
 
 
     // console.log(Auth)
     // const [isRandomCategory,setIsRandomCategory]=useState(false)
     // const [category_random,setCategory_random]=useState('')
+    const [showModalListBulk,setShowModalListBulk]=useState(false)
     const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allSubCategory)
     const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory)
     const [headerHome,setHeaderHome]=useState(true)
+
     const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
-    
     const [totalCartRedux,setTotalCartRedux]=useState(0)
+    const [allOrderList,setAllOrderList]=useState(Order.allOrder)
     const [totalOrderList,setTotalOrderList]=useState(0)
+
     const [isMenuHoverCart,setIsMenuHoverCart]=useState(false) 
     const [isMenuHoverBulkOrder,setIsMenuHoverBulkOrder]=useState(false) 
     const [isMenuHoverOrderList,setIsMenuHoverOrderList]=useState(false) 
@@ -58,7 +66,6 @@ export default function Header(data){
     const [category_Active,setCategory_Active] = useState(allSubcategoryFromHome[0][0].Category)
     const [subCategory_Active,setSubCategory_Active]=useState(allSubcategoryFromHome[0][0].allSubcategory[0].Subcategory)
 
-    const [allOrderList,setAllOrderList]=useState(undefined)
     // console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
@@ -127,25 +134,21 @@ export default function Header(data){
             setTotalCartRedux(0)
             // console.log('Cart Reducer kosong',Cart.Cart)
         }
-        if(allOrderList === undefined){
-            console.log('131 jalan allorderlist')
-            axios.post(`https://sales.sold.co.id/get-sales-order-data-per-customer?Customer_Code=${Auth.token}`)
-            .then((res)=>{
-                if(res.data){
-                    setTotalOrderList(res.data.length)
-                    setAllOrderList(res.data)
-                }else {
-                    setTotalOrderList(0)
-                }
-            }).catch((err)=>{
-                console.log(err)
-            })
+
+        if(Order.allorder){
+            console.log(Order)
+            console.log(Order.totalOrder)
+            setAllOrderList(Order.allOrder)
+            setTotalOrderList(Order.totalOrder)
+        }else{
+            setTotalOrderList(0)
         }
+ 
         
         setIsLoginHeader(Auth.isLogin)
         // console.log('Auth is Login skrng ' , Auth.isLogin)
         
-    },[Auth.isLogin, Auth.token, Cart.Cart, allOrderList])
+    },[Auth.isLogin, Auth.token, Cart.Cart, Order.allOrder, Order.allorder, Order.totalOrder, allOrderList])
     function commafy( num ) {
         if(num !==undefined){
             var str = num.toString().split('.');
@@ -466,18 +469,26 @@ export default function Header(data){
         }else if(params === 'pesanan'){
             setIsMenuHoverOrderList(true)
             setTogglePesanan(true)
-            axios.post(`https://sales.sold.co.id/get-sales-order-data-per-customer?Customer_Code=${Auth.token}`)
-            .then((res)=>{
-                if(res.data){
-                    setTotalOrderList(res.data.length)
-                    setAllOrderList(res.data)
-                }else {
-                    setTotalOrderList(0)
-                }
-            }).catch((err)=>{
-                console.log(err)
-            })
-          
+            if(allOrderList !== undefined){
+                //data udah ada 
+                console.log(allOrderList)
+                console.log('masuk ke if all order list 467')
+                setAllOrderList(Order.allOrder)
+                setTotalOrderList(Order.totalOrder)
+            }else {
+                console.log('masuk ke else all order list 469')
+                axios.post(`https://sales.sold.co.id/get-sales-order-data-per-customer?Customer_Code=${Auth.token}`)
+                .then((res)=>{
+                    if(res.data){
+                        let allDataOrder = res.data
+                        setAllOrderList(allDataOrder)
+                    }else {
+                    }
+                }).catch((err)=>{
+                    console.log(err)
+                })
+            }
+
         }else if (params === 'Login'){
             setIsMenuHoverLogin(true)
             setToggleLogin(true)
@@ -509,22 +520,23 @@ export default function Header(data){
     const renderOrderList=()=>{
         if(allOrderList){
             return allOrderList.map((val,index)=>{
+                let total_price = parseInt(val.Total_Price) + parseInt(val.Shipping_Fee)
                 return (
                 <>
                     <Link to={'/cart'}  key={1} className="render-item-list-cart">
                         <div className="render-img-list-cart">
                             <ImgEffect data={{
-                                img:Gopay_icon,
-                                background:'#ccc'
+                                img:TikiLogo,
+                                background:'transparent'
                                 }}
                             />
                         </div>
                         <div className="render-name-list-cart">
-                            <p className='p-limited-text'>{val.Primary_Recipient_Name}</p>
-                            <p>{val.Total_Quantity} Barang (1kg)</p>
+                            <p className='p-limited-text'>{val.Order_Number}</p>
+                            <p>{val.Total_Quantity} {val.Unit}</p>
                         </div>
                         <div className="render-price-list-cart">
-                            <p className="p-price-limited">RP.{commafy(10000)}</p>
+                            <p className="p-price-limited">RP.{commafy(total_price)}</p>
                         </div>
                     </Link>
                 </>
@@ -752,9 +764,55 @@ export default function Header(data){
             })
         }
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
+
+    const onInputBulk=(value,id)=>{
+        
+        if (value.length > 3){
+            setShowModalListBulk(true)
+        }else {
+            setShowModalListBulk(false)
+        }
+    }
+    const onInputQty=(value,id)=>{
+        console.log(value,id)
+    }
+
+    const renderAllProductList=()=>{
+        return allProductFromHome.map((val,index)=>{
+            return (
+                <>
+                    <div className="box-list-card-bo">
+                        <img src={val.Picture_1} alt="" />
+                        <p>{val.Name} </p>
+                    </div>
+                </>
+            )
+        })
+    }
     return(
         
         <>
+            <Modal
+                show={showModalListBulk}
+                onHide={() => setShowModalListBulk(false)}
+                dialogClassName="modal-90w"
+                size="md"
+                aria-labelledby="contained-modal-title-vcenter"
+                clasName="modal-list-bulk"
+                centered
+                >
+                <Modal.Header closeButton className="modal-header-success">
+                <Modal.Title className="modal-header-success-cart" id="example-custom-modal-styling-title">
+                    <p>Pilih barang yang anda inginkan</p>
+                </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modal-body-bulk-order">
+                    {renderAllProductList()}       
+                </Modal.Body>
+            </Modal>
+
+
+
             <div className={headerHome ? 'header-container' : 'header-container-fixed' }>
                 <div className="header-top">
                     <div className="header-download-app" onClick={open_download_app}>
@@ -797,18 +855,13 @@ export default function Header(data){
                             <DropdownToggle caret>
                                 <p onClick={open_semua_kategori}>Semua  Kategori</p>
                             </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-toggle-allcategory">
-                                {/* <Tabs defaultActiveKey="detail" id="uncontrolled-tab-example" className="mb-3">
-                                
-                                </Tabs> */}
-                            
+                            <DropdownMenu className="dropdown-menu-toggle-allcategory">                            
                                 <Tab.Container defaultActiveKey={1}>
                                     <Nav variant="pills" className="flex-column">
                                         <Row>        
                                             {render_product_allCategory()}
                                         </Row>
                                     </Nav>
-
                                     <Tab.Content>
                                         {render_isi_allCategory()}
                                     </Tab.Content>
@@ -822,7 +875,7 @@ export default function Header(data){
                             {render_searching_product()}
                         </div>
                         <div className="category-random-box">
-                                {render_random_category()}
+                            {render_random_category()}
                         </div>
                     </div>
                     <div className="menu-from-header">
@@ -878,8 +931,31 @@ export default function Header(data){
                                     </div>
                                 </DropdownToggle>
                                 <DropdownMenu className="dropdown-menu-toggle-cart">
-                                    <div className="dropdown-menu-auth-header">
-                                        <h1>testing</h1>
+                                    <div className="dropdown-item-list-cart">
+                                        <div className="dropdown-item-keranjang-list-cart">
+                                            <p>Line By Line </p>
+                                            <p id="copypas">Copy & Paste</p>
+                                        </div>
+                                        <div className="box-bulk-order">
+                                            <div className="bulk-left">
+                                                <p>Product Code / Product Name</p>
+                                                <input type="text" className="input-bulk" id="inp_bulk_1" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_1')} />
+                                                <input type="text" className="input-bulk" id="inp_bulk_2" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_2')} />
+                                                <input type="text" className="input-bulk" id="inp_bulk_3" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_3')} />
+                                                <input type="text" className="input-bulk" id="inp_bulk_4" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_4')} />     
+                                           
+                                            </div>
+                                            <div className="bulk-right">
+                                                <p>Qty</p>
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_1" onChange={(e)=>onInputQty(e.target.value,'inp_qty_1')}/>
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_2" onChange={(e)=>onInputQty(e.target.value,'inp_qty_2')}/>
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_3" onChange={(e)=>onInputQty(e.target.value,'inp_qty_3')} />
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_4" onChange={(e)=>onInputQty(e.target.value,'inp_qty_4')} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="btn-addcart">
+                                        ADD TO CART
                                     </div>
                                 </DropdownMenu>
                             </Dropdown>

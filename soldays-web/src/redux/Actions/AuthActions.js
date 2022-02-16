@@ -17,14 +17,11 @@ export const LoginRedux=(token)=>{
         }).catch((err)=>{
             console.log(err)
         })
-   
     }
 }
 
 export const LogoutRedux=()=>{
     return (dispatch)=>{
-        
-        // console.log('logout redux jalan')
         localStorage.removeItem('token')
         dispatch({type:'LOGOUT'})
         toast.error('Berhasil Logout', {

@@ -389,7 +389,7 @@
                         max-height:300px !important;
                         padding-left:5px !important;
                         padding-right:5px !important;
-                        overflow-x:scroll;
+                        overflow-x:hidden;
                         transition: 1s;
                         -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 11.1 */
                        -moz-animation: fadein 1s; /* Firefox < 16 */
@@ -398,12 +398,29 @@
                             animation: fadein 1s;
                             box-shadow: 0px 15px 10px -15px #111 !important;
     
+                            .btn-addcart{
+                                width:40%;
+                                height:30px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border:1px solid #27aae1;
+                                border-radius:5px;
+                                background-color: #27aae1;
+                                position: relative;
+                                left:10px;
+                                color:white;
+                                &:hover{
+                                    cursor: pointer;
+                                }
+                            }
                             .dropdown-item-list-cart {
                                 width:100%;
                                 height:100%;
                                 min-height:100%;
                                 /* height:500px; */
                                 /* border:1px solid black;  */
+                                // overflow-x:hidden !important;
                                 display: flex;
                                 flex-direction: column;
                                 .dropdown-item-keranjang-list-cart {
@@ -418,6 +435,8 @@
                                     padding-right:10px;
                                     border-bottom:1px solid #a5a6a9;
                                     margin-bottom:5px;
+                                 
+                                 
                                 }
                                 & p:nth-child(1){
                                     margin:0px !important;
@@ -430,6 +449,8 @@
                                     font-weight:700;
                                     color:#27aae1;
                                 }
+
+                               
                                 .render-item-list-cart{
                                     width:100%;
                                     height:50px;
@@ -493,6 +514,69 @@
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
                                             text-align: end;
+                                        }
+                                        
+                                    }
+                                }
+                                .box-bulk-order{
+                                    width: 100%;
+                                    height:200px;
+                                    
+                                    // border:1px solid red;
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    justify-content: center;
+                                    padding-left:5px;
+                                    padding-right:5px;
+                                    .bulk-left{
+                                        width:70%;
+                                        height:100%;
+                                        min-height:100%;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        p{
+                                            position: relative;
+                                            left:5px;
+                                        }
+                                        // background-color: blue;
+                                        .input-bulk{
+                                            width:90%;
+                                            height:30px;
+                                            margin:5px;
+                                            border-radius:5px;
+                                            border:1px solid #dedede;
+
+                                            &:focus{
+                                                outline: none;
+                                            }
+                                        }
+
+                                     
+                                    }
+                                    .bulk-right{
+                                        width:30%;
+                                        height:100%;
+                                        min-height:100%;
+                                        // background-color: red;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        p{
+                                            position: relative;
+                                            left:5px;
+                                        }
+                                        .input-qty{
+                                            width:90%;
+                                            height:30px;
+                                            margin:5px;
+                                            border-radius:5px;
+                                            border:1px solid #dedede;
+
+                                            &:focus{
+                                                outline: none;
+                                            }
                                         }
                                         
                                     }
@@ -674,6 +758,7 @@
                                     }          
                                 }
                             }
+                       
                     }
                 }
                 .box-active-item-menu{
@@ -1259,7 +1344,7 @@
                         max-height:300px !important;
                         padding-left:5px !important;
                         padding-right:5px !important;
-                        overflow-x:scroll;
+                        overflow-x:hidden;
                         transition: 1s;
                         -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 11.1 */
                        -moz-animation: fadein 1s; /* Firefox < 16 */
@@ -1267,13 +1352,29 @@
                          -o-animation: fadein 1s; /* Opera < 11.1 */
                             animation: fadein 1s;
                             box-shadow: 0px 15px 10px -15px #111 !important;
+                            .btn-addcart{
+                                width:40%;
+                                height:30px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border:1px solid #27aae1;
+                                border-radius:5px;
+                                background-color: #27aae1;
+                                position: relative;
+                                left:10px;
+                                color:white;
+                                &:hover{
+                                    cursor: pointer;
+                                }
+                            }
     
                             .dropdown-item-list-cart {
                                 width:100%;
                                 height:100%;
                                 min-height:100%;
                                 /* height:500px; */
-                                /* border:1px solid black;  */
+                                //  border:1px solid black;
                                 display: flex;
                                 flex-direction: column;
                                 .dropdown-item-keranjang-list-cart {
@@ -1340,11 +1441,14 @@
                                             color:#a5a6a9;
                                         }
                                         .p-limited-text {
-                                            text-overflow: ellipsis;
+                                            // text-overflow: ellipsis;
                                             white-space: nowrap;
                                             overflow-x:scroll;
                                             width:100%;
                                             transition:0.5s;
+                                            &::-webkit-scrollbar {
+                                                display: none;
+                                            }
                                         }
                                     }
                                     .render-price-list-cart{
@@ -1362,6 +1466,69 @@
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
                                             text-align: end;
+                                        }
+                                        
+                                    }
+                                }
+                                .box-bulk-order{
+                                    width: 100%;
+                                    height:200px;
+                                    
+                                    // border:1px solid red;
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    justify-content: center;
+                                    padding-left:5px;
+                                    padding-right:5px;
+                                    .bulk-left{
+                                        width:70%;
+                                        height:100%;
+                                        min-height:100%;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        p{
+                                            position: relative;
+                                            left:5px;
+                                        }
+                                        // background-color: blue;
+                                        .input-bulk{
+                                            width:90%;
+                                            height:30px;
+                                            margin:5px;
+                                            border-radius:5px;
+                                            border:1px solid #dedede;
+
+                                            &:focus{
+                                                outline: none;
+                                            }
+                                        }
+
+                                     
+                                    }
+                                    .bulk-right{
+                                        width:30%;
+                                        height:100%;
+                                        min-height:100%;
+                                        // background-color: red;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        p{
+                                            position: relative;
+                                            left:5px;
+                                        }
+                                        .input-qty{
+                                            width:90%;
+                                            height:30px;
+                                            margin:5px;
+                                            border-radius:5px;
+                                            border:1px solid #dedede;
+
+                                            &:focus{
+                                                outline: none;
+                                            }
                                         }
                                         
                                     }
@@ -1663,6 +1830,87 @@
                     }
                 }
             }  
+        }
+    }
+}
+
+.modal {
+    .modal-dialog{
+        .modal-content{
+            overflow: hidden !important;
+            .modal-header-success {
+                border:none !important;
+                .modal-header-success-cart {
+                    width:100%;
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    p {
+                        color:#393D42;
+                        font-size:1.71429rem;
+                    }
+                }
+                .modal-header-buynow {
+                    width:100%;
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    p {
+                        color:#393D42;
+                        font-size:1.71429rem;
+                    }
+                    
+                }
+            }
+           .modal-body-bulk-order{
+               width:100%;;
+               height:250px;
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               overflow: scroll;
+
+               .box-list-card-bo{
+                   width:95%;
+                   height:60px;
+                   min-height:60px;
+                   margin:3px;
+                   border:1px solid #dedede;
+                   border-radius:5px;
+                   display: flex;
+                   flex-direction: row;
+                   justify-content: space-between;
+                   align-items: center;
+                   padding-right:5px;
+                   transition:0.5s;
+                   &:hover{
+                       cursor: pointer;
+                       background-color: #27aae1;
+                       color:white;
+                   }
+                   img{
+                       width:20%;
+                       height:100%;
+                       border-radius:5px;
+                   }
+                   p{
+                       text-align: left;
+                       width:100%;
+                       height:100%;
+                       padding:5px;
+                       display: flex;
+                    //    justify-content: center;
+                       align-items: center;
+                    //    text-overflow: ellipsis;
+                       white-space: nowrap;
+                       overflow-x:scroll;
+                    //    transition:0.5s;
+                       &::-webkit-scrollbar {
+                        display: none;
+                    }
+                   }
+               }
+           }
         }
     }
 }

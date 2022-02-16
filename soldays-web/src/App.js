@@ -13,6 +13,7 @@ import PigeonMap from '../src/Pages/MapsTesting/PigeonMap.jsx'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {FullPageLoading} from './Component/Loading/Loading'
 import {GetAllProduct} from './redux/Actions/ProductActions'
+import {getAllOrderListRedux} from './redux/Actions/OrderActions'
 import {useDispatch,useSelector} from 'react-redux'
 import {LoginRedux} from './redux/Actions/AuthActions'
 import Cart from './Pages/Cart/Cart';
@@ -37,9 +38,9 @@ function App(props) {
     if(token) {
       console.log('masuk ke if token ada')
       dispatch(LoginRedux(token))
+      dispatch(getAllOrderListRedux(token))
       checking_data_product()
       // navigate('/')
-      
     }else {
       console.log('masuk ke if token  gaada ')
       checking_data_product()
@@ -64,7 +65,7 @@ function App(props) {
         setTimeout(()=>{
           console.log(Auth)
           setLoading(false)
-        },300)
+        },100)
     }else {
       console.log('masuk ke else line 63 app js')
       dispatch({type:'LOADINGPRODUCT'})
