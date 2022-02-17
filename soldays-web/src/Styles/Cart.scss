@@ -186,6 +186,9 @@ $orange-soldays:#f6941c;
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
+                                    &:hover{
+                                        cursor: pointer !important;
+                                    }
                                     .icon-plus-minus{
                                         font-size:20px;
                                     }
@@ -193,6 +196,7 @@ $orange-soldays:#f6941c;
                                         font-size:20px;
                                         color:#dedede;
                                         transition:1s;
+                                        
                                     }
                                 }
                                 .box-qty{
@@ -215,6 +219,9 @@ $orange-soldays:#f6941c;
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
+                                    &:hover{
+                                        cursor: pointer !important;
+                                    }
                                     .icon-plus-minus{
                                         font-size:20px;
                                     }

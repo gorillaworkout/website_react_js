@@ -31,20 +31,14 @@ import { Tabs, Tab, Row, Nav } from "react-bootstrap";
 import axios from 'axios'
 export default function Header(data){
     const dispatch=useDispatch()
-    // console.log(React.version);
+    // console.log(React.version,' react version');
 
     const Product = useSelector(state=>state.Product)
     // console.log(Product)
     const Cart = useSelector(state=>state.Cart)
     const Auth = useSelector(state=>state.Auth)
     const Order = useSelector(state=>state.Order)
-    console.log(Order.totalOrder)
-    console.log(Order.allOrder)
 
-
-    // console.log(Auth)
-    // const [isRandomCategory,setIsRandomCategory]=useState(false)
-    // const [category_random,setCategory_random]=useState('')
     const [showModalListBulk,setShowModalListBulk]=useState(false)
     const [dataSearching,setDataSearching]=useState([])
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
@@ -73,27 +67,12 @@ export default function Header(data){
     const [toggleBulkOrder,setToggleBulkOrder]=useState(false)
     const [togglePesanan,setTogglePesanan]=useState(false)
     const [toggleAllCategory,setToggleAllCategory]=useState(false)
-    const [allIsData,setAllIsData]=useState(
-        {
-            isLogin:Auth.isLoading,
-            isSemuaKategori:false,
-            isOrderList:false,
-            isBulkOrder:false,
-            isCart:false,
-            isAboutUs:false,
-            isKebijakan:false,
-            isPanduanSeller:false,
-            isPanduanCustomer:false,
-            isSocialMedia:false,
-            isCatalog:false,
-            isDownloadApp:false,
-            isRandomCategory:false,
-            category_random:''
-        }
-    )
+
 
     const [isLoginHeader,setIsLoginHeader]=useState(Auth.isLogin)
   
+    const [activeInputBulk,setActiveInputBulk]=useState()
+    const [activeInputQty,setActiveInputQty]=useState()
     const options_product_searching = []
     const location = useLocation();
     // console.log(location)
@@ -136,8 +115,8 @@ export default function Header(data){
         }
 
         if(Order.allorder){
-            console.log(Order)
-            console.log(Order.totalOrder)
+            // console.log(Order)
+            // console.log(Order.totalOrder)
             setAllOrderList(Order.allOrder)
             setTotalOrderList(Order.totalOrder)
         }else{
@@ -164,246 +143,10 @@ export default function Header(data){
         }
     }
     // function searching header
-    const open_product=(e)=>{
-        var nama_product = e
-        if(nama_product === null){
 
-        }else {
-            setDataSearching(e.value)
-            // data.parentCallback({"searching_header":e.value})
-        }
-    }
     // function searching header
 
-    const open_download_app=()=>{
-        // data.parentCallback({"download_app":!allIsData.isDownloadApp})
-        setAllIsData({...allIsData,
-        isDownloadApp:!allIsData.isDownloadApp,
-        isSemuaKategori:false,
-        isOrderList:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    const open_order_list=()=>{
-        // data.parentCallback({"order_list":!allIsData.isOrderList})
-        setAllIsData({...allIsData,
-        isOrderList:!allIsData.isOrderList,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
 
-    }
-    const open_bulk_order=()=>{
-        // data.parentCallback({"bulk_order":!allIsData.isBulkOrder})
-        setAllIsData({...allIsData,
-        isBulkOrder:!allIsData.isBulkOrder,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    const open_semua_kategori=()=>{
-        // data.parentCallback({"semua_kategori":!allIsData.isSemuaKategori})
-        setAllIsData({...allIsData,
-        isSemuaKategori:!allIsData.isSemuaKategori,
-        isDownloadApp:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    
-    const open_cart=()=>{
-        // data.parentCallback({"cart":!allIsData.isCart})
-        setAllIsData({...allIsData,
-        isCart:!allIsData.isCart,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-
-    const open_login=()=>{
-        // data.parentCallback({"login":!allIsData.isLogin})
-        setAllIsData({...allIsData,
-        isLogin:!allIsData.isLogin
-    })
-    }
-
-    const open_logout=()=>{
-        // data.parentCallback({"login":!allIsData.isLogin})
-        setAllIsData({...allIsData,isLogin:!allIsData.isLogin})
-    }
-
-    const open_random_category=(category)=>{
-        // setCategory_random(category)
-        var data_from_cart =[
-            {"random_kategori":!allIsData.isRandomCategory},
-            {"category_random_item":category}
-        ] 
-        // data.parentCallback(data_from_cart)
-        setAllIsData({
-            ...allIsData,
-        category_random:category,
-        isRandomCategory:!allIsData.isRandomCategory,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        })
-
-    }
-    const open_aboutus=()=>{
-        // data.parentCallback({"about_us":!allIsData.isAboutUs})
-        setAllIsData({...allIsData,
-        isAboutUs:!allIsData.isAboutUs,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    const open_kebijakan=()=>{
-        // data.parentCallback({"kebijakan":!allIsData.isKebijakan})
-        setAllIsData({...allIsData,
-        isKebijakan:!allIsData.isKebijakan,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    
-    })
-    }
-    const open_panduan_customer=()=>{
-        // data.parentCallback({"panduan_customer":!allIsData.isPanduanCustomer})
-        setAllIsData({...allIsData,
-        isPanduanCustomer:!allIsData.isPanduanCustomer,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    const open_panduan_seller=()=>{
-        // data.parentCallback({"panduan_seller":!allIsData.isPanduanSeller})
-        setAllIsData({...allIsData,
-        isPanduanSeller:!allIsData.isPanduanSeller,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    const open_social_media=()=>{
-        // data.parentCallback({"social_media":!allIsData.isSocialMedia})
-        setAllIsData({...allIsData,
-        isSocialMedia:!allIsData.isSocialMedia,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isCatalog:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
-    const open_catalog=()=>{
-        // data.parentCallback({"catalog":!allIsData.isCatalog})
-        setAllIsData({...allIsData,
-        isCatalog:!allIsData.isCatalog,
-        isDownloadApp:false,
-        isSemuaKategori:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isRandomCategory:false,
-        category_random:''
-    })
-    }
     const render_searching_product=()=>{
         return (
             <>
@@ -428,7 +171,7 @@ export default function Header(data){
                 if(index<5){
                     return (
                         <>
-                            <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index} className="category-random-item" onClick={()=>open_random_category(`${val[0].Category}`)}>
+                            <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index} className="category-random-item" >
                                 <p>{val[0].Category}</p>
                             </Link>
                         </>
@@ -472,11 +215,9 @@ export default function Header(data){
             if(allOrderList !== undefined){
                 //data udah ada 
                 console.log(allOrderList)
-                console.log('masuk ke if all order list 467')
                 setAllOrderList(Order.allOrder)
                 setTotalOrderList(Order.totalOrder)
             }else {
-                console.log('masuk ke else all order list 469')
                 axios.post(`https://sales.sold.co.id/get-sales-order-data-per-customer?Customer_Code=${Auth.token}`)
                 .then((res)=>{
                     if(res.data){
@@ -503,18 +244,23 @@ export default function Header(data){
         setToggleCart(false)
         setToggleLogin(false)
         setToggleAllCategory(false)
-        setToggleBulkOrder(false)
         setTogglePesanan(false)
         
         setIsMenuHoverCart(false)
-        setIsMenuHoverBulkOrder(false)
         setIsMenuHoverOrderList(false)
         setIsMenuHoverLogin(false)
+
+        if(showModalListBulk){
+
+        }else {
+            setIsMenuHoverBulkOrder(false)
+            setToggleBulkOrder(false)
+        }
     }
 
-    const toggleCartFunc=()=>{
-        setToggleCart(!toggleCart)
-    }
+    // const toggleCartFunc=()=>{
+    //     setToggleCart(!toggleCart)
+    // }
 
 
     const renderOrderList=()=>{
@@ -587,15 +333,13 @@ export default function Header(data){
         // alert('function logout jalan')
         dispatch(LogoutRedux())
     }
-
-
     const onSubcategoryClick=(subCategory)=>{
         console.log(subCategory)
         setSubCategory_Active(subCategory)
     }
     const onCategoryClick=(Category,subcategory)=>{
-        console.log(Category)
-        console.log(subcategory)
+        // console.log(Category)
+        // console.log(subcategory)
         var all_findsubcategory = []
         var find_subcategory = allProductFromHome.filter((val)=>{
             if(val.Category === Category){
@@ -765,23 +509,63 @@ export default function Header(data){
         }
     // RENDER PRODUCT CARD HOVER ALL CATEGORY
 
+   
+    const onInputQty=(value,id)=>{
+        console.log(value,id)
+    }
     const onInputBulk=(value,id)=>{
         
         if (value.length > 3){
             setShowModalListBulk(true)
+            setActiveInputBulk(id)
         }else {
             setShowModalListBulk(false)
         }
     }
-    const onInputQty=(value,id)=>{
-        console.log(value,id)
+    
+    const onChooseItem=(value)=>{
+        console.log('on choose item jalan')
+        let allElement = Array.from(document.querySelectorAll('.input-bulk')) // semua input yang udh ke isi /kosong 
+        let elementItem = document.querySelector(`#${activeInputBulk}`) // input yang sedang di isi
+        let findIndexDuplicate = allElement.findIndex((val)=>{
+            return val.value === value.Name
+        })
+        
+        if(findIndexDuplicate !== -1){
+            console.log(findIndexDuplicate)
+            let elementQty = document.querySelector(`#inp_qty_${findIndexDuplicate+1}`)
+            console.log(elementQty.value,'input qty')
+            let total_qty = (parseInt(elementQty.value) + 1)
+            elementQty.value = total_qty
+            elementItem.value = ''
+        }else {
+            elementItem.value = value.Name
+        }
+        setShowModalListBulk(false)
     }
+    const onAddToCart=()=>{
+        let allCart = JSON.parse(localStorage.getItem('itemsInCart'))
+        let allElementBulk = Array.from(document.querySelectorAll('.input-bulk'))
+        console.log(allElementBulk)
+        console.log(allCart)
+        allElementBulk.forEach((val,index)=>{
+            allCart.forEach((value,id)=>{
+                if(val.value === value.product_name){
+                    // ini berarti ada data yg sama di cart, jadi cuma update quantity
+                    console.log(val.value,index)
+                    console.log(value.product_name,id)
+                }else {
+                    // ini berarti update cart nambah product yg ada di cart
 
+                }
+            })
+        })
+    }
     const renderAllProductList=()=>{
         return allProductFromHome.map((val,index)=>{
             return (
                 <>
-                    <div className="box-list-card-bo">
+                    <div className="box-list-card-bo" onClick={()=>onChooseItem(val)}>
                         <img src={val.Picture_1} alt="" />
                         <p>{val.Name} </p>
                     </div>
@@ -798,7 +582,7 @@ export default function Header(data){
                 dialogClassName="modal-90w"
                 size="md"
                 aria-labelledby="contained-modal-title-vcenter"
-                clasName="modal-list-bulk"
+                className="modal-list-bulk"
                 centered
                 >
                 <Modal.Header closeButton className="modal-header-success">
@@ -815,27 +599,27 @@ export default function Header(data){
 
             <div className={headerHome ? 'header-container' : 'header-container-fixed' }>
                 <div className="header-top">
-                    <div className="header-download-app" onClick={open_download_app}>
+                    <div className="header-download-app" >
                         <BsPhone className="icon-hp-download"/>
                         <p>Download Sold App</p>
                     </div>
                     <div className="header-top-option">
-                        <div className="option-top-header-box" onClick={open_aboutus}>
+                        <div className="option-top-header-box" >
                             <p>About Us</p>
                         </div>
-                        <div className="option-top-header-box" onClick={open_kebijakan}>
+                        <div className="option-top-header-box">
                             <p>Kebijakan</p>
                         </div>
-                        <div className="option-top-header-box" onClick={open_panduan_customer}>
+                        <div className="option-top-header-box" >
                             <p>Panduan Customer</p>
                         </div>
-                        <div className="option-top-header-box" onClick={open_panduan_seller}>
+                        <div className="option-top-header-box" >
                             <p>Panduan Seller</p>
                         </div>
-                        <div className="option-top-header-box" onClick={open_social_media}>
+                        <div className="option-top-header-box" >
                             <p>Our Social Media</p>
                         </div>
-                        <div className="option-top-header-box" onClick={open_catalog}>
+                        <div className="option-top-header-box" >
                             <p>Out Catalog</p>
                         </div>
                     </div>
@@ -850,10 +634,10 @@ export default function Header(data){
                     >         
                         <Dropdown
                             isOpen={toggleAllCategory}
-                            // onClick={open_cart}
+                            toggle={() => {}}
                             >
                             <DropdownToggle caret>
-                                <p onClick={open_semua_kategori}>Semua  Kategori</p>
+                                <p>Semua  Kategori</p>
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-toggle-allcategory">                            
                                 <Tab.Container defaultActiveKey={1}>
@@ -884,9 +668,11 @@ export default function Header(data){
                                 onMouseOver={()=>onMouseEnter('pesanan')}
                                 onMouseLeave={onMouseLeave}
                                 isOpen={togglePesanan}
+                                toggle={() => {}}
+                                // onClick={new_open_order_list}
                                 >
                                 <DropdownToggle caret>   
-                                    <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} onClick={open_order_list}>
+                                    <div className={isMenuHoverOrderList? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'} >
                                         <img src={logo_unpaid_list} alt="" />
                                         <p>Pesanan Saya</p>
                                     </div>
@@ -923,9 +709,11 @@ export default function Header(data){
                                 onMouseOver={()=>onMouseEnter('BulkOrder')}
                                 onMouseLeave={onMouseLeave}
                                 isOpen={toggleBulkOrder}
+                                // onClick={new_open_bulk_order}
+                                toggle={() => {}}
                                 >
                                 <DropdownToggle caret>   
-                                    <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_bulk_order}>
+                                    <div className={isMenuHoverBulkOrder ? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}>
                                         <img src={logo_qr_scan} alt="" />
                                         <p>Bulk Order</p>
                                     </div>
@@ -947,14 +735,14 @@ export default function Header(data){
                                             </div>
                                             <div className="bulk-right">
                                                 <p>Qty</p>
-                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_1" onChange={(e)=>onInputQty(e.target.value,'inp_qty_1')}/>
-                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_2" onChange={(e)=>onInputQty(e.target.value,'inp_qty_2')}/>
-                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_3" onChange={(e)=>onInputQty(e.target.value,'inp_qty_3')} />
-                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_4" onChange={(e)=>onInputQty(e.target.value,'inp_qty_4')} />
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_1" defaultValue={1} onChange={(e)=>onInputQty(e.target.value,'inp_qty_1')}/>
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_2" defaultValue={1} onChange={(e)=>onInputQty(e.target.value,'inp_qty_2')}/>
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_3" defaultValue={1} onChange={(e)=>onInputQty(e.target.value,'inp_qty_3')} />
+                                                <input type="number" placeholder={1} min={1} className="input-qty" id="inp_qty_4" defaultValue={1} onChange={(e)=>onInputQty(e.target.value,'inp_qty_4')} />
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="btn-addcart">
+                                    <div className="btn-addcart" onClick={onAddToCart}>
                                         ADD TO CART
                                     </div>
                                 </DropdownMenu>
@@ -965,7 +753,8 @@ export default function Header(data){
                                 onMouseOver={()=>onMouseEnter('Cart')}
                                 onMouseLeave={onMouseLeave}
                                 isOpen={toggleCart}
-                                onClick={open_cart}
+                                // onClick={new_open_cart}
+                                toggle={() => {}}
                                 >
                                 <DropdownToggle caret>
                                     <div className={isMenuHoverCart? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}>
@@ -1010,9 +799,10 @@ export default function Header(data){
                                     onMouseOver={()=>onMouseEnter('Login')}
                                     onMouseLeave={onMouseLeave}
                                     isOpen={toggleLogin}
+                                    toggle={() => {}}
                                     >
                                     <DropdownToggle caret>   
-                                        <div className={isMenuHoverLogin? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}onClick={open_logout}>
+                                        <div className={isMenuHoverLogin? 'box-active-item-menu box-active-is-active' : 'box-active-item-menu'}>
                                             <AiOutlineLogout className="icon-login-logout"/>
                                             <p>Logout</p>
                                         </div>

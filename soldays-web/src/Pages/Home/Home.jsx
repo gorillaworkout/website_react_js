@@ -32,26 +32,9 @@ export default function Home({parentCallback}){
     const [allCategory,setAllCategory]=useState(Product.AllCategory)
     const [allSubCategory,setAllSubCategory]=useState(Product.allSubCategory)
     const [loadingFetchingData,setLoadingFetchingData]=useState(Auth.isLoading)
-    const [callbackFromHeader,setCallbackFromHeader]=useState([])
     const [callbackFromHighlight,setCallbackFromHighlight]=useState([])
     const [callbackFromCardPromo,setCallbackFromCardPromo]=useState([])
     const [callbackFromCardNew,setCallbackFromCardNew]=useState([])
-    const [allIsDataFromHeader,setAllIsDataFromHeader]=useState({
-        isLogin:false,
-        isSemuaKategori:false,
-        isOrderList:false,
-        isBulkOrder:false,
-        isCart:false,
-        isAboutUs:false,
-        isKebijakan:false,
-        isPanduanSeller:false,
-        isPanduanCustomer:false,
-        isSocialMedia:false,
-        isCatalog:false,
-        isDownloadApp:false,
-        isRandomCategory:false,
-        category_random:''
-    })
 
     
     // STATE YANG DIKIRIM UNTUK SETIAP CHILD
@@ -178,10 +161,7 @@ export default function Home({parentCallback}){
     [Product.isLoadingProduct, Product.AllCategory, Product.AllCategoryNew, Product.allCategoryGroupBuy, Product.allProduct, Product.allSubCategory, allProductItem])
     
     // FUNCTION FOR HEADER
-    const handleCallbackFromHeader=(childData)=>{
-        setCallbackFromHeader(childData)
-        // setAllIsDataFromHeader()
-    }
+
     const handleCallbackFromHighlight=(childData)=>{
         setCallbackFromHighlight(childData)
     }
@@ -193,23 +173,21 @@ export default function Home({parentCallback}){
     const handleCallbackFromCardNew=(childData)=>{
         setCallbackFromCardNew(childData)
     }
-    var data_to_header = {
-        isLogin:allIsDataFromHeader.isLogin,
-        isOrderList:allIsDataFromHeader.isOrderList,
-        isBulkOrder:allIsDataFromHeader.isBulkOrder,
-        isCart:allIsDataFromHeader.isCart,
-        isSemuaKategori:allIsDataFromHeader.isSemuaKategori,
-        isRandomCategory:allIsDataFromHeader.isRandomCategory,
-        isDownloadApp:allIsDataFromHeader.isDownloadApp,
-        isAboutUs:allIsDataFromHeader.isAboutUs,
-        isKebijakan:allIsDataFromHeader.isKebijakan,
-        isPanduanCustomer:allIsDataFromHeader.isPanduanCustomer,
-        isPanduanSeller:allIsDataFromHeader.isPanduanSeller,
-        isSocialMedia:allIsDataFromHeader.isSocialMedia,
-        isCatalog:allIsDataFromHeader.isCatalog,
-        // allProduct:allProductItem,
-        // allCategory:allCategory
-    }
+    // var data_to_header = {
+    //     isLogin:allIsDataFromHeader.isLogin,
+    //     isOrderList:allIsDataFromHeader.isOrderList,
+    //     isBulkOrder:allIsDataFromHeader.isBulkOrder,
+    //     isCart:allIsDataFromHeader.isCart,
+    //     isSemuaKategori:allIsDataFromHeader.isSemuaKategori,
+    //     isRandomCategory:allIsDataFromHeader.isRandomCategory,
+    //     isDownloadApp:allIsDataFromHeader.isDownloadApp,
+    //     isAboutUs:allIsDataFromHeader.isAboutUs,
+    //     isKebijakan:allIsDataFromHeader.isKebijakan,
+    //     isPanduanCustomer:allIsDataFromHeader.isPanduanCustomer,
+    //     isPanduanSeller:allIsDataFromHeader.isPanduanSeller,
+    //     isSocialMedia:allIsDataFromHeader.isSocialMedia,
+    //     isCatalog:allIsDataFromHeader.isCatalog,
+    // }
 
     // FUNCTION FOR HEADER
     if(loadingFetchingData){
@@ -225,7 +203,7 @@ export default function Home({parentCallback}){
         <>
         <div className="home-container">
            {/* <h1>header</h1> */}
-            <Header  parentCallback={handleCallbackFromHeader}/>
+            <Header />
             <LazyLoad>
                 <div className="box-highlight">
                     <Highlight data={dataToHighlight} parentCallback={handleCallbackFromHighlight}/>
@@ -249,28 +227,6 @@ export default function Home({parentCallback}){
                 <ProductCard data={dataToCardNew} parentCallback={handleCallbackFromCardNew}/>
             </LazyLoad>
 
-
-
-            {
-                callbackFromHeader.download_app ? 
-                <>
-                    <h1>DOWNLOAD APP MUNCUL</h1>
-                </>
-                :
-                <>
-
-                </>
-            }
-            {
-                callbackFromHeader.order_list ?
-                <>
-                    <h1>ORDER LIST KEBUKA</h1>
-                </>
-                :
-                <>
-
-                </>
-            }
                 <div className="box-highlight2">
                     <LazyLoad>
                             <Footer/>
