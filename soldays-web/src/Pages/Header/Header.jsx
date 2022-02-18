@@ -1,4 +1,4 @@
-import React, { useState,useEffect, } from 'react'
+import React, { useState,useEffect,useCallback,useMemo } from 'react'
 // import './Header.css'
 import '../../Styles/Header.scss'
 import { css,  } from '@emotion/react'
@@ -29,7 +29,14 @@ import Highlight from '../../Component/Highlight/highlight'
 import TabPane from 'react-bootstrap/TabPane'
 import { Tabs, Tab, Row, Nav } from "react-bootstrap";
 import axios from 'axios'
+import debounce from "lodash.debounce";
+import { RiContrastDropLine } from 'react-icons/ri'
+import {updateToCartRedux} from '../../redux/Actions/ProductActions'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Header(data){
+    toast.configure()
     const dispatch=useDispatch()
     // console.log(React.version,' react version');
 
@@ -41,7 +48,8 @@ export default function Header(data){
 
     const [showModalListBulk,setShowModalListBulk]=useState(false)
     const [dataSearching,setDataSearching]=useState([])
-    const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct)
+    const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct) // ini dipake buat render yg lain
+    const [allProductRedux,setAllProductRedux]=useState(Product.allProduct) // ini dipake buat render searching input bulk order
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allSubCategory)
     const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory)
     const [headerHome,setHeaderHome]=useState(true)
@@ -444,6 +452,7 @@ export default function Header(data){
                 
                 if(filter_product.length > 1){
                     return filter_product.map((val,index)=>{
+                        console.log(val)
                         return(
                             <>
                                 <Link to={`/ProductDetail/${val.Product_Code}`} className="card-product-allcategory" >
@@ -516,12 +525,32 @@ export default function Header(data){
     const onInputBulk=(value,id)=>{
         
         if (value.length > 3){
+
+            let filterAllProduct = []
+            allProductRedux.filter((val,index)=>{
+                if(val.Name.toUpperCase().includes(value.toUpperCase())){
+                    console.log('masuk ke if 524')
+                    filterAllProduct.push(val)
+                }
+            })
+            console.log(filterAllProduct)
+            setAllProductRedux(filterAllProduct)
+            // setAllProductFromHome(filterAllProduct)
             setShowModalListBulk(true)
             setActiveInputBulk(id)
         }else {
+            setAllProductRedux(Product.allProduct)
             setShowModalListBulk(false)
         }
     }
+
+
+    let callbackDebounce_1 =  useCallback(debounce((e)=>onInputBulk(e.target.value,'inp_bulk_1'), 500), []);
+    let callbackDebounce_2 =  useCallback(debounce((e)=>onInputBulk(e.target.value,'inp_bulk_2'), 500), []);
+    let callbackDebounce_3 =  useCallback(debounce((e)=>onInputBulk(e.target.value,'inp_bulk_3'), 500), []);
+    let callbackDebounce_4 =  useCallback(debounce((e)=>onInputBulk(e.target.value,'inp_bulk_4'), 500), []);
+
+    
     
     const onChooseItem=(value)=>{
         console.log('on choose item jalan')
@@ -551,18 +580,67 @@ export default function Header(data){
         allElementBulk.forEach((val,index)=>{
             allCart.forEach((value,id)=>{
                 if(val.value === value.product_name){
+                    console.log('masuk ke if ')
                     // ini berarti ada data yg sama di cart, jadi cuma update quantity
                     console.log(val.value,index)
                     console.log(value.product_name,id)
+                    let filterProduct = allProductFromHome.filter((val,index)=>{
+                        if(val.Name === value.product_name){
+                            return val
+                        }
+                    })
+                    console.log(filterProduct)
+                    
                 }else {
                     // ini berarti update cart nambah product yg ada di cart
-
+                    if(val.value !== ''){
+                        console.log(val.value)
+                        console.log(index+1,' ini index looping')
+                        let total_qty = document.querySelector(`#inp_qty_${index+1}`).value
+                        console.log(total_qty)
+                        console.log('masuk ke else ')
+                        let filterProduct = allProductFromHome.filter((item,index)=>{
+                            if(item.Name === val.value){
+                                return val
+                            }
+                        })
+                        console.log(filterProduct)
+                        var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
+                        axios.post(`https://products.sold.co.id/get-product-details?product_code=${filterProduct[0].Product_Code}`)
+                        .then((res)=>{
+                            console.log(res.data)
+                            let quantity_product = parseInt(res.data.Stock_Quantity)
+                            if( quantity_product === 0  ||
+                                quantity_product === "0" ||
+                                quantity_product === undefined ||
+                                quantity_product === null ||
+                                isNaN(quantity_product) || 
+                                quantity_product < 0){
+                                    toast.error('Stock Tidak Tersedia', {
+                                        position: "top-center",
+                                        autoClose: 2000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                        });
+                                }else {
+                                    dispatch(updateToCartRedux(filterProduct[0].Product_Code,total_qty,res.data.PIC_company_address,res.data.Weight_KG,res.data.Name,dataParse,res.data.Picture_1,res.data.Sell_Price,res.data.GroupBuy_SellPrice,quantity_product))
+                                    console.log('masuk ke else redux jalan')
+                                }
+                        }).catch((err)=>{
+                            console.log(err)
+                        })
+                    }else {
+                        console.log('masuk ke else')
+                    }
                 }
             })
         })
     }
     const renderAllProductList=()=>{
-        return allProductFromHome.map((val,index)=>{
+        return allProductRedux.map((val,index)=>{
             return (
                 <>
                     <div className="box-list-card-bo" onClick={()=>onChooseItem(val)}>
@@ -727,10 +805,10 @@ export default function Header(data){
                                         <div className="box-bulk-order">
                                             <div className="bulk-left">
                                                 <p>Product Code / Product Name</p>
-                                                <input type="text" className="input-bulk" id="inp_bulk_1" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_1')} />
-                                                <input type="text" className="input-bulk" id="inp_bulk_2" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_2')} />
-                                                <input type="text" className="input-bulk" id="inp_bulk_3" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_3')} />
-                                                <input type="text" className="input-bulk" id="inp_bulk_4" onChange={(e)=>onInputBulk(e.target.value,'inp_bulk_4')} />     
+                                                <input type="text" className="input-bulk" id="inp_bulk_1" onChange={callbackDebounce_1} />
+                                                <input type="text" className="input-bulk" id="inp_bulk_2" onChange={callbackDebounce_2} />
+                                                <input type="text" className="input-bulk" id="inp_bulk_3" onChange={callbackDebounce_3} />
+                                                <input type="text" className="input-bulk" id="inp_bulk_4" onChange={callbackDebounce_4} />     
                                            
                                             </div>
                                             <div className="bulk-right">

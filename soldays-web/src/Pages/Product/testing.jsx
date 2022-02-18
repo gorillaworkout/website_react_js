@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import './testing.css'
+import '../../Styles/testing.scss'
+
 
 export default function Testing(){
 
@@ -61,11 +63,56 @@ export default function Testing(){
             
         }else {      
         }
+
+    }
+    const [isFreight,setIsFreight]=useState(false)
+
+
+
+    const onClickBtn=()=>{
+
+        if(isFreight === true){
+            setIsFreight(false)
+        }else {
+            setIsFreight(true)
+        }
     }
     return (
         <>
-            <div className="container">
-               <p>Learning css3 is fun</p>
+            <div className="container-testing">
+               <div className="box-bigger">
+                   <div className="small-box" onClick={()=>onClickBtn()}>
+                        Freight
+                   </div>
+                   {
+                       isFreight ? 
+                       <>
+                        <div className="small-box">
+                            freight menu
+                        </div>
+                        <div className="small-box">
+                            freight menu    
+                        </div>
+                       </>
+                       :
+                       null
+
+                   }
+                    <div className="small-box">
+                        trucking    
+                    </div>
+
+               </div>
+               <div className="box-bigger">
+                   
+               </div>
+               <div className="box-bigger">
+                   
+               </div>
+               <div className="box-bigger">
+
+                </div>
+
             </div>
         </>
     )

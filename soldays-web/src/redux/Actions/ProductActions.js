@@ -161,7 +161,7 @@ export const addToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weig
 // FUNCTION UNTUK TAMBAH KE CART JIKA LOCAL STORAGE KOSONG ( itemsInCart)
 
 
-// FUNCTION UNTUK UPDATE CART LOCALSTORAGE -> KALAU ITEMSINCART UDH ADA TAPI PRODUCT YANG MAU DITAMBAH BELUM ADA
+// FUNCTION UNTUK UPDATE CART LOCALSTORAGE -> KALAU ITEMSINCART UDH ADA TAPI PRODUCT YANG MAU DITAMBAH BELUM ADA, BISA JUGA UNTUK UPDATE QTY
 export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_Weight,Product_Name,dataParse,Product_Img,Normal_Price,Groupbuy_Price)=>{
     return (dispatch)=>{
 
@@ -172,13 +172,13 @@ export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_W
                     return filtering
                 }
             })
-            if(filterdatakosong.length){
+            if(filterdatakosong.length){ // update jika emg cart udh ada. jadi tinggal tambah quantity
                 var objIndex = dataParse.findIndex(
                     (obj) => obj.productNo === Product_Code
                   );
                   console.log(dataParse[objIndex])
                   dataParse[objIndex].quantity = parseInt(dataParse[objIndex].quantity)  + parseInt(Total_Qty)
-            }else {
+            }else { // push data baru ke localstorage
 
                 var data = {
                     productNo:Product_Code,
