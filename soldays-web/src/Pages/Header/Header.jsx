@@ -590,6 +590,14 @@ export default function Header(data){
                         }
                     })
                     console.log(filterProduct)
+                    let dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
+
+                    axios.post(`https://products.sold.co.id/get-product-details?product_code=${filterProduct[0].Product_Code}`)
+                    .then((res)=>{
+                        console.log(res.data)
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
                     
                 }else {
                     // ini berarti update cart nambah product yg ada di cart
