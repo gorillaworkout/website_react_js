@@ -1,14 +1,71 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import './testing.css'
 import '../../Styles/testing.scss'
 
+import axios from 'axios'
 
 export default function Testing(){
 
     // const [corrections,setCorrections]=useState({
     //     'wierd':'weird',
     //     'realy':'really'
-    // })
+    // }),useEffe
+
+    useEffect(()=>{
+        fetching()
+    },[])
+    const fetching =()=>{
+
+        let alldata = [
+            {
+                a:'asdasdadsa',
+                b:'asdadasdadas',
+                c:'asdadasdads',
+                list_data:[
+                    {
+                        key:'asdadadsa',
+                        city:'asdasdad'
+                    },
+                    {
+                        key:'asdadadsa',
+                        city:'asdasdad'
+                    },
+                    {
+                        key:'asdadadsa',
+                        city:'asdasdad'
+                    },
+                    {
+                        key:'asdadadsa',
+                        city:'asdasdad'
+                    },
+
+                ]
+            }
+        ]
+        let provinsi = alldata.list_data
+
+       
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+          };
+          
+          fetch("https://data.covid19.go.id/public/api/prov.json", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+        
+          
+        
+    //     axios.get(`https://data.covid19.go.id/public/api/prov.json`)
+    //     .then((res)=>{
+    //         console.log(res.data)
+    //         // console.log(res.data.list_data)
+    //     }).catch((err)=>{
+    //         console.log(err)
+    //     })
+    }
 
     const [corrections,setCorrections]=useState([
         {
