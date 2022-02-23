@@ -4,8 +4,12 @@ import '../../Styles/Highlight.scss'
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ImgEffect from '../Effect/img_effect'
 import {Link} from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux'
 
     export default function Highlight(data){
+        console.log(data)
+        const Product = useSelector(state=>state.Product)
+        console.log(Product)
     // console.log(data.data.allSubCategory)
     // console.log(data.data.allSubCategory[0][0].Category)
 
@@ -30,7 +34,7 @@ import {Link} from 'react-router-dom'
     const render_subcategory_highlight=()=>{
         if(allSubCategoryFromHome.length > 1){
             return allSubCategoryFromHome.map((val,index)=>{
-                // console.log(val)
+                console.log(val)
                 if(val[0].allSubcategory.length >1 ){
                     return val[0].allSubcategory.map((val,index)=>{
                         // console.log(val.Subcategory)
@@ -51,10 +55,11 @@ import {Link} from 'react-router-dom'
                         )
                     })
                 }else {
-                    console.log(val[0].allSubcategory[0].Picture_1)
+                    // console.log(val[0].allSubcategory[0].Picture_1)
+                    console.log(val[0])
                     return(
                         <>
-                         <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
+                         {/* <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
                             <div className="card-highlight-img">
                                 <ImgEffect
                                     data={{
@@ -66,7 +71,7 @@ import {Link} from 'react-router-dom'
                             <div className="card-detail-name">
                                 <p>{val[0].allSubcategory[0].Subcategory}</p>
                             </div>
-                        </Link>
+                        </Link> */}
                         </>
                     )
     

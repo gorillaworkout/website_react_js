@@ -41,6 +41,7 @@ export default function Home({parentCallback}){
         const [dataToHighlight,setDataToHighlight]=useState({
             allSubCategory:Product.allSubCategory
         })
+        console.log(dataToHighlight)
         const [dataToCardPromo,setDataToCardPromo]=useState({
             isTokpedAds:true,
             allProductItem: Product.allCategoryGroupBuy
@@ -64,7 +65,6 @@ export default function Home({parentCallback}){
       
 
         const check_all_data=()=>{
-            var isDataToHeader    = false
             var isDataToHighlight = false
             var isDataToCardPromo = false
             var isDataToCardNew   = false
@@ -72,6 +72,7 @@ export default function Home({parentCallback}){
             var isDataToCardAds2  = false
             if(dataToHighlight.allSubCategory !== undefined){
                 if(dataToHighlight.allSubCategory.length > 0){
+                    console.log('data highlight ada')
                     // console.log('data dah ada isinya')
                     // console.log(Product.allSubCategory)
                     setDataToHighlight({...dataToHighlight,allSubCategory:Product.allSubCategory})
@@ -130,6 +131,7 @@ export default function Home({parentCallback}){
             }
 
             if(isDataToHighlight && isDataToCardPromo && isDataToCardNew && isDataToCardAds1 && isDataToCardAds2 ){
+                console.log(dataToHighlight)
                 setLoadingFetchingData(false)
             }else {
                 dispatch(GetAllProduct())

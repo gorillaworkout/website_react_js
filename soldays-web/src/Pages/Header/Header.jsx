@@ -65,8 +65,8 @@ export default function Header(data){
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
     const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(false)
 
-    const [category_Active,setCategory_Active] = useState(allSubcategoryFromHome[0][0].Category)
-    const [subCategory_Active,setSubCategory_Active]=useState(allSubcategoryFromHome[0][0].allSubcategory[0].Subcategory)
+    const [category_Active,setCategory_Active] = useState('')
+    const [subCategory_Active,setSubCategory_Active]=useState('')
 
     // console.log(cartFromRedux)
 
@@ -733,7 +733,7 @@ export default function Header(data){
                                         </Row>
                                     </Nav>
                                     <Tab.Content>
-                                        {render_isi_allCategory()}
+                                        {/* {render_isi_allCategory()} */}
                                     </Tab.Content>
                                 </Tab.Container>
                             </DropdownMenu>
@@ -745,7 +745,7 @@ export default function Header(data){
                             {render_searching_product()}
                         </div>
                         <div className="category-random-box">
-                            {render_random_category()}
+                            {/* {render_random_category()} */}
                         </div>
                     </div>
                     <div className="menu-from-header">
