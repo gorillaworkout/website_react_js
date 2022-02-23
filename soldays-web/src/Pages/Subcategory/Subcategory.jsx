@@ -99,6 +99,7 @@ export default function Product(){
     }
 
     const RenderCard=()=>{
+        console.log(arrayForRender)
        if(arrayForRender.length > 1 ){
            return arrayForRender.map((val,index)=>{      
                var hargaAwal = parseInt(val.Sell_Price)
@@ -118,13 +119,8 @@ export default function Product(){
                )
            })
        }else {
-           console.log(Array.isArray(arrayForRender),' array apa bukan')
 
             var isArray = Array.isArray(arrayForRender)
-
-        
-
-            
 
             if(isArray){
                 var hargaAwal = parseInt(arrayForRender[0].Sell_Price)
@@ -282,6 +278,7 @@ export default function Product(){
     }
 
     const renderSubCategory=()=>{
+        console.log(allSubcategory)
         return allSubcategory.map((val,index)=>{
             if(val[0].allSubcategory.length > 1){
                 return val[0].allSubcategory.map((val,index)=>{

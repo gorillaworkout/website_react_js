@@ -53,6 +53,9 @@ function App(props) {
     var all_category = JSON.parse(localStorage.getItem('all_category'))
     var all_subcategory = JSON.parse(localStorage.getItem('all_subcategory'))
     
+    console.log(all_product)
+    console.log(all_category)
+    console.log(all_subcategory)
     // var token = JSON.parse(localStorage.getItem('token'))
     var all_array_groupbuy = []
     var all_array_new = []
@@ -61,6 +64,7 @@ function App(props) {
       (all_category === null || all_category === '') &&
       (all_subcategory === null || all_subcategory === ''))
     {
+      console.log('dispatch get all product jalan')
         dispatch(GetAllProduct()) // get all product,category,subcategory,category groupbuy, category  new
         setTimeout(()=>{
           console.log(Auth)

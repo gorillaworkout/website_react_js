@@ -12,7 +12,7 @@ export const GetAllProduct=()=>{
             // GET ALL CART FROM STORAGE
             var Cart = JSON.parse(localStorage.getItem('itemsInCart'))
             dispatch({type:'GETALLCARTSTORAGE',Cart})
-            console.log(Cart)
+            console.log(Cart,'from redux product action')
             // GET ALL CART FROM STORAGE
             var allProduct = res.data
             dispatch({type:'GETALLPRODUCT',allProduct:allProduct})
@@ -44,11 +44,14 @@ export const GetAllProduct=()=>{
                 var all_array_subcategory = []
                 var allCategory = res.data
                 allCategory.forEach((val,indexCategory,arrayCategory)=>{
-                 
-                    // console.log(all_array_subcategory)
                     axios.post(`https://products.sold.co.id/get-product-details?Get_ALL_Sub_Category_Based_On_Category=${val.Category}`)
                     .then((res)=>{
-                        var allSubcategory = res.data
+                        console.log(res.data)
+                        const ids = res.data.map(o => o.Subcategory)
+                        const filtered = res.data.filter(({Subcategory}, index) => !ids.includes(Subcategory, index + 1))
+                        console.log(filtered)
+                        
+                        var allSubcategory = filtered
                         all_array_subcategory.push([{"Category":val.Category,allSubcategory}])
                         var stringify_subcategory = JSON.stringify(all_array_subcategory)
                         console.log(all_array_subcategory)

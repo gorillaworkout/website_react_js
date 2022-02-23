@@ -733,7 +733,7 @@ export default function Header(data){
                                         </Row>
                                     </Nav>
                                     <Tab.Content>
-                                        {/* {render_isi_allCategory()} */}
+                                        {render_isi_allCategory()}
                                     </Tab.Content>
                                 </Tab.Container>
                             </DropdownMenu>
@@ -745,7 +745,7 @@ export default function Header(data){
                             {render_searching_product()}
                         </div>
                         <div className="category-random-box">
-                            {/* {render_random_category()} */}
+                            {render_random_category()}
                         </div>
                     </div>
                     <div className="menu-from-header">

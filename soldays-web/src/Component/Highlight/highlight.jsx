@@ -15,7 +15,7 @@ import {useDispatch,useSelector} from 'react-redux'
 
     const [allSubCategoryFromHome,setAllSubCategpryFromHome]=useState(data.data.allSubCategory)
     // const [open_Category,setOpen_Category] = useState(false)
-
+    
     useEffect(()=>{
         if(allSubCategoryFromHome !== undefined) {
             setAllSubCategpryFromHome(data.data.allSubCategory)
@@ -59,7 +59,7 @@ import {useDispatch,useSelector} from 'react-redux'
                     console.log(val[0])
                     return(
                         <>
-                         {/* <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
+                         <Link to={`/Subcategory/${val[0].allSubcategory[0].Subcategory}`} style={{textDecoration:'none'}} key={index+1} className="card-highlight-product" onClick={()=>open_highlight(`${val[0].allSubcategory[0].Subcategory}`)}>
                             <div className="card-highlight-img">
                                 <ImgEffect
                                     data={{
@@ -71,7 +71,7 @@ import {useDispatch,useSelector} from 'react-redux'
                             <div className="card-detail-name">
                                 <p>{val[0].allSubcategory[0].Subcategory}</p>
                             </div>
-                        </Link> */}
+                        </Link>
                         </>
                     )
     
