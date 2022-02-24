@@ -300,6 +300,7 @@
     height:40px;
     border:none;
     transition: 1s;
+    background-color: transparent;
 }
 .input-email-keisi:focus{
     outline: none;

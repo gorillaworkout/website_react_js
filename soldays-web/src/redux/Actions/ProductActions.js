@@ -180,7 +180,7 @@ export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_W
                     (obj) => obj.productNo === Product_Code
                   );
                   console.log(dataParse[objIndex])
-                  dataParse[objIndex].quantity = parseInt(dataParse[objIndex].quantity)  + parseInt(Total_Qty)
+                  dataParse[objIndex].quantity = parseInt(dataParse[objIndex].quantity)  + parseInt(Total_Qty) 
             }else { // push data baru ke localstorage
 
                 var data = {
@@ -196,7 +196,6 @@ export const updateToCartRedux=(Product_Code,Total_Qty,Company_Address,Product_W
                 dataParse.push(data)
                 console.log('168 selesai else')
             }
-            console.log(dataParse)
             var pushToStorage = JSON.stringify(dataParse);
             localStorage.setItem("itemsInCart", pushToStorage);
             dispatch({type:'ADDPRODUCTTOCART',dataParse})

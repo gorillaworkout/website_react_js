@@ -315,7 +315,7 @@ export default function Login(){
                                 <div className="box-input-email-login">
                                     <p>Email</p>
                                     <div className="email-keisi-login">
-                                        <input type="email" className="input-email-keisi"  onChange={(e)=>onInputEmail(e.target.value)} />
+                                        <input type="email" className="input-email-keisi" value={emailCustomer} disabled onChange={(e)=>onInputEmail(e.target.value)} />
                                         <p id="id_back_login" onClick={()=>backToDefault(false)}>Ubah</p>
                                     </div>
                                 </div>

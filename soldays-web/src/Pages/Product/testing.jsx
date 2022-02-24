@@ -16,46 +16,65 @@ export default function Testing(){
     },[])
     const fetching =()=>{
 
-        let alldata = [
-            {
-                a:'asdasdadsa',
-                b:'asdadasdadas',
-                c:'asdadasdads',
-                list_data:[
+        let testing = [
+            [
+                [
                     {
-                        key:'asdadadsa',
-                        city:'asdasdad'
-                    },
+                        Category:'Adhesive',
+                        allSubCategory:[
+                            [
+                                {
+                                    Subcategory:'Sealant'
+                                }
+                            ],
+                            [
+                                {
+                                    Subcategory:'Sealant'
+                                }
+                            ]
+                        ]
+                    }
+                ],
+                [
                     {
-                        key:'asdadadsa',
-                        city:'asdasdad'
-                    },
+                        Category:'Adhesive2',
+                        allSubCategory:[
+                            [
+                                {
+                                    Subcategory:'Sealant2'
+                                }
+                            ],
+                            [
+                                {
+                                    Subcategory:'Sealant2'
+                                }
+                            ]
+                        ]
+                    }
+                ],
+                [
                     {
-                        key:'asdadadsa',
-                        city:'asdasdad'
-                    },
-                    {
-                        key:'asdadadsa',
-                        city:'asdasdad'
-                    },
-
+                        Category:'Adhesive3',
+                        allSubCategory:[
+                            [
+                                {
+                                    Subcategory:'Sealant3'
+                                }
+                            ],
+                            [
+                                {
+                                    Subcategory:'Sealant3'
+                                }
+                            ]
+                        ]
+                    }
                 ]
-            }
+            ]
         ]
-        let provinsi = alldata.list_data
-
-       
-
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-          };
-          
-          fetch("https://data.covid19.go.id/public/api/prov.json", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-        
+        console.log(testing)
+        let find = testing.forEach((val,index)=>{
+            console.log(val)
+        })
           
         
     //     axios.get(`https://data.covid19.go.id/public/api/prov.json`)

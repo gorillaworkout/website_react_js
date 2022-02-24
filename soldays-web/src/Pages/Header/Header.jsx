@@ -31,7 +31,7 @@ import { Tabs, Tab, Row, Nav } from "react-bootstrap";
 import axios from 'axios'
 import debounce from "lodash.debounce";
 import { RiContrastDropLine } from 'react-icons/ri'
-import {updateToCartRedux} from '../../redux/Actions/ProductActions'
+import {addToCartRedux, updateToCartRedux} from '../../redux/Actions/ProductActions'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -51,7 +51,7 @@ export default function Header(data){
     const [allProductFromHome,setAllProductFromHome]=useState(Product.allProduct) // ini dipake buat render yg lain
     const [allProductRedux,setAllProductRedux]=useState(Product.allProduct) // ini dipake buat render searching input bulk order
     const [allCategoryFromHome,setAllCategoryFromHome]=useState(Product.allSubCategory)
-    const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory)
+    const [allSubcategoryFromHome,setAllSubcategoryFromHome]=useState(Product.allSubCategory) 
     const [headerHome,setHeaderHome]=useState(true)
 
     const [cartFromRedux,setCartFromRedux]=useState(Cart.Cart)
@@ -65,9 +65,8 @@ export default function Header(data){
     const [isMenuHoverLogin,setIsMenuHoverLogin]=useState(false)
     const [isMenuHoverAllCategory,setisMenuHoverAllCategory]=useState(false)
 
-    const [category_Active,setCategory_Active] = useState('')
-    const [subCategory_Active,setSubCategory_Active]=useState('')
-
+    const [category_Active,setCategory_Active] = useState(Product.allSubCategory[0][0].allSubcategory[0].Subcategory)
+    const [subCategory_Active,setSubCategory_Active]=useState(Product.allSubCategory[0][0].allSubcategory[0].Subcategory)
     // console.log(cartFromRedux)
 
     const [toggleCart,setToggleCart]=useState(false)
@@ -107,24 +106,17 @@ export default function Header(data){
         }else {
             // console.log(location)
             setHeaderHome(false)
-        }
-
-        
-
+        }       
     })
 
     useEffect(()=>{
         if(Cart.Cart){
             setTotalCartRedux(Cart.Cart.length)
-            // console.log('Cart Reducer ada isinya',Cart.Cart)
         }else {
             setTotalCartRedux(0)
-            // console.log('Cart Reducer kosong',Cart.Cart)
         }
 
         if(Order.allorder){
-            // console.log(Order)
-            // console.log(Order.totalOrder)
             setAllOrderList(Order.allOrder)
             setTotalOrderList(Order.totalOrder)
         }else{
@@ -222,7 +214,6 @@ export default function Header(data){
             setTogglePesanan(true)
             if(allOrderList !== undefined){
                 //data udah ada 
-                console.log(allOrderList)
                 setAllOrderList(Order.allOrder)
                 setTotalOrderList(Order.totalOrder)
             }else {
@@ -342,12 +333,9 @@ export default function Header(data){
         dispatch(LogoutRedux())
     }
     const onSubcategoryClick=(subCategory)=>{
-        console.log(subCategory)
         setSubCategory_Active(subCategory)
     }
     const onCategoryClick=(Category,subcategory)=>{
-        // console.log(Category)
-        // console.log(subcategory)
         var all_findsubcategory = []
         var find_subcategory = allProductFromHome.filter((val)=>{
             if(val.Category === Category){
@@ -449,10 +437,8 @@ export default function Header(data){
                         return val
                     }
                 })
-                
                 if(filter_product.length > 1){
                     return filter_product.map((val,index)=>{
-                        console.log(val)
                         return(
                             <>
                                 <Link to={`/ProductDetail/${val.Product_Code}`} className="card-product-allcategory" >
@@ -471,7 +457,7 @@ export default function Header(data){
                         )
 
                     })
-                }else {
+                }else if (filter_product.length > 0){
                     return (
                         <>
                            <Link to={`/ProductDetail/${filter_product[0].Product_Code}`}  className="card-product-allcategory">
@@ -487,6 +473,13 @@ export default function Header(data){
                                 </div>
                             </Link>
                 
+                        </>
+                    )
+                }
+                else {
+                    return (
+                        <>
+                        null
                         </>
                     )
                 }
@@ -533,7 +526,6 @@ export default function Header(data){
                     filterAllProduct.push(val)
                 }
             })
-            console.log(filterAllProduct)
             setAllProductRedux(filterAllProduct)
             // setAllProductFromHome(filterAllProduct)
             setShowModalListBulk(true)
@@ -553,7 +545,6 @@ export default function Header(data){
     
     
     const onChooseItem=(value)=>{
-        console.log('on choose item jalan')
         let allElement = Array.from(document.querySelectorAll('.input-bulk')) // semua input yang udh ke isi /kosong 
         let elementItem = document.querySelector(`#${activeInputBulk}`) // input yang sedang di isi
         let findIndexDuplicate = allElement.findIndex((val)=>{
@@ -561,9 +552,7 @@ export default function Header(data){
         })
         
         if(findIndexDuplicate !== -1){
-            console.log(findIndexDuplicate)
             let elementQty = document.querySelector(`#inp_qty_${findIndexDuplicate+1}`)
-            console.log(elementQty.value,'input qty')
             let total_qty = (parseInt(elementQty.value) + 1)
             elementQty.value = total_qty
             elementItem.value = ''
@@ -575,45 +564,63 @@ export default function Header(data){
     const onAddToCart=()=>{
         let allCart = JSON.parse(localStorage.getItem('itemsInCart'))
         let allElementBulk = Array.from(document.querySelectorAll('.input-bulk'))
-        console.log(allElementBulk)
-        console.log(allCart)
-        allElementBulk.forEach((val,index)=>{
-            allCart.forEach((value,id)=>{
-                if(val.value === value.product_name){
-                    console.log('masuk ke if ')
-                    // ini berarti ada data yg sama di cart, jadi cuma update quantity
-                    console.log(val.value,index)
-                    console.log(value.product_name,id)
+        if(allCart === undefined || allCart === null){ // ini ngecheck apakah ada list cart di localstorage, kalo gaada berarti tambahin baru
+            
+            console.log('allCart kosong. blm ada belanja')
+            console.log(allElementBulk)
+            allElementBulk.forEach((val,index)=>{
+                if(val.value !== ''){
+                    console.log(val.value)
+                    let productName = val.value
                     let filterProduct = allProductFromHome.filter((val,index)=>{
-                        if(val.Name === value.product_name){
+                        if(val.Name ===  productName){
                             return val
                         }
                     })
                     console.log(filterProduct)
-                    let dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
-
                     axios.post(`https://products.sold.co.id/get-product-details?product_code=${filterProduct[0].Product_Code}`)
                     .then((res)=>{
                         console.log(res.data)
+                        
+                        let quantity_product = parseInt(res.data.Stock_Quantity)
+                        let total_qty = document.querySelector(`#inp_qty_${index+1}`).value
+                        if( quantity_product === 0  ||
+                            quantity_product === "0" ||
+                            quantity_product === undefined ||
+                            quantity_product === null ||
+                            isNaN(quantity_product) || 
+                            quantity_product < 0){
+                                toast.error('Stock Tidak Tersedia', {
+                                    position: "top-center",
+                                    autoClose: 2000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    });
+                            }else {
+                                // dispatch(updateToCartRedux(filterProduct[0].Product_Code,total_qty,res.data.PIC_company_address,res.data.Weight_KG,res.data.Name,dataParse,res.data.Picture_1,res.data.Sell_Price,res.data.GroupBuy_SellPrice,quantity_product))
+                                dispatch(addToCartRedux(filterProduct[0].Product_Code,total_qty,res.data.PIC_company_address,res.data.Weight_KG,res.data.Name,res.data.Picture_1,res.data.Sell_Price,res.data.GroupBuy_SellPrice,quantity_product))
+                                console.log('masuk ke else redux jalan')
+                            }
                     }).catch((err)=>{
                         console.log(err)
                     })
-                    
-                }else {
-                    // ini berarti update cart nambah product yg ada di cart
-                    if(val.value !== ''){
-                        console.log(val.value)
-                        console.log(index+1,' ini index looping')
-                        let total_qty = document.querySelector(`#inp_qty_${index+1}`).value
-                        console.log(total_qty)
-                        console.log('masuk ke else ')
-                        let filterProduct = allProductFromHome.filter((item,index)=>{
-                            if(item.Name === val.value){
+                }
+            })
+        }else { // masuk sini berarti seharusnya localstorage udah ada isinya
+            allElementBulk.forEach((val,index)=>{
+                allCart.forEach((value,id)=>{
+                    if(val.value === value.product_name){
+                        // ini berarti ada data yg sama di cart, jadi cuma update quantity
+                        let filterProduct = allProductFromHome.filter((val,index)=>{
+                            if(val.Name === value.product_name){
                                 return val
                             }
                         })
-                        console.log(filterProduct)
-                        var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
+                        let dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
+                        let total_qty = document.querySelector(`#inp_qty_${index+1}`).value
                         axios.post(`https://products.sold.co.id/get-product-details?product_code=${filterProduct[0].Product_Code}`)
                         .then((res)=>{
                             console.log(res.data)
@@ -640,12 +647,55 @@ export default function Header(data){
                         }).catch((err)=>{
                             console.log(err)
                         })
+                        
                     }else {
-                        console.log('masuk ke else')
+                        // ini berarti update cart nambah product yg ada di cart
+                        if(val.value !== ''){
+                            console.log(val.value)
+                            console.log(index+1,' ini index looping')
+                            let total_qty = document.querySelector(`#inp_qty_${index+1}`).value
+                            console.log(total_qty)
+                            console.log('masuk ke else ')
+                            let filterProduct = allProductFromHome.filter((item,index)=>{
+                                if(item.Name === val.value){
+                                    return val
+                                }
+                            })
+                            console.log(filterProduct)
+                            var dataParse = JSON.parse(localStorage.getItem('itemsInCart'))
+                            axios.post(`https://products.sold.co.id/get-product-details?product_code=${filterProduct[0].Product_Code}`)
+                            .then((res)=>{
+                                console.log(res.data)
+                                let quantity_product = parseInt(res.data.Stock_Quantity)
+                                if( quantity_product === 0  ||
+                                    quantity_product === "0" ||
+                                    quantity_product === undefined ||
+                                    quantity_product === null ||
+                                    isNaN(quantity_product) || 
+                                    quantity_product < 0){
+                                        toast.error('Stock Tidak Tersedia', {
+                                            position: "top-center",
+                                            autoClose: 2000,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true,
+                                            progress: undefined,
+                                            });
+                                    }else {
+                                        dispatch(updateToCartRedux(filterProduct[0].Product_Code,total_qty,res.data.PIC_company_address,res.data.Weight_KG,res.data.Name,dataParse,res.data.Picture_1,res.data.Sell_Price,res.data.GroupBuy_SellPrice,quantity_product))
+                                        console.log('masuk ke else redux jalan')
+                                    }
+                            }).catch((err)=>{
+                                console.log(err)
+                            })
+                        }else {
+                            console.log('masuk ke else')
+                        }
                     }
-                }
+                })
             })
-        })
+        }
     }
     const renderAllProductList=()=>{
         return allProductRedux.map((val,index)=>{

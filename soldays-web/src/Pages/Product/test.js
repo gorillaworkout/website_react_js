@@ -240,4 +240,64 @@ for (var i = 0; i < 5; i++) {
       return primes;
   }
   console.log(primeFactorsTo(10));
-  
+
+
+  let testing2 = [
+    [
+        [
+            {
+                Category:'Adhesive',
+                allSubCategory:[
+                    [
+                        {
+                            Subcategory:'Sealant'
+                        }
+                    ],
+                    [
+                        {
+                            Subcategory:'Sealant'
+                        }
+                    ]
+                ]
+            }
+        ],
+        [
+            {
+                Category:'Adhesive2',
+                allSubCategory:[
+                    [
+                        {
+                            Subcategory:'Sealant2'
+                        }
+                    ],
+                    [
+                        {
+                            Subcategory:'Sealant2'
+                        }
+                    ]
+                ]
+            }
+        ],
+        [
+            {
+                Category:'Adhesive3',
+                allSubCategory:[
+                    [
+                        {
+                            Subcategory:'Sealant3'
+                        }
+                    ],
+                    [
+                        {
+                            Subcategory:'Sealant3'
+                        }
+                    ]
+                ]
+            }
+        ]
+    ]
+]
+console.log(testing2)
+let find = testing2.forEach((val,index)=>{
+    console.log(val)
+})
