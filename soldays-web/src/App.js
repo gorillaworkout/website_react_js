@@ -20,6 +20,7 @@ import Cart from './Pages/Cart/Cart';
 import Category from './Pages/Category/Category';
 import Testing from './Pages/Product/testing'
 import Orderlist from './Pages/Order/Orderlist.jsx'
+import DetailOrder from './Pages/Order/DetailOrder.jsx'
 import { useNavigate } from 'react-router-dom';
 
 
@@ -129,6 +130,7 @@ function App(props) {
         <Route exact path ='/allCategory' element={<Category new_params={"testing"}/>}/>
         <Route exact path ='/cart' element={<Cart new_params={"testing"}/>}/>
         <Route exact path ='/list-pembelian' element={<Orderlist new_params={"testing"}/>}/>
+        <Route exact path ='/detail-pembelian/:detail' element={<DetailOrder new_params={"testing"}/>}/>
 
         {/* testing page */}
         <Route exact path ='/testing' element={<Testing new_params={"testing"}/>}/>
