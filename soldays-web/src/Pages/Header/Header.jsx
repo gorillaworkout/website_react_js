@@ -455,7 +455,6 @@ export default function Header(data){
                                 </Link>
                             </>
                         )
-
                     })
                 }else if (filter_product.length > 0){
                     return (
@@ -472,7 +471,6 @@ export default function Header(data){
                                     <p>{filter_product[0].Name}</p>
                                 </div>
                             </Link>
-                
                         </>
                     )
                 }
