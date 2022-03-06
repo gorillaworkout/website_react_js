@@ -38,23 +38,174 @@ $bg-white:white;
                 // border:1px solid $border-color;
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                justify-content:flex-start;
                 background-color: transparent;;
                 .tab-content {
                     position: relative;
                     top:20px;
-                    border:1px solid #dedede;
+                    // border:1px solid #dedede;
                     background-color: white;
                     .tab-pane{
                         .box-orderlist{
                             width:100%;
-                            height:700px;
+                            height:300px;
+                            display: flex;
+                            // justify-content: center;
+                            align-items: center;
+                            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+                            margin-bottom:20px;
+                            flex-direction: column;
+                            padding-top:20px;
+                            padding-right:20px;
+                            padding-left:20px;
+                            ;
+
+                            .top-ol{
+                                width:100%;
+                                height:20%;
+                                border-bottom:1px solid #dedede;
+                                display: flex;
+                                flex-direction: row;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+
+                                .title-toko{
+                                    width:30%;
+                                    height:100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    padding-left:10px;
+                                    .icon-company{
+                                        position: relative;
+                                        right:5px;
+                                    }
+                                }
+                                .status-order-box{
+                                    width:30%;
+                                    height:100%;
+                                    // border:1px solid red;
+                                    display: flex;
+                                    justify-content: flex-end;
+                                    align-items: center;
+                                    padding-right:5px;
+                                    .icon-truck{
+                                        color:#27aae1;
+                                        font-size:25px;
+                                        position: relative;
+                                        left:-3px;
+                                    }
+                                    p:nth-child(1){
+                                        color:#27aae1;
+                                        text-align: center;
+                                        position: relative;
+                                        left:-5px;
+                                    }
+                                    p:nth-child(2){
+                                        margin-right:10px;
+                                        color:black;
+                                        position: relative;
+                                        // left:5px;
+                                    }
+                                    p:nth-child(3){
+                                        color:$orange-soldays;
+                                        position: relative;
+                                        right:-5px;
+                                    }
+                                    
+                                }
+                            }
+                            .mid-ol-detail{
+                                width:100%;
+                                height:50%;
+                                border-bottom:1px solid #dedede;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                padding-left:10px;
+                                padding-right:10px;
+                                .box-img-detail{
+                                    width:80px;
+                                    height:80px;
+                                    img{
+                                        width:100%;
+                                        height:100%;
+                                    }
+                                }
+                                p:nth-child(2){
+                                    width:80%;
+                                    font-size:16px;
+                                }
+                                p:nth-child(3){
+                                    width:10%;
+                                    font-size:16px;
+                                }
+                            }
+                            .bottom-ol-detail{
+                                width:100%;
+                                height:30%;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: flex-end;
+                                .bottom-left{
+                                    width:50%;
+                                    height:100%;                                    
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+                                .bottom-right{
+                                    width:50%;
+                                    height:100%;
+                                    display: flex;
+                                    justify-content: flex-end;
+                                    align-items: center;
+                                    .detail-btn{
+                                        width:auto;
+                                        height:40px;
+                                        border:1px solid $blue-soldays;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        color:black;
+                                        border-radius:8px;
+                                        margin:3px;
+                                        padding:5px;
+                                        transition:0.8s;
+                                        text-decoration: none;
+                                        &:hover{
+                                            border:1px solid $orange-soldays;
+                                            cursor: pointer;
+                                            background-color:$orange-soldays;
+                                            color:white;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .box-empty-ol{
+                            width:100%;
+                            height:450px;;
                             display: flex;
                             justify-content: center;
                             align-items: center;
+                            flex-direction: column;
                             box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
-                            
+                            img{
+                                width:30%;
+                                height:60%;
+                            }
+                            p{
+                                font-size:20px;
+                                position: relative;
+                                top:10px;
+                                color:$blue-soldays;
+                                font-weight:500;
+                            }
                         }
+                        
                     }
                 }
                 .title-orderlist{
