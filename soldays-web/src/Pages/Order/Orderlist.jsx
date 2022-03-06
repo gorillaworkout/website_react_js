@@ -175,10 +175,273 @@ export default function Orderlist(){
                                     </Tab.Pane>
                                     
                                     <Tab.Pane eventKey={2} title={'Category'}>
+                                        {
+                                            totalOrder > 0 ?
+                                            <>
+                                                <div className="box-orderlist">
+                                                    <div className="top-ol">
+                                                        <div className="title-toko">
+                                                            <GrCommand className="icon-company"/>
+                                                            <p>VANTSING INTERNATIONAL</p>
+                                                        </div>
+                                                        <div className="status-order-box">
+                                                            <p>
+                                                                <BsTruck className="icon-truck"/>
+                                                                COMPLETED    
+                                                            </p>
+                                                            <p> | </p>
+                                                            <p>SELESAI</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mid-ol-detail">
+                                                        <div className="box-img-detail">
+                                                            <img src={sealant} alt="" />
+                                                        </div>
+                                                        <p>SEALANT HITAM 300 ML PALING MURAH BANGET <br /> 1x</p>
+                                                        <p>RP 30.000</p>
+                                                    </div>
+                                                    <div className="bottom-ol-detail">
+                                                        <div className="bottom-left">
+
+                                                        </div>
+                                                        <div className="bottom-right">
+                                                            <Link to={'/detail-pembelian/1231231232'} className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </Link>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div className="box-orderlist">
+                                                    <div className="top-ol">
+                                                        <div className="title-toko">
+                                                            <GrCommand className="icon-company"/>
+                                                            <p>VANTSING INTERNATIONAL</p>
+                                                        </div>
+                                                        <div className="status-order-box">
+                                                            <p>
+                                                                <BsTruck className="icon-truck"/>
+                                                                COMPLETED    
+                                                            </p>
+                                                            <p> | </p>
+                                                            <p>SELESAI</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mid-ol-detail">
+                                                        <div className="box-img-detail">
+                                                            <img src={sealant} alt="" />
+                                                        </div>
+                                                        <p>SEALANT HITAM 300 ML PALING MURAH BANGET <br /> 1x</p>
+                                                        <p>RP 30.000</p>
+                                                    </div>
+                                                    <div className="bottom-ol-detail">
+                                                        <div className="bottom-left">
+
+                                                        </div>
+                                                        <div className="bottom-right">
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div className="box-orderlist">
+                                                    <div className="top-ol">
+                                                        <div className="title-toko">
+                                                            <GrCommand className="icon-company"/>
+                                                            <p>VANTSING INTERNATIONAL</p>
+                                                        </div>
+                                                        <div className="status-order-box">
+                                                            <p>
+                                                                <BsTruck className="icon-truck"/>
+                                                                COMPLETED    
+                                                            </p>
+                                                            <p> | </p>
+                                                            <p>SELESAI</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mid-ol-detail">
+                                                        <div className="box-img-detail">
+                                                            <img src={sealant} alt="" />
+                                                        </div>
+                                                        <p>SEALANT HITAM 300 ML PALING MURAH BANGET <br /> 1x</p>
+                                                        <p>RP 30.000</p>
+                                                    </div>
+                                                    <div className="bottom-ol-detail">
+                                                        <div className="bottom-left">
+
+                                                        </div>
+                                                        <div className="bottom-right">
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>       
+                                            </>
+                                            :
+                                            <>
+                                                <div className="box-empty-ol">
+                                                    <img src={Empty} alt="" />
+                                                    <p>Orderlist Kosong, Silahkan belanja dulu</p>
+                                                </div>
+                                            </>
+                                        }
                                        
                                     </Tab.Pane>
                                     <Tab.Pane eventKey={3} title={'Category'}>
-                                        
+                                    {
+                                            totalOrder > 0 ?
+                                            <>
+                                                <div className="box-orderlist">
+                                                    <div className="top-ol">
+                                                        <div className="title-toko">
+                                                            <GrCommand className="icon-company"/>
+                                                            <p>VANTSING INTERNATIONAL</p>
+                                                        </div>
+                                                        <div className="status-order-box">
+                                                            <p>
+                                                                <BsTruck className="icon-truck"/>
+                                                                COMPLETED    
+                                                            </p>
+                                                            <p> | </p>
+                                                            <p>SELESAI</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mid-ol-detail">
+                                                        <div className="box-img-detail">
+                                                            <img src={sealant} alt="" />
+                                                        </div>
+                                                        <p>SEALANT HITAM 300 ML PALING MURAH BANGET <br /> 1x</p>
+                                                        <p>RP 30.000</p>
+                                                    </div>
+                                                    <div className="bottom-ol-detail">
+                                                        <div className="bottom-left">
+
+                                                        </div>
+                                                        <div className="bottom-right">
+                                                            <Link to={'/detail-pembelian/1231231232'} className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </Link>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div className="box-orderlist">
+                                                    <div className="top-ol">
+                                                        <div className="title-toko">
+                                                            <GrCommand className="icon-company"/>
+                                                            <p>VANTSING INTERNATIONAL</p>
+                                                        </div>
+                                                        <div className="status-order-box">
+                                                            <p>
+                                                                <BsTruck className="icon-truck"/>
+                                                                COMPLETED    
+                                                            </p>
+                                                            <p> | </p>
+                                                            <p>SELESAI</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mid-ol-detail">
+                                                        <div className="box-img-detail">
+                                                            <img src={sealant} alt="" />
+                                                        </div>
+                                                        <p>SEALANT HITAM 300 ML PALING MURAH BANGET <br /> 1x</p>
+                                                        <p>RP 30.000</p>
+                                                    </div>
+                                                    <div className="bottom-ol-detail">
+                                                        <div className="bottom-left">
+
+                                                        </div>
+                                                        <div className="bottom-right">
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div className="box-orderlist">
+                                                    <div className="top-ol">
+                                                        <div className="title-toko">
+                                                            <GrCommand className="icon-company"/>
+                                                            <p>VANTSING INTERNATIONAL</p>
+                                                        </div>
+                                                        <div className="status-order-box">
+                                                            <p>
+                                                                <BsTruck className="icon-truck"/>
+                                                                COMPLETED    
+                                                            </p>
+                                                            <p> | </p>
+                                                            <p>SELESAI</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mid-ol-detail">
+                                                        <div className="box-img-detail">
+                                                            <img src={sealant} alt="" />
+                                                        </div>
+                                                        <p>SEALANT HITAM 300 ML PALING MURAH BANGET <br /> 1x</p>
+                                                        <p>RP 30.000</p>
+                                                    </div>
+                                                    <div className="bottom-ol-detail">
+                                                        <div className="bottom-left">
+
+                                                        </div>
+                                                        <div className="bottom-right">
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                            <div className="detail-btn">
+                                                                Lihat detail pesanan
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>       
+                                            </>
+                                            :
+                                            <>
+                                                <div className="box-empty-ol">
+                                                    <img src={Empty} alt="" />
+                                                    <p>Orderlist Kosong, Silahkan belanja dulu</p>
+                                                </div>
+                                            </>
+                                        }
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Tab.Container>
