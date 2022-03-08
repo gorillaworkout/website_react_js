@@ -10,7 +10,7 @@ import Empty from '../../Assets/tokped_gambar/cart-kosong.jpeg'
 export default function Orderlist(){
 
 
-    const [totalOrder,setTotalOrder]=useState(0)
+    const [totalOrder,setTotalOrder]=useState(2)
     return (
         <>
             <div className="container-orderlist">
